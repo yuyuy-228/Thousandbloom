@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>花千树 · 考研英语学习台</title>
+<style>
+  :root{
+    --night:#141d36; --indigo:#1b2949; --panel:#1f2c4f; --panel2:#26375f;
+    --line:#2c3d6b; --ink:#101830;
+    --zhu:#d95b32; --zhu-deep:#b8452a; --teng:#e3aa4e; --zhe:#a06b3f;
+    --moon:#ece7d9; --yan:#8d99b5; --gold:#cdb277; --star:#f7f4ec;
+    --serif:"Songti SC","STSong","Source Han Serif SC","Noto Serif SC",SimSun,serif;
+    --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",system-ui,sans-serif;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--sans);color:var(--moon);line-height:1.65;
+    background:
+      radial-gradient(circle at 85% -10%, rgba(217,91,50,.07), transparent 42%),
+      radial-gradient(circle at 10% 110%, rgba(227,170,78,.05), transparent 40%),
+      var(--night);
+    -webkit-font-smoothing:antialiased}
+  ::selection{background:rgba(217,91,50,.35)}
+
+  /* ===== 页眉 ===== */
+  header{background:linear-gradient(180deg,#0e1629,#141d36);border-bottom:1px solid var(--line);
+    padding:16px 26px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  header h1{font-family:var(--serif);font-size:clamp(19px,2.4vw,24px);margin:0;color:var(--gold);letter-spacing:2px;font-weight:700}
+  header .verse{font-family:var(--serif);font-size:12.5px;color:var(--yan);margin-top:2px;letter-spacing:1px}
+  .saved{font-size:12px;background:rgba(205,178,119,.12);color:var(--gold);padding:4px 12px;border-radius:20px;border:1px solid rgba(205,178,119,.25)}
+
+  /* ===== 导航 ===== */
+  nav{display:flex;gap:2px;flex-wrap:wrap;background:rgba(16,24,48,.92);backdrop-filter:blur(6px);
+    padding:5px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+  nav button{border:0;background:transparent;color:var(--yan);padding:10px 13px;font-size:13.5px;
+    cursor:pointer;font-weight:600;font-family:var(--sans);border-bottom:2px solid transparent;
+    transition:color .2s,background .2s,border-color .2s,text-shadow .2s}
+  nav button:hover{color:var(--teng);background:rgba(227,170,78,.08)}
+  nav button.active{color:var(--zhu);border-bottom-color:var(--zhu);font-weight:700;text-shadow:0 0 14px rgba(217,91,50,.55)}
+  main{max-width:1160px;margin:24px auto;padding:0 18px 70px}
+  .view{display:none;animation:viewIn .35s cubic-bezier(.16,1,.3,1)}
+  .view.active{display:block}
+  @keyframes viewIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  /* ===== 卡片 ===== */
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px 22px;margin-bottom:18px;box-shadow:0 14px 34px -20px rgba(0,0,0,.55)}
+  .card h2{margin:0 0 14px;font-family:var(--serif);font-size:18px;font-weight:700;
+    display:flex;align-items:center;gap:10px;color:var(--gold)}
+  .card h2 .dot{width:6px;height:20px;background:var(--zhu);border-radius:3px;display:inline-block;
+    box-shadow:0 0 10px rgba(217,91,50,.6)}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:860px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+  /* ===== 横幅 · 扇面 ===== */
+  .banner{position:relative;border-radius:var(--radius);overflow:hidden;min-height:215px;
+    background:linear-gradient(120deg,#101a33 0%,#1b2949 55%,#22345e 100%);
+    border:1px solid var(--line);margin-bottom:20px;display:flex;align-items:center;
+    justify-content:space-between;gap:20px;padding:24px 30px;flex-wrap:wrap;
+    box-shadow:0 18px 40px -22px rgba(0,0,0,.6)}
+  .banner-svg{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+  .rain{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+  .rain span{position:absolute;top:-12px;width:2px;height:9px;border-radius:2px;
+    background:linear-gradient(180deg,rgba(247,244,236,.9),rgba(247,244,236,0));
+    animation:fall linear infinite}
+  @keyframes fall{0%{transform:translateY(-12px);opacity:0}12%{opacity:.85}90%{opacity:.5}100%{transform:translateY(230px);opacity:0}}
+  .binfo,.bctl{position:relative;z-index:2}
+  .binfo .cap,.bctl .cap{font-size:12px;color:var(--yan);letter-spacing:3px;margin-bottom:5px}
+  .banner .days{font-family:var(--serif);font-size:56px;font-weight:800;line-height:1;
+    color:var(--star);text-shadow:0 0 24px rgba(227,170,78,.35)}
+  .banner .days small{font-size:16px;font-weight:400;color:var(--yan);margin-left:8px;font-family:var(--sans)}
+  .phase{display:inline-block;padding:3px 13px;border-radius:20px;font-size:12.5px;font-weight:700;
+    background:rgba(217,91,50,.22);color:#f0b49a;border:1px solid rgba(240,180,154,.4)}
+  .banner .advice{font-size:13px;color:var(--yan);margin-top:9px;max-width:520px;line-height:1.75}
+  .seg{display:inline-flex;background:rgba(16,24,48,.6);border:1px solid var(--line);border-radius:10px;padding:3px;gap:3px}
+  .seg button{border:0;background:transparent;color:var(--yan);padding:7px 14px;border-radius:8px;
+    font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:.2s}
+  .seg button:hover{color:var(--teng)}
+  .seg button.on{background:var(--zhu);color:var(--star);box-shadow:0 0 14px rgba(217,91,50,.5)}
+  .bctl .est{font-size:12.5px;color:var(--gold);margin-top:9px}
+  .bctl .est a{color:var(--teng);cursor:pointer;text-decoration:underline}
+
+  /* ===== 灯火图 ===== */
+  .heatwrap{overflow-x:auto;padding-bottom:4px}
+  .heat{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,13px);grid-auto-columns:13px;gap:4px}
+  .heat i{display:block;width:13px;height:13px;border-radius:50%;transition:transform .15s}
+  .heat i:hover{transform:scale(1.35)}
+  .lv0{background:#1a2545}
+  .lv1{background:#5e2f1e;box-shadow:0 0 4px rgba(217,91,50,.25)}
+  .lv2{background:#a34626;box-shadow:0 0 6px rgba(217,91,50,.45)}
+  .lv3{background:#d95b32;box-shadow:0 0 9px rgba(217,91,50,.7)}
+  .lv4{background:#f0a04b;box-shadow:0 0 13px rgba(240,160,75,.9)}
+  .heatlegend{display:flex;gap:10px;align-items:center;font-size:11.5px;color:var(--yan);margin-top:10px;flex-wrap:wrap}
+  .heatlegend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:middle}
+
+  /* ===== 快捷入口 ===== */
+  .quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media(max-width:860px){.quick{grid-template-columns:repeat(2,1fr)}}
+  .quick button{border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),var(--panel2));
+    color:var(--moon);border-radius:12px;padding:14px 10px;font-size:14px;font-weight:700;cursor:pointer;
+    font-family:var(--serif);letter-spacing:2px;transition:.18s;position:relative;overflow:hidden}
+  .quick button small{display:block;font-size:11px;color:var(--yan);font-family:var(--sans);letter-spacing:0;margin-top:3px;font-weight:400}
+  .quick button:hover{border-color:var(--zhu);color:var(--teng);transform:translateY(-2px);
+    box-shadow:0 8px 20px -10px rgba(217,91,50,.5)}
+
+  /* ===== 统计块 ===== */
+  .stat{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);
+    border-radius:12px;padding:15px 14px;text-align:center;border-top:2px solid var(--zhu)}
+  .stat .num{font-family:var(--serif);font-size:30px;font-weight:800;color:var(--gold);line-height:1.1}
+  .stat .lbl{font-size:12px;color:var(--yan);margin-top:6px}
+
+  /* ===== 表单 ===== */
+  label{display:block;font-size:13px;color:var(--yan);margin:9px 0 4px;font-weight:600}
+  input,select,textarea{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:9px;
+    font-size:14px;font-family:var(--sans);background:#16203a;color:var(--moon);transition:.18s}
+  textarea{resize:vertical;min-height:90px}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--zhu);box-shadow:0 0 0 3px rgba(217,91,50,.2)}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .row>*{flex:1;min-width:120px}
+  button.btn{border:0;background:var(--zhu);color:var(--star);padding:9px 18px;border-radius:9px;
+    font-size:14px;font-weight:600;cursor:pointer;font-family:var(--sans);
+    transition:transform .15s cubic-bezier(.16,1,.3,1),background .2s,box-shadow .2s}
+  button.btn:hover{background:var(--zhu-deep);transform:translateY(-1px);box-shadow:0 6px 18px -8px rgba(217,91,50,.7)}
+  button.btn:active{transform:translateY(0)}
+  button.btn.ghost{background:transparent;color:var(--moon);border:1px solid var(--line)}
+  button.btn.ghost:hover{background:rgba(227,170,78,.08);border-color:var(--teng);transform:none;box-shadow:none;color:var(--teng)}
+  button.btn.danger{background:rgba(217,91,50,.14);color:#eb9d7f;border:1px solid rgba(217,91,50,.3)}
+  button.btn.danger:hover{background:rgba(217,91,50,.25);transform:none;box-shadow:none}
+  button.btn.sm{padding:5px 11px;font-size:12px}
+
+  /* ===== 表格 / 列表 ===== */
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{padding:10px 11px;text-align:left;border-bottom:1px solid var(--line)}
+  th{color:var(--yan);font-weight:600;background:#1a2745;font-size:12.5px;letter-spacing:.5px}
+  tr:hover td{background:#243459}
+  .pill{display:inline-block;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:600}
+  .p0{background:rgba(141,153,181,.15);color:var(--yan)}
+  .p1{background:rgba(217,91,50,.2);color:#eb9d7f}
+  .p2{background:rgba(227,170,78,.18);color:var(--teng)}
+  .p3{background:rgba(205,178,119,.22);color:var(--gold)}
+  .tag{display:inline-block;padding:1px 9px;border-radius:6px;background:rgba(227,170,78,.13);
+    color:var(--teng);font-size:12px;margin-right:4px;font-weight:600}
+  .tip{font-size:12.5px;color:var(--yan);margin:8px 0 0;line-height:1.7}
+  .tips-list{margin:0;padding-left:1.4em;font-size:13.5px;line-height:1.9}
+  .tips-list b{color:var(--teng)}
+  .empty{color:var(--yan);font-size:13px;padding:22px;text-align:center;border:1px dashed var(--line);
+    border-radius:10px;background:rgba(16,24,48,.4)}
+  .muted{color:var(--yan)}
+  .small{font-size:12.5px}
+  .gap-neg{color:#eb9d7f;font-weight:700}
+  .gap-pos{color:var(--teng);font-weight:700}
+  .flex-between{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .svgbox{width:100%;overflow:hidden}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--yan);margin-top:8px}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:middle}
+
+  /* ===== 抽认卡 ===== */
+  .flashcard{background:linear-gradient(135deg,#1b2949,#22345e);border:1px solid var(--line);
+    border-left:4px solid var(--zhu);border-radius:14px;padding:30px;text-align:center;
+    min-height:175px;display:flex;flex-direction:column;justify-content:center}
+  .flashcard .term{font-family:var(--serif);font-size:32px;font-weight:800;color:var(--star)}
+  .flashcard .phon{color:var(--yan);font-size:15px;margin-top:6px}
+  .flashcard .mean{font-size:18px;margin-top:16px;color:var(--teng);font-weight:600}
+  .hidden{display:none}
+
+  /* ===== 打卡项 ===== */
+  .checkbox{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1px solid var(--line);
+    border-radius:10px;margin-bottom:9px;background:rgba(16,24,48,.45);transition:.2s;cursor:pointer}
+  .checkbox input{width:auto;flex:none;accent-color:var(--zhu);width:17px;height:17px}
+  .checkbox.done{background:rgba(227,170,78,.1);border-color:rgba(227,170,78,.45)}
+  .checkbox .t{font-weight:600}
+  .checkbox .d{font-size:12px;color:var(--yan)}
+
+  .template-btn{text-align:left;padding:11px 14px;border:1px solid var(--line);border-radius:10px;
+    background:rgba(16,24,48,.45);cursor:pointer;font-size:13.5px;font-weight:600;margin-bottom:9px;
+    width:100%;color:var(--moon);transition:.18s}
+  .template-btn:hover{border-color:var(--teng);background:rgba(227,170,78,.08);transform:translateX(3px)}
+
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(10px);
+    background:#0e1629;color:var(--gold);padding:11px 20px;border-radius:24px;font-size:13.5px;
+    border:1px solid var(--line);opacity:0;transition:.25s;z-index:200;pointer-events:none;
+    box-shadow:0 14px 34px -12px rgba(0,0,0,.7)}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  /* ===== 目标分拆解滑杆 ===== */
+  .tgt-row{display:flex;align-items:center;gap:12px;margin-bottom:9px;flex-wrap:wrap}
+  .tgt-row label{flex:0 0 88px;font-size:13.5px;margin:0}
+  .tgt-row input[type=range]{flex:1;min-width:150px;accent-color:var(--zhu);height:22px}
+  .tgt-row .tv{flex:0 0 84px;text-align:right;font-family:var(--serif);font-size:15px;color:var(--gold)}
+  /* ===== 真题库 PDF 作答 ===== */
+  .pdf-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .pdf-wrap{display:flex;gap:14px;align-items:flex-start}
+  .pdf-pages{flex:1.35;min-width:0;background:rgba(16,24,48,.45);border:1px solid var(--line);
+    border-radius:12px;padding:12px;max-height:76vh;overflow:auto;display:flex;flex-direction:column;align-items:center}
+  .pdf-pages canvas{display:block;margin:0 auto 12px;border-radius:6px;background:#fff;box-shadow:0 4px 18px rgba(0,0,0,.35);max-width:100%;max-height:calc(76vh - 24px);object-fit:contain}
+  .pdf-pages:fullscreen,.pdf-pages:-webkit-full-screen{background:var(--night);padding:20px;justify-content:center;align-items:center}
+  .pdf-pages:fullscreen canvas,.pdf-pages:-webkit-full-screen canvas{max-height:calc(100vh - 40px)}
+  .ans-card{flex:1;min-width:300px;max-height:76vh;overflow:auto}
+  .ans-card .card{margin-bottom:12px}
+  .qgrid{display:grid;grid-template-columns:repeat(10,minmax(34px,1fr));gap:6px;margin:8px 0 12px}
+  .qcell{border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--moon);
+    padding:5px 2px;text-align:center;cursor:pointer;font-size:12px;line-height:1.35;user-select:none;transition:all .15s}
+  .qcell:hover{border-color:var(--teng)}
+  .qcell .qn{display:block;color:var(--yan);font-size:10.5px}
+  .qcell .qa{display:block;font-weight:700;font-size:14px;font-family:var(--serif);min-height:18px}
+  .qcell.sel{background:rgba(217,91,50,.22);border-color:var(--zhu)}
+  .qcell.ok{background:rgba(127,180,126,.18);border-color:#7fb47e}
+  .qcell.ok .qa{color:#9fd39e}
+  .qcell.bad{background:rgba(217,91,50,.32);border-color:var(--zhu-deep)}
+  .qcell.bad .qa{color:#f0a58f}
+  .subscore{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+  .subscore label{flex:1;font-size:13.5px;min-width:180px}
+  .grade-sum{background:rgba(227,170,78,.08);border:1px solid rgba(227,170,78,.3);border-radius:10px;
+    padding:12px 14px;font-size:13.5px;line-height:1.95}
+  .lib-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .lib-item:last-child{border-bottom:none}
+  @media (max-width:900px){ .pdf-wrap{flex-direction:column} .ans-card{max-height:none} }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>花千树 · 考研英语学习台</h1>
+    <div class="verse">东风夜放花千树，更吹落、星如雨</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="seg" id="examTypeSeg" title="选择你参加英语一还是英语二">
+      <button data-et="1">英语一</button>
+      <button data-et="2">英语二</button>
+    </div>
+    <div class="saved" id="savedTag">● 已保存</div>
+  </div>
+</header>
+
+<nav id="nav">
+  <button data-tab="home" class="active">首页</button>
+  <button data-tab="vocab">词汇</button>
+  <span id="topicNav" style="display:contents"></span>
+  <button data-tab="library">真题库</button>
+  <button data-tab="mistakes">错题本</button>
+  <button data-tab="stats">统计</button>
+  <button data-tab="data">数据管理</button>
+</nav>
+
+<main>
+  <!-- ============ 首页 ============ -->
+  <section class="view active" id="view-home">
+    <div class="banner" id="banner">
+      <svg class="banner-svg" viewBox="0 0 1000 215" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#16223f"/><stop offset="1" stop-color="#1d2c50"/>
+          </linearGradient>
+        </defs>
+        <rect width="1000" height="215" fill="url(#skyG)"/>
+        <!-- 远景楼台 -->
+        <path fill="#131f3d" d="M0,215 L0,150 L70,150 L70,120 L82,108 L94,120 L94,150 L150,150 L150,88 L162,74 L174,88 L174,150 L230,150 L230,128 L300,128 L300,150 L360,150 L360,100 L372,86 L384,100 L384,150 L460,150 L460,130 L540,130 L540,150 L620,150 L620,92 L632,78 L644,92 L644,150 L710,150 L710,126 L790,126 L790,150 L860,150 L860,106 L872,92 L884,106 L884,150 L940,150 L940,132 L1000,132 L1000,215 Z"/>
+        <!-- 近景楼台 -->
+        <path fill="#0d1528" d="M0,215 L0,178 L90,178 L90,158 L102,146 L114,158 L114,178 L210,178 L210,150 L222,138 L234,150 L234,178 L340,178 L340,162 L470,162 L470,178 L580,178 L580,148 L592,136 L604,148 L604,178 L720,178 L720,164 L850,164 L850,178 L930,178 L930,156 L942,144 L954,156 L954,178 L1000,178 L1000,215 Z"/>
+        <!-- 灯火 -->
+        <g fill="#e3aa4e">
+          <circle cx="102" cy="118" r="2.6" opacity=".9"/><circle cx="162" cy="82" r="3" opacity=".95"/>
+          <circle cx="372" cy="94" r="2.4" opacity=".85"/><circle cx="632" cy="80" r="3" opacity=".9"/>
+          <circle cx="872" cy="100" r="2.4" opacity=".85"/><circle cx="222" cy="146" r="2.6" opacity=".9"/>
+          <circle cx="592" cy="142" r="2.6" opacity=".9"/><circle cx="942" cy="148" r="2.4" opacity=".85"/>
+        </g>
+        <g fill="#d95b32">
+          <circle cx="134" cy="144" r="2.2" opacity=".8"/><circle cx="330" cy="168" r="2.2" opacity=".75"/>
+          <circle cx="512" cy="170" r="2.4" opacity=".8"/><circle cx="764" cy="170" r="2.2" opacity=".75"/>
+          <circle cx="908" cy="166" r="2.2" opacity=".7"/>
+        </g>
+        <g fill="#f7f4ec" opacity=".85">
+          <circle cx="80" cy="44" r="1.3"/><circle cx="240" cy="30" r="1.1"/><circle cx="420" cy="52" r="1.2"/>
+          <circle cx="600" cy="26" r="1.2"/><circle cx="760" cy="48" r="1.1"/><circle cx="900" cy="34" r="1.3"/>
+        </g>
+      </svg>
+      <div class="rain" id="rainBox"></div>
+      <div class="binfo">
+        <div class="cap" id="bCap">距离考研</div>
+        <div class="days"><span id="bDays">—</span><small>天</small></div>
+        <span class="phase" id="bPhase">未设置</span>
+        <div class="advice" id="bAdvice">选择你的届别，灯火为你点亮。</div>
+      </div>
+      <div class="bctl">
+        <div class="cap">我是哪一届考生</div>
+        <div class="seg" id="cohortSeg">
+          <button data-off="0">当年考</button>
+          <button data-off="1">明年考</button>
+          <button data-off="2">后年考</button>
+        </div>
+        <div class="est" id="estDate"></div>
+      </div>
+    </div>
+
+    <div class="grid g4" id="dashStats"></div>
+
+    <div class="grid g2" style="margin-top:18px">
+      <div class="card">
+        <div class="flex-between">
+          <h2><span class="dot"></span>今日功课</h2>
+          <button class="btn ghost sm" onclick="togglePlanEdit()">✎ 编辑功课</button>
+        </div>
+        <div id="planEdit" class="hidden">
+          <div id="planEditList" style="margin-top:6px"></div>
+          <div class="row" style="margin-top:8px">
+            <div style="flex:2"><input id="newTaskText" placeholder="新任务名称，如：背 50 个单词"></div>
+            <div style="flex:2"><input id="newTaskDesc" placeholder="说明（可选）"></div>
+            <div style="flex:0"><button class="btn" onclick="addDailyTask()">＋ 添加</button></div>
+          </div>
+          <p class="tip">在这里自定义你每天的功课清单，保存后每日自动重置为未勾选；勾选状态只记当天。</p>
+        </div>
+        <div id="todayPlan" style="margin-top:12px"></div>
+        <div class="row" style="margin-top:12px">
+          <button class="btn" onclick="doCheckin()">点灯 · 今日打卡</button>
+          <button class="btn ghost" onclick="resetToday()">重置今日</button>
+        </div>
+        <p class="tip">每完成一天功课，就在灯火图上点亮一盏灯。</p>
+      </div>
+      <div class="card">
+        <h2><span class="dot"></span>目标与倒计时</h2>
+        <div class="row">
+          <div><label>你的称呼</label><input id="pName" placeholder="例如：小王"></div>
+          <div><label>目标院校 / 分数</label><input id="pGoal" placeholder="例如：英语 80+"></div>
+        </div>
+        <div class="row" style="margin-top:6px">
+          <div><label>考试日期（已按届别预填，可微调）</label><input id="pExam" type="date"></div>
+          <div><label>每日单词目标</label><input id="pVocabGoal" type="number" min="1" value="30"></div>
+        </div>
+        <div id="countdown" style="margin-top:14px;font-size:15px;font-weight:600;color:var(--gold)"></div>
+        <button class="btn ghost sm" style="margin-top:10px" onclick="saveProfile()">保存目标</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="flex-between">
+        <h2><span class="dot"></span>目标分拆解 · <span id="tgtEtName">英语一</span></h2>
+        <span class="small muted">合计 <b id="tgtSum" style="color:var(--gold);font-size:15px">80</b> / 100 分</span>
+      </div>
+      <div id="tgtRows"></div>
+      <div class="row" style="margin-top:8px">
+        <button class="btn ghost sm" onclick="saveTargetsUI()">保存目标分</button>
+        <button class="btn ghost sm" onclick="resetTargetsUI()">恢复默认 80 分档</button>
+      </div>
+      <p class="tip">拖动滑杆调整各题型目标分（上限＝该题型真实满分）。练习记录与统计中的「距目标」都以此为基线；切换英语一/英语二后这里会分别记忆两套目标。</p>
+    </div>
+
+    <div class="card">
+      <div class="flex-between">
+        <h2><span class="dot"></span>灯火图 · 学习热力</h2>
+        <span class="small muted" id="heatSum"></span>
+      </div>
+      <div class="heatwrap"><div class="heat" id="heatGrid"></div></div>
+      <div class="heatlegend">
+        <span>少</span>
+        <span><i class="lv1"></i>暗火</span><span><i class="lv2"></i>微光</span>
+        <span><i class="lv3"></i>明亮</span><span><i class="lv4"></i>璀璨</span>
+        <span>多</span>
+        <span class="muted small" style="margin-left:auto">每学一天点一盏灯，东风夜放花千树</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span class="dot"></span>专题直达</h2>
+      <div class="quick" id="quickNav"></div>
+    </div>
+
+    <div class="card">
+      <h2><span class="dot"></span>最近练习</h2>
+      <div id="recentBox"></div>
+    </div>
+  </section>
+
+  <!-- ============ 词汇 ============ -->
+  <section class="view" id="view-vocab">
+    <div class="card">
+      <div class="flex-between">
+        <h2><span class="dot"></span>词汇 · 5500 长征</h2>
+        <div>
+          <button class="btn ghost sm" onclick="importBuiltin()">＋ 内置核心词库</button>
+          <button class="btn ghost sm" onclick="document.getElementById('wordFile').click()">⬆ 导入个人词库</button>
+          <input id="wordFile" type="file" accept=".txt,.csv,.md" class="hidden" onchange="importWordFile(event)">
+        </div>
+      </div>
+      <p class="tip">「导入个人词库」支持 <b>.txt</b>（每行：<code>单词 释义</code>）与 <b>.csv</b>（<code>单词,释义</code>），可从你的 Word / Excel 另存为这两种格式后上传。PDF / Word 原文解析将随真题库解析引擎一并开放。</p>
+      <div class="row" style="margin-top:6px">
+        <div style="flex:2"><input id="wTerm" placeholder="单词（英文）"></div>
+        <div style="flex:1"><input id="wPhon" placeholder="音标"></div>
+        <div style="flex:1"><input id="wPos" placeholder="词性"></div>
+        <div style="flex:2"><input id="wMean" placeholder="中文释义"></div>
+        <div style="flex:1"><input id="wTag" placeholder="标签"></div>
+        <div style="flex:0"><button class="btn" onclick="addWord()">添加</button></div>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <select id="wFilter" onchange="renderWords()" style="flex:1">
+          <option value="all">全部单词</option>
+          <option value="0">未学</option><option value="1">生疏</option>
+          <option value="2">熟悉</option><option value="3">已掌握</option>
+        </select>
+        <input id="wSearch" placeholder="搜索单词 / 释义…" oninput="renderWords()" style="flex:2">
+        <button class="btn ghost" onclick="startReview()">🎴 抽认卡复习（未掌握）</button>
+      </div>
+    </div>
+    <div class="card hidden" id="reviewBox">
+      <h2><span class="dot"></span>复习 <span id="revProgress" class="muted small"></span></h2>
+      <div class="flashcard">
+        <div class="term" id="revTerm">—</div>
+        <div class="phon" id="revPhon"></div>
+        <div class="mean hidden" id="revMean"></div>
+      </div>
+      <div class="row" style="margin-top:14px">
+        <button class="btn ghost" onclick="revReveal()">显示释义</button>
+        <button class="btn danger" onclick="revResult(0)">不认识</button>
+        <button class="btn" style="background:var(--zhe)" onclick="revResult(1)">模糊</button>
+        <button class="btn" style="background:var(--teng);color:#1c2313" onclick="revResult(2)">认识</button>
+        <button class="btn ghost" onclick="endReview()">结束</button>
+      </div>
+    </div>
+    <div class="card"><div id="wordList"></div></div>
+  </section>
+
+  <!-- ============ 题型专题（JS 生成） ============ -->
+  <div id="topicViews"></div>
+
+  <!-- ============ 真题库 ============ -->
+  <section class="view" id="view-library">
+    <div class="card">
+      <div class="flex-between">
+        <h2><span class="dot"></span>真题库 · 上传 PDF</h2>
+        <span class="small muted">离线存储于本机 IndexedDB</span>
+      </div>
+      <div class="row">
+        <div style="flex:2"><label>试卷名称</label><input id="libName" placeholder="如 2021 英语一真题"></div>
+        <div><label>考试类型</label><select id="libEt"><option value="1">英语一</option><option value="2">英语二</option></select></div>
+        <div style="flex:0"><label>&nbsp;</label><button class="btn" onclick="document.getElementById('pdfFile').click()">⬆ 选择 PDF 上传</button></div>
+      </div>
+      <input type="file" id="pdfFile" accept="application/pdf,.pdf" class="hidden" onchange="libUpload(event)">
+      <p class="tip" style="margin:8px 0 0">上传后左侧渲染试卷，右侧电子答题卡分「模拟考试 → 对答案」两阶段使用：模考时只记录选择、不显示答案；对答案时再贴答案键自动判分，错题自动入库。答案键需你自己从真题解析/答案册获取。若以 <code>file://</code> 双击打开导致 PDF 不显示，请用本地服务器（如 <code>python -m http.server</code>）以 http 访问。</p>
+    </div>
+    <div class="card">
+      <h2><span class="dot"></span>我的真题库</h2>
+      <div id="pdfList"></div>
+    </div>
+    <div class="card hidden" id="graderCard">
+      <div class="pdf-toolbar">
+        <b id="graderTitle"></b>
+        <button class="btn ghost sm" onclick="pdfPrev()">‹ 上一页</button>
+        <span id="pdfPageInfo" class="small"></span>
+        <button class="btn ghost sm" onclick="pdfNext()">下一页 ›</button>
+        <button class="btn ghost sm" id="fsBtn" onclick="toggleFullScreen()">⛶ 全屏看卷</button>
+        <span class="small muted" style="margin-left:auto">左看卷 · 右答题 · 双击页面也可全屏</span>
+      </div>
+      <div class="pdf-wrap">
+        <div class="pdf-pages" id="pdfPages"></div>
+        <div class="ans-card" id="ansCard"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2><span class="dot"></span>整套模考记录</h2>
+      <div class="row">
+        <div><label>年份 / 来源</label><input id="pYear" placeholder="如 2021 真题 / 某机构模考"></div>
+        <div><label>得分</label><input id="pScore" type="number" step="0.5" placeholder="得分"></div>
+        <div><label>满分</label><input id="pFull" type="number" step="0.5" value="100"></div>
+        <div style="flex:2"><label>备注</label><input id="pNote" placeholder="例如：阅读限时超时，作文没写完"></div>
+        <div style="flex:0"><button class="btn" onclick="addPaper()">保存记录</button></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2><span class="dot"></span>全部练习记录</h2>
+      <div id="paperList"></div>
+    </div>
+  </section>
+
+  <!-- ============ 错题本 ============ -->
+  <section class="view" id="view-mistakes">
+    <div class="card">
+      <div class="row">
+        <div><label>题型</label>
+          <select id="mType">
+            <option>完形</option><option>阅读</option><option>新题型</option>
+            <option>翻译</option><option>写作</option><option>其他</option>
+          </select>
+        </div>
+        <div style="flex:2"><label>题目 / 错误点</label><input id="mQ" placeholder="题干或你错在哪里"></div>
+        <div style="flex:2"><label>正确答案 / 要点</label><input id="mA" placeholder="正确选项或得分点"></div>
+        <div style="flex:2"><label>原因 / 解析</label><input id="mWhy" placeholder="为什么会错"></div>
+        <div style="flex:0"><button class="btn" onclick="addMistake()">记录</button></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="flex-between">
+        <h2><span class="dot"></span>错题列表</h2>
+        <select id="mFilter" onchange="renderMistakes()" style="width:auto;flex:none">
+          <option value="all">全部题型</option><option>完形</option><option>阅读</option>
+          <option>新题型</option><option>翻译</option><option>写作</option><option>其他</option>
+        </select>
+      </div>
+      <div id="mistakeList"></div>
+    </div>
+  </section>
+
+  <!-- ============ 统计 ============ -->
+  <section class="view" id="view-stats">
+    <div class="grid g2">
+      <div class="card">
+        <h2><span class="dot"></span>各题型实际平均分 vs 目标分</h2>
+        <div class="svgbox" id="chartType"></div>
+      </div>
+      <div class="card">
+        <h2><span class="dot"></span>练习得分趋势</h2>
+        <div class="svgbox" id="chartTrend"></div>
+      </div>
+    </div>
+    <div class="grid g2">
+      <div class="card">
+        <h2><span class="dot"></span>词汇掌握度</h2>
+        <div class="svgbox" id="chartMastery"></div>
+      </div>
+      <div class="card">
+        <h2><span class="dot"></span>学习概览</h2>
+        <div id="overviewText"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 数据管理 ============ -->
+  <section class="view" id="view-data">
+    <div class="card">
+      <h2><span class="dot"></span>数据管理</h2>
+      <p class="tip">所有数据仅保存在<strong>当前浏览器</strong>。换设备或清缓存会丢失，建议定期导出备份；
+      真题 PDF 由你自己保管，不包含在备份内。若新版本读不到旧数据，请在旧文件「数据管理」导出，再到此处导入。</p>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" onclick="exportData()">⬇ 导出数据 (JSON)</button>
+        <button class="btn ghost" onclick="document.getElementById('importFile').click()">⬆ 导入数据</button>
+        <input id="importFile" type="file" accept="application/json" class="hidden" onchange="importData(event)">
+        <button class="btn danger" onclick="clearAll()">清空全部数据</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="pdf.min.js"></script>
+<script>
+/* ===================== 数据层 ===================== */
+const STORE_KEY = 'ky_en1_workbench_v1';
+let reviewQueue = [], reviewIdx = 0;
+
+const DEFAULT_DAILY_TASKS=[
+  {id:'d_vocab',text:'背诵单词 30 个',desc:'完成今日词汇目标'},
+  {id:'d_read',text:'精读 2 篇阅读',desc:'积累语感与解题逻辑'},
+  {id:'d_sent',text:'分析 1 个长难句',desc:'拆解语法结构'},
+  {id:'d_write',text:'写作 / 模板练习',desc:'小作文或句型积累'}
+];
+function load(){ try{return JSON.parse(localStorage.getItem(STORE_KEY));}catch(e){return null;} }
+function defaultDB(){
+  return {
+    profile:{name:'',goal:'',examDate:'',vocabGoal:30,cohort:1},
+    words:[], papers:[], writings:[], sentences:[], mistakes:[],
+    checkins:{}, materials:'', dailyTasks:DEFAULT_DAILY_TASKS.map(t=>({...t})),
+    aiKey:'', aiEndpoint:'',
+    targets:{1:{完形填空:7,阅读理解:37,新题型:8,翻译:6,小作文:7,大作文:15},
+             2:{完形填空:6,阅读理解:34,新题型:8,翻译:11,小作文:7,大作文:14}},
+    v:2
+  };
+}
+/* 数据规范化与版本升级（载入 / 导入时共用） */
+function normalizeDB(){
+  if(!DB.v){ DB.targets={完形填空:7,阅读理解:37,新题型:8,翻译:6,小作文:7,大作文:15}; DB.v=2; }
+  /* targets 升级为按考试类型（1=英语一，2=英语二）分别存储 */
+  if(!DB.targets || typeof DB.targets!=='object' || DB.targets['完形填空']!=null){
+    const old = (DB.targets && DB.targets['完形填空']!=null) ? DB.targets
+      : {完形填空:7,阅读理解:37,新题型:8,翻译:6,小作文:7,大作文:15};
+    DB.targets = {1:{...old}, 2:{完形填空:6,阅读理解:34,新题型:8,翻译:11,小作文:7,大作文:14}};
+  }
+  if(!DB.profile) DB.profile={name:'',goal:'',examDate:'',vocabGoal:30,cohort:1,examType:1};
+  if(DB.profile.cohort==null) DB.profile.cohort=1;
+  if(DB.profile.examType==null) DB.profile.examType=1;
+  if(!DB.dailyTasks||!DB.dailyTasks.length) DB.dailyTasks=DEFAULT_DAILY_TASKS.map(t=>({...t}));
+  if(DB.aiKey==null) DB.aiKey='';
+  if(DB.aiEndpoint==null) DB.aiEndpoint='';
+  /* 旧练习记录补全考试类型，默认当前选中的类型 */
+  if(DB.papers&&DB.papers.length) DB.papers.forEach(p=>{ if(p.et==null) p.et=DB.profile.examType; });
+  DB.v=2;
+}
+
+let DB = load() || defaultDB();
+normalizeDB();
+function save(){
+  localStorage.setItem(STORE_KEY, JSON.stringify(DB));
+  const t=document.getElementById('savedTag');
+  t.textContent='● 已保存 '+new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
+}
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function todayStr(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1600); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+const FULL_BY_TYPE={'完形填空':10,'阅读理解':40,'新题型':10,'翻译':{1:10,2:15},'小作文':10,'大作文':{1:20,2:15},'整套模考':100};
+const TARGET_TYPES=['完形填空','阅读理解','新题型','翻译','小作文','大作文'];
+function targetFor(t, et){
+  et = et||DB.profile.examType; const tg=DB.targets[et]||DB.targets[1];
+  if(t==='整套模考') return TARGET_TYPES.reduce((s,k)=>s+(+tg[k]||0),0);
+  return (+tg[t]||0);
+}
+function fullFor(t, et){
+  et=et||DB.profile.examType;
+  const v=FULL_BY_TYPE[t];
+  if(v==null) return 100;
+  return typeof v==='number'? v : (v[et]!=null?v[et]:100);
+}
+function curTips(t){ return (DB.profile.examType===2 && t.tips2)? t.tips2 : t.tips; }
+
+/* 默认目标分（80 分档），按考试类型分别给出 */
+const DEFAULT_TARGETS={1:{完形填空:7,阅读理解:37,新题型:8,翻译:6,小作文:7,大作文:15},
+  2:{完形填空:6,阅读理解:34,新题型:8,翻译:11,小作文:7,大作文:14}};
+/* 答题卡分区配置：客观题（滑选 A–E + 答案键自动判分）/ 主观题（自评） */
+const GRADE_SECTIONS={
+ 1:[
+   {key:'cloze',title:'完形填空（20题×0.5分）',subj:false,n:20,per:0.5},
+   {key:'reading',title:'阅读理解（20题×2分）',subj:false,n:20,per:2},
+   {key:'newtype',title:'新题型（5题×2分）',subj:false,n:5,per:2},
+   {key:'trans',title:'翻译（5句划线·英译汉）',subj:true,full:10,type:'翻译'},
+   {key:'sw',title:'小作文（满分10）',subj:true,full:10,type:'小作文'},
+   {key:'bw',title:'大作文（满分20）',subj:true,full:20,type:'大作文'}
+ ],
+ 2:[
+   {key:'cloze',title:'完形填空（20题×0.5分）',subj:false,n:20,per:0.5},
+   {key:'reading',title:'阅读理解（20题×2分）',subj:false,n:20,per:2},
+   {key:'newtype',title:'新题型（5题×2分）',subj:false,n:5,per:2},
+   {key:'trans',title:'翻译（段落·英译汉）',subj:true,full:15,type:'翻译'},
+   {key:'sw',title:'小作文（满分10）',subj:true,full:10,type:'小作文'},
+   {key:'bw',title:'大作文（满分15）',subj:true,full:15,type:'大作文'}
+ ]
+};
+
+/* ===================== 题型专题配置 ===================== */
+const TOPICS=[
+ {key:'cloze',name:'完形',full:10,types:['完形填空'],
+  tips:['<b>题型</b>：20 题 × 0.5 分，共 10 分，建议 15–20 分钟',
+   '<b>首句是钥匙</b>：完形首句不设空，往往点明全文主旨与基调',
+   '<b>先通读后做题</b>：花 1 分钟通读把握主线，切忌逐空孤立判断',
+   '<b>逻辑衔接词定答案</b>：but / however / therefore / indeed 前后是考点高发区',
+   '<b>复现原则</b>：正确选项常与上下文某词构成同义 / 反义复现',
+   '<b>词汇辨析看搭配</b>：不确定时优先看介词搭配与习惯用法',
+   '<b>战略定位</b>：0.5 分一题，性价比最低，考场最后做，别恋战']},
+ {key:'reading',name:'阅读',full:40,types:['阅读理解'],
+  tips:['<b>题型</b>：4 篇 × 5 题 × 2 分，共 40 分，建议每篇 16–18 分钟',
+   '<b>先读题干再读文</b>：只读题干不读选项，带着问题定位',
+   '<b>题文同序</b>：出题顺序与行文顺序一致，可顺藤摸瓜',
+   '<b>细节题回文定位</b>：正确答案一定是原文的同义改写，照抄原文的多是陷阱',
+   '<b>推理题忌过度推理</b>：推一步就停，贴着原文走',
+   '<b>主旨题</b>：看首末段 + 各段首句，警惕以偏概全的选项',
+   '<b>态度题</b>：抓形容词副词的感情色彩，学术文章态度多为 objective / cautious',
+   '<b>得阅读者得天下</b>：这 40 分是 80 分档的生命线']},
+ {key:'newtype',name:'新题型',full:10,types:['新题型'],
+  tips:['<b>题型</b>：5 题 × 2 分，共 10 分，建议 15–20 分钟',
+   '<b>七选五</b>：重点看空前空后的逻辑关系与代词指代（this / such / these 指代谁）',
+   '<b>排序题</b>：先找首段特征（无指代词、无转折词），再靠固定搭配与逻辑词衔接',
+   '<b>标题匹配</b>：抓段落首末句，标题要能覆盖全段而非某个例子',
+   '<b>先易后难</b>：确定的先锁定，用排除法收敛剩余选项',
+   '<b>技巧性强</b>：投入产出比高，强化期集中突破一次，收益一整年']},
+ {key:'trans',name:'翻译',full:10,types:['翻译'],
+  tips:['<b>题型</b>：一篇文章中 5 个划线句，英译汉，共 10 分',
+   '<b>先抓主干</b>：先找主谓宾骨架，再挂修饰成分，长句不慌',
+   '<b>定语从句</b>：短的前置译（"…的"），长的拆成独立短句',
+   '<b>英文长句拆中文短句</b>：中文偏好短句流水，一句可拆两句',
+   '<b>被动变主动</b>：英语多被动，中文多主动，"it is believed that"→"人们认为"',
+   '<b>踩点给分</b>：阅卷按得分点给分，主干译对就有分，别整句放弃',
+   '<b>译完必通读</b>：读着别扭的中文，往往就是错的信号'],
+  tips2:['<b>题型</b>：一段约 150 词的英语文章，全文英译汉，共 15 分',
+   '<b>先通读全段</b>：把握段落主题与逻辑，再逐句落笔，避免断章取义',
+   '<b>长句拆短句</b>：中文偏好短句流水，英文从句可拆成若干小句',
+   '<b>被动变主动</b>：英语多被动，中文多用主动表达更自然',
+   '<b>专有名词要准</b>：人名、机构、术语尽量准确，不确定时音译也要通顺',
+   '<b>踩点给分</b>：阅卷按得分点给分，主干与关键词译对即得分',
+   '<b>译完必通读</b>：读着别扭的中文，往往就是误译的信号']},
+ {key:'writing',name:'写作',full:10,types:['小作文','大作文'],
+  tips:['<b>分值</b>：小作文 10 分（约 100 词）+ 大作文 20 分（160–200 词），共 30 分',
+   '<b>格式分不能丢</b>：称呼、落款 Li Ming、日期，格式错了直接扣档',
+   '<b>小作文三段式</b>：写信目的 → 具体内容（2–3 点）→ 期待回复 / 感谢',
+   '<b>背熟 8 类信件模板</b>：建议 / 道歉 / 感谢 / 投诉 / 邀请 / 求职 / 祝贺 / 通知',
+   '<b>大作文三段式</b>：客观描图（不加评论）→ 阐释意义（因果 / 举例论证）→ 建议升华',
+   '<b>语言准确 > 高级</b>：一个错译扣的分比一个高级词挣的多',
+   '<b>冲刺期策略</b>：11 月起每天一篇大小作文交替练，字迹工整值 1–2 分'],
+  tips2:['<b>分值</b>：小作文 10 分（约 100 词）+ 大作文 15 分（约 150 词），共 25 分',
+   '<b>格式分不能丢</b>：称呼、落款 Li Ming、日期，格式错了直接扣档',
+   '<b>小作文三段式</b>：写信目的 → 具体内容（2–3 点）→ 期待回复 / 感谢',
+   '<b>背熟 8 类信件模板</b>：建议 / 道歉 / 感谢 / 投诉 / 邀请 / 求职 / 祝贺 / 通知',
+   '<b>大作文·图表作文</b>：描述图表数据 → 分析成因 → 总结或预测',
+   '<b>图表描述</b>：用 rise / fall / account for / the proportion of 客观呈现趋势与占比',
+   '<b>语言准确 > 高级</b>：一个错译扣的分比一个高级词挣的多',
+   '<b>冲刺期策略</b>：11 月起大小作文交替练，字迹工整值 1–2 分']}
+];
+
+/* ===================== 内置词库 ===================== */
+const BUILTIN_WORDS = [
+["abandon","əˈbændən","v.","放弃，抛弃"],["abolish","əˈbɒlɪʃ","v.","废除，废止"],
+["absorb","əbˈsɔːb","v.","吸收；使专心"],["abstract","ˈæbstrækt","a./n.","抽象的；摘要"],
+["abundant","əˈbʌndənt","a.","丰富的，充裕的"],["accelerate","əkˈseləreɪt","v.","加速，促进"],
+["access","ˈækses","n./v.","接近；获取"],["accommodate","əˈkɒmədeɪt","v.","容纳；适应"],
+["accomplish","əˈkʌmplɪʃ","v.","完成，实现"],["accord","əˈkɔːd","n./v.","一致；给予"],
+["accumulate","əˈkjuːmjəleɪt","v.","积累"],["accurate","ˈækjərət","a.","精确的"],
+["accuse","əˈkjuːz","v.","控告，指责"],["achieve","əˈtʃiːv","v.","达到，实现"],
+["acquire","əˈkwaɪə","v.","获得，习得"],["adapt","əˈdæpt","v.","适应；改编"],
+["adequate","ˈædɪkwət","a.","充足的，适当的"],["adjust","əˈdʒʌst","v.","调整，使适应"],
+["advocate","ˈædvəkeɪt","v./n.","提倡；拥护者"],["affect","əˈfekt","v.","影响；感动"],
+["aggressive","əˈɡresɪv","a.","有进取心的"],["allocate","ˈæləkeɪt","v.","分配，拨出"],
+["alter","ˈɔːltə","v.","改变"],["ambiguous","æmˈbɪɡjuəs","a.","模棱两可的"],
+["ambitious","æmˈbɪʃəs","a.","有雄心的"],["anticipate","ænˈtɪsɪpeɪt","v.","预期，期望"],
+["apparent","əˈpærənt","a.","明显的；表面的"],["appeal","əˈpiːl","v./n.","呼吁；吸引；上诉"],
+["appropriate","əˈprəʊpriət","a.","适当的"],["approve","əˈpruːv","v.","批准；赞成"],
+["arbitrary","ˈɑːbɪtrəri","a.","任意的，武断的"],["assess","əˈses","v.","评估，评定"],
+["assign","əˈsaɪn","v.","分配；指定"],["assume","əˈsjuːm","v.","假定；承担"],
+["assure","əˈʃʊə","v.","保证，使确信"],["attribute","əˈtrɪbjuːt","v.","把…归因于"],
+["authority","ɔːˈθɒrəti","n.","权威；当局"],["available","əˈveɪləbl","a.","可获得的"],
+["aware","əˈweə","a.","意识到的"],["behalf","bɪˈhɑːf","n.","利益；代表"],
+["benefit","ˈbenɪfɪt","n./v.","利益；有益于"],["bias","ˈbaɪəs","n.","偏见"],
+["boost","buːst","v./n.","提高，推动"],["bound","baʊnd","a.","必定的；受约束的"],
+["brief","briːf","a.","简短的"],["bulk","bʌlk","n.","大部分；体积"],
+["burden","ˈbɜːdn","n.","负担"],["capable","ˈkeɪpəbl","a.","有能力的"],
+["capacity","kəˈpæsəti","n.","能力；容量"],["category","ˈkætəɡəri","n.","种类，类别"],
+["cease","siːs","v.","停止"],["challenge","ˈtʃælɪndʒ","n./v.","挑战"],
+["circumstance","ˈsɜːkəmstəns","n.","环境，情况"],["cite","saɪt","v.","引用，引证"],
+["clarify","ˈklærəfaɪ","v.","澄清，阐明"],["civil","ˈsɪvl","a.","公民的；民用的"],
+["classical","ˈklæsɪkl","a.","经典的，古典的"],["comprehensive","ˌkɒmprɪˈhensɪv","a.","综合的"],
+["conceal","kənˈsiːl","v.","隐藏，隐瞒"],["conclude","kənˈkluːd","v.","得出结论；结束"],
+["conduct","kənˈdʌkt","v./n.","进行；行为"],["confront","kənˈfrʌnt","v.","面对，对抗"],
+["conscious","ˈkɒnʃəs","a.","有意识的"],["consequence","ˈkɒnsɪkwəns","n.","结果，后果"],
+["conserve","kənˈsɜːv","v.","保存，保护"],["considerable","kənˈsɪdərəbl","a.","相当大的"],
+["consist","kənˈsɪst","v.","由…组成"],["constant","ˈkɒnstənt","a.","不断的；恒定的"],
+["constitute","ˈkɒnstɪtjuːt","v.","构成，组成"],["consume","kənˈsjuːm","v.","消耗，消费"]
+];
+
+/* ===================== 写作模板 ===================== */
+const TEMPLATES = {
+  "小作文·建议信":`Dear ______,\n\nI am writing to express my views concerning ______. In my opinion, it would be beneficial if you could ______. To begin with, ______. Besides, ______. I hope my suggestions will be of some help to you.\n\nYours sincerely,\nLi Ming`,
+  "小作文·道歉信":`Dear ______,\n\nI am writing to apologize for ______. I am terribly sorry for the inconvenience caused. The reason is that ______. I would appreciate it if you could accept my apology and ______.\n\nYours sincerely,\nLi Ming`,
+  "小作文·感谢信":`Dear ______,\n\nI am writing to express my heartfelt thanks for ______. It was your kindness that ______. Without your help, ______. I sincerely hope to have the chance to repay your kindness.\n\nYours sincerely,\nLi Ming`,
+  "小作文·投诉信":`Dear Sir/Madam,\n\nI am writing to complain about ______. The problem is that ______. I request that you ______. I look forward to your early reply and proper settlement.\n\nYours sincerely,\nLi Ming`,
+  "小作文·邀请信":`Dear ______,\n\nI am writing to invite you to ______, which will be held at ______ on ______. It would be a great honor if you could attend. We would appreciate your presence very much.\n\nYours sincerely,\nLi Ming`,
+  "小作文·通知":`NOTICE\n\nTo enrich campus life, the Student Union will organize ______. The activity is scheduled at ______ on ______. All students interested are welcome to ______. For more information, please contact ______.\n\nStudent Union`,
+  "大作文·图画作文结构":`【第一段·描述图画】\nAs is vividly shown in the picture above, ______. The caption reads: "______". Simple as the drawing is, the meaning behind it is profound.\n\n【第二段·阐释意义】\nUndoubtedly, the picture aims to reveal a common phenomenon: ______. In modern society, ______. A case in point is that ______. Therefore, ______ plays an indispensable role.\n\n【第三段·评论建议】\nIn conclusion, it is high time that we attached great importance to ______. On the one hand, ______. On the other hand, ______. Only in this way can we ______.`,
+  "大作文·社会现象类":`Recently, the issue of ______ has aroused wide concern. Some hold that ______, while others believe ______. As far as I am concerned, ______. What counts is that we should ______.`
+};
+
+/* ===================== 导航 ===================== */
+function switchTab(tab){
+  document.querySelectorAll('#nav button').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  const btn=document.querySelector('#nav button[data-tab="'+tab+'"]');
+  if(btn) btn.classList.add('active');
+  const v=document.getElementById('view-'+tab);
+  if(v) v.classList.add('active');
+  if(tab==='stats') renderStats();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('#nav button[data-tab]');
+  if(b) switchTab(b.dataset.tab);
+});
+
+/* ===================== 专题生成 ===================== */
+function buildTopics(){
+  const navBox=document.getElementById('topicNav');
+  const viewBox=document.getElementById('topicViews');
+  navBox.innerHTML=TOPICS.map(t=>`<button data-tab="${t.key}">${t.name}</button>`).join('');
+  viewBox.innerHTML=TOPICS.map(t=>{
+    const tg=t.types.length>1?'（小作文 '+targetFor('小作文')+' / 大作文 '+targetFor('大作文')+'）':'（目标 '+targetFor(t.types[0])+' 分 / 满分 '+fullFor(t.types[0])+'）';
+    let extra='';
+    if(t.key==='reading'){
+      extra=`<div class="card"><h2><span class="dot"></span>长难句摘录</h2>
+        <div class="row">
+          <div style="flex:2"><input id="sText" placeholder="原句（英文）"></div>
+          <div style="flex:2"><input id="sAnal" placeholder="结构 / 语法分析"></div>
+          <div style="flex:2"><input id="sTrans" placeholder="中文翻译"></div>
+          <div style="flex:0"><button class="btn" onclick="addSentence()">收藏</button></div>
+        </div>
+        <div id="sentenceList" style="margin-top:14px"></div></div>`;
+    }
+    if(t.key==='writing'){
+      extra=`<div class="grid g3" style="margin-bottom:18px">
+        <div class="card"><h2><span class="dot"></span>模板库</h2><div id="tplList"></div>
+          <p class="tip">点击模板载入编辑器，可修改后另存。</p></div>
+        <div class="card" style="grid-column:span 2"><h2><span class="dot"></span>编辑器</h2>
+          <input id="wTitle" placeholder="标题，如：2021 大作文练习">
+          <label>正文</label>
+          <textarea id="wContent" style="min-height:230px" placeholder="在此写作，或使用左侧模板…"></textarea>
+          <div class="row" style="margin-top:10px">
+            <button class="btn" onclick="saveWriting()">保存到我的文库</button>
+            <button class="btn ghost" onclick="clearEditor()">清空</button>
+            <span id="wcCount" class="muted small"></span>
+          </div></div>
+      </div>
+      <div class="card"><h2><span class="dot"></span>我的文库</h2><div id="writingList"></div></div>
+      <div class="card"><h2><span class="dot"></span>万能句型 / 素材库</h2>
+        <textarea id="materialBox" placeholder="把过渡句、亮点表达、固定搭配粘贴在这里…"></textarea>
+        <button class="btn ghost sm" style="margin-top:8px" onclick="saveMaterial()">保存素材库</button></div>
+      <div class="card">
+        <h2><span class="dot"></span>🤖 AI 润色 · 智能修改打分</h2>
+        <div class="row" style="margin-bottom:8px">
+          <div style="flex:1"><label>作文类型</label>
+            <select id="aiType"><option value="10">小作文（满分 10 分）</option><option value="${fullFor('大作文')}">大作文（满分 ${fullFor('大作文')} 分）</option></select></div>
+          <div style="flex:2"><label>API Key（仅存本机，不上传）</label>
+            <input id="aiKey" type="password" placeholder="sk-...（DeepSeek 等兼容 OpenAI 的 Key）"></div>
+          <div style="flex:1"><label>模型</label>
+            <select id="aiModel"><option value="deepseek-chat">deepseek-chat</option><option value="deepseek-reasoner">deepseek-reasoner</option></select></div>
+        </div>
+        <div class="row" style="margin-bottom:8px">
+          <div style="flex:2"><label>接口地址（可填中转 / 兼容端点）</label>
+            <input id="aiEndpoint" placeholder="https://api.deepseek.com/chat/completions"></div>
+          <div style="flex:0"><button class="btn ghost sm" onclick="fillEditorToAi()">从编辑器载入</button></div>
+        </div>
+        <label>作文正文</label>
+        <textarea id="aiInput" style="min-height:160px" placeholder="在此粘贴或输入你的作文，点「润色并打分」获得修改建议与评分…"></textarea>
+        <div class="row" style="margin-top:10px">
+          <button class="btn" id="aiBtn" onclick="aiPolish()">✨ 润色并打分</button>
+          <span id="aiStatus" class="muted small"></span>
+        </div>
+        <div id="aiResult" class="hidden" style="margin-top:14px"></div>
+      </div>
+      <div class="card"><h2><span class="dot"></span>交卷前自查清单</h2>
+        <div class="grid g2">
+          <div class="small">① 时态一致、主谓一致<br>② 名词单复数、冠词遗漏<br>③ 模板词拼写（sincerely / appreciate…）<br>④ 句间逻辑连接词是否自然</div>
+          <div class="small">⑤ 首段点题、末段升华或建议<br>⑥ 字数：小作文约 100 词，大作文（英一 160–200 / 英二约 150 词）<br>⑦ 卷面工整，避免大段涂改<br>⑧ 落款 Li Ming 与格式正确</div>
+        </div></div>`;
+    }
+    const typeSel=t.types.length>1
+      ?`<select id="sub_${t.key}" onchange="autoFullTopic('${t.key}')"><option>小作文</option><option>大作文</option></select>`
+      :`<input value="${t.types[0]}" readonly style="color:var(--yan)">`;
+    return `<section class="view" id="view-${t.key}">
+      <div class="card">
+        <h2><span class="dot"></span>${t.name} · 技巧要点</h2>
+        <ul class="tips-list">${curTips(t).map(x=>'<li>'+x+'</li>').join('')}</ul>
+      </div>
+      <div class="card">
+        <h2><span class="dot"></span>练习记录 ${tg}</h2>
+        <div class="row">
+          <div><label>题型</label>${typeSel}</div>
+          <div><label>年份 / 来源</label><input id="py_${t.key}" placeholder="如 2018 真题 Text 1"></div>
+          <div><label>得分</label><input id="ps_${t.key}" type="number" step="0.5" placeholder="得分"></div>
+          <div><label>满分</label><input id="pf_${t.key}" type="number" step="0.5" value="${t.types.length>1?10:fullFor(t.types[0])}"></div>
+          <div style="flex:2"><label>备注</label><input id="pn_${t.key}" placeholder="错题点 / 心得"></div>
+          <div style="flex:0"><button class="btn" onclick="addTopicRecord('${t.key}')">记录</button></div>
+        </div>
+        <div id="rec_${t.key}" style="margin-top:14px"></div>
+      </div>
+      <div class="card">
+        <h2><span class="dot"></span>本题型错题</h2>
+        <div class="row">
+          <div style="flex:3"><input id="mq_${t.key}" placeholder="题目 / 错误点"></div>
+          <div style="flex:2"><input id="ma_${t.key}" placeholder="正确答案"></div>
+          <div style="flex:2"><input id="mw_${t.key}" placeholder="错因"></div>
+          <div style="flex:0"><button class="btn" onclick="addTopicMistake('${t.key}')">记错</button></div>
+        </div>
+        <div id="mis_${t.key}" style="margin-top:14px"></div>
+      </div>
+      ${extra}
+    </section>`;
+  }).join('');
+}
+function topicTypes(key){ return TOPICS.find(t=>t.key===key).types; }
+function autoFullTopic(key){
+  const t=TOPICS.find(t=>t.key===key);
+  const sel=document.getElementById('sub_'+key);
+  const type=sel?sel.value:t.types[0];
+  document.getElementById('pf_'+key).value=fullFor(type);
+}
+function addTopicRecord(key){
+  const t=TOPICS.find(x=>x.key===key);
+  const sel=document.getElementById('sub_'+key);
+  const type=sel?sel.value:t.types[0];
+  const year=document.getElementById('py_'+key).value.trim();
+  const score=parseFloat(document.getElementById('ps_'+key).value);
+  const full=parseFloat(document.getElementById('pf_'+key).value)||fullFor(type);
+  if(!year||isNaN(score)){ toast('请填写来源和得分'); return; }
+  DB.papers.unshift({id:uid(),date:todayStr(),year,type,score,full,et:DB.profile.examType,note:document.getElementById('pn_'+key).value.trim()});
+  ['py_'+key,'ps_'+key,'pn_'+key].forEach(i=>document.getElementById(i).value='');
+  save(); renderTopic(key); renderPapers(); renderRecent(); toast('已记录 · 距目标 '+(score-targetFor(type,DB.profile.examType)>=0?'+':'')+(Math.round((score-targetFor(type,DB.profile.examType))*10)/10)+' 分');
+}
+function addTopicMistake(key){
+  const q=document.getElementById('mq_'+key).value.trim();
+  if(!q){ toast('请填写错误点'); return; }
+  const typeMap={cloze:'完形',reading:'阅读',newtype:'新题型',trans:'翻译',writing:'写作'};
+  DB.mistakes.unshift({id:uid(),type:typeMap[key]||'其他',q,a:document.getElementById('ma_'+key).value.trim(),
+    why:document.getElementById('mw_'+key).value.trim(),date:todayStr()});
+  ['mq_'+key,'ma_'+key,'mw_'+key].forEach(i=>document.getElementById(i).value='');
+  save(); renderTopic(key); renderMistakes(); toast('错题已记录');
+}
+function renderTopic(key){
+  const t=TOPICS.find(x=>x.key===key);
+  const recs=DB.papers.filter(p=>t.types.includes(p.type));
+  const recBox=document.getElementById('rec_'+key);
+  if(recs.length===0){ recBox.innerHTML='<div class="empty">灯火未起，先添一盏——记录第一次练习。</div>'; }
+  else{
+    recBox.innerHTML=`<table><thead><tr><th>日期</th><th>来源</th><th>得分</th><th>得分率</th><th>距目标</th><th>备注</th><th>操作</th></tr></thead><tbody>`+
+    recs.map(p=>{
+      const tg=targetFor(p.type,p.et); const gap=tg>0?Math.round((p.score-tg)*10)/10:null;
+      const g=gap==null?'—':(gap>=0?`<span class="gap-pos">+${gap}</span>`:`<span class="gap-neg">${gap}</span>`);
+      return `<tr><td>${p.date}</td><td>${esc(p.year)}</td><td><b>${p.score}</b>/${p.full}</td>
+      <td>${p.full?Math.round(p.score/p.full*100):0}%</td><td>${g}</td>
+      <td class="muted small">${esc(p.note||'')}</td>
+      <td><button class="btn danger sm" onclick="deletePaper('${p.id}')">删</button></td></tr>`;
+    }).join('')+'</tbody></table>';
+  }
+  const typeMap={cloze:'完形',reading:'阅读',newtype:'新题型',trans:'翻译',writing:'写作'};
+  const mis=DB.mistakes.filter(m=>m.type===typeMap[key]);
+  const misBox=document.getElementById('mis_'+key);
+  if(mis.length===0){ misBox.innerHTML='<div class="empty">蓦然回首，这里还没有错题。</div>'; }
+  else{
+    misBox.innerHTML=mis.map(m=>`<div style="border-bottom:1px solid var(--line);padding:10px 0">
+      <div class="flex-between"><b class="small">${esc(m.q)}</b><span class="muted small">${m.date}</span></div>
+      <div class="small" style="margin-top:3px">正解：<span style="color:var(--teng)">${esc(m.a||'—')}</span>　<span class="muted">错因：${esc(m.why||'—')}</span></div>
+      <button class="btn danger sm" style="margin-top:5px" onclick="deleteMistake('${m.id}')">删除</button></div>`).join('');
+  }
+}
+
+/* ===================== 届别与横幅 ===================== */
+function estExamDate(y){
+  /* 近年规律：考研初试在 12 月 21 日前后最近的那个周六（元旦前、圣诞前的周末），此处估算，可手动微调 */
+  const target=new Date(y,11,21), d=new Date(y,11,21), dow=d.getDay();
+  const satPrev=new Date(d); satPrev.setDate(d.getDate()-((dow+1)%7));
+  const satNext=new Date(d); satNext.setDate(d.getDate()+((6-dow+7)%7));
+  return (target-satPrev)<= (satNext-target) ? satPrev : satNext;
+}
+function fmtDate(d){ return d.getFullYear()+' 年 '+(d.getMonth()+1)+' 月 '+d.getDate()+' 日'; }
+function setCohort(off){
+  DB.profile.cohort=off;
+  const y=new Date().getFullYear()+off;
+  const est=estExamDate(y);
+  DB.profile.examDate=est.getFullYear()+'-'+String(est.getMonth()+1).padStart(2,'0')+'-'+String(est.getDate()).padStart(2,'0');
+  save(); renderBanner(); renderDashboard(); fillProfile(); toast('已按「'+(off===0?'当年':off===1?'明年':'后年')+'考」点亮倒计时');
+}
+document.getElementById('cohortSeg').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-off]'); if(b) setCohort(parseInt(b.dataset.off));
+});
+/* 考试类型切换（英语一 / 英语二） */
+document.getElementById('examTypeSeg').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-et]'); if(b) applyExamType(parseInt(b.dataset.et));
+});
+function renderExamTypeSeg(){
+  document.querySelectorAll('#examTypeSeg button').forEach(b=>
+    b.classList.toggle('on',parseInt(b.dataset.et)===DB.profile.examType));
+}
+function applyExamType(et){
+  if(et===DB.profile.examType){ return; }
+  DB.profile.examType=et; save();
+  renderExamTypeSeg(); fullRender();
+  toast('已切换为考研英语'+(et===1?'一':'二')+'，题型满分与方法论已适配');
+}
+function getPhase(days){
+  if(days>180) return {name:'基础阶段',tip:'主攻考研大纲词汇与长难句精读，可用早年真题阅读（2010 之前）找语感，作文暂不必投入。'};
+  if(days>90) return {name:'强化阶段',tip:'分题型精练 2010–2018 真题：阅读逐篇精读复盘，新题型与翻译专项突破，同时积累写作句型。'};
+  if(days>30) return {name:'冲刺阶段',tip:'近三年真题整套限时模考（严格 180 分钟），高频复盘错题本，大作文成文并背诵模板。'};
+  return {name:'临考阶段',tip:'以复盘为主：错题本、模板与素材每日过一遍，每天保持 1–2 篇阅读手感，调整作息与心态。'};
+}
+function renderBanner(){
+  document.querySelectorAll('#cohortSeg button').forEach(b=>
+    b.classList.toggle('on',parseInt(b.dataset.off)===DB.profile.cohort));
+  const est=estExamDate(new Date().getFullYear()+(DB.profile.cohort||0));
+  document.getElementById('estDate').innerHTML='预计考试日：'+fmtDate(est)+' · <a onclick="gotoProfile()">精确日期可点此微调</a>';
+  if(!DB.profile.examDate){
+    document.getElementById('bCap').textContent='距离考研';
+    document.getElementById('bDays').textContent='—';
+    document.getElementById('bPhase').textContent='未设置';
+    document.getElementById('bAdvice').textContent='选择你的届别，灯火为你点亮。';
+    return;
+  }
+  const days=Math.ceil((new Date(DB.profile.examDate)-new Date())/86400000);
+  const y=new Date(DB.profile.examDate).getFullYear();
+  document.getElementById('bCap').textContent='距 '+y+' 年考研';
+  if(days<0){
+    document.getElementById('bDays').textContent='已考完';
+    document.getElementById('bPhase').textContent='旅程结束';
+    document.getElementById('bAdvice').textContent='辛苦了！可在数据管理导出全部记录留档。';
+    return;
+  }
+  document.getElementById('bDays').textContent=days;
+  const ph=getPhase(days);
+  document.getElementById('bPhase').textContent=ph.name+' · 英语'+DB.profile.examType;
+  document.getElementById('bAdvice').textContent=ph.tip;
+}
+function gotoProfile(){ switchTab('home'); setTimeout(()=>document.getElementById('pExam').focus(),350); }
+
+/* ===================== 首页 ===================== */
+function renderDashboard(){
+  const c = DB.checkins[todayStr()] || {tasks:{}};
+  document.getElementById('todayPlan').innerHTML=DB.dailyTasks.map(x=>{
+    const done=c.tasks&&c.tasks[x.id];
+    return `<label class="checkbox ${done?'done':''}">
+      <input type="checkbox" ${done?'checked':''} onchange="toggleTask('${x.id}',this.checked)">
+      <div><div class="t">${esc(x.text)}</div><div class="d">${esc(x.desc||'')}</div></div></label>`;
+  }).join('');
+  const total=DB.words.length, mastered=DB.words.filter(w=>w.mastery>=3).length;
+  document.getElementById('dashStats').innerHTML=[
+    {n:calcStreak(),l:'连续点灯(天)'},{n:Object.keys(DB.checkins).filter(k=>DB.checkins[k].checked).length,l:'累计点灯(天)'},
+    {n:total,l:'词汇总量'},{n:mastered,l:'已掌握'}
+  ].map(s=>`<div class="stat"><div class="num">${s.n}</div><div class="lbl">${s.l}</div></div>`).join('');
+  const cd=document.getElementById('countdown');
+  if(DB.profile.examDate){
+    const days=Math.ceil((new Date(DB.profile.examDate)-new Date())/86400000);
+    cd.innerHTML='距离考试还有 '+(days>=0?days:0)+' 天'+(DB.profile.name?('　·　'+DB.profile.name+(DB.profile.goal?' / '+DB.profile.goal:'')):'');
+  } else cd.textContent='尚未设置考试日期。';
+  renderQuick(); renderHeat(); renderRecent();
+}
+function renderQuick(){
+  document.getElementById('quickNav').innerHTML=
+    `<button onclick="switchTab('vocab')">词汇<small>词库 · 抽认卡</small></button>`+
+    TOPICS.map(t=>`<button onclick="switchTab('${t.key}')">${t.name}<small>目标 ${t.types.length>1?targetFor('小作文')+'+'+targetFor('大作文'):targetFor(t.types[0])} 分</small></button>`).join('')+
+    `<button onclick="switchTab('library')">真题库<small>PDF 作答 · 模考</small></button>`;
+}
+function renderHeat(){
+  const weeks=20;
+  const start=new Date(); start.setHours(0,0,0,0);
+  const dow=(start.getDay()+6)%7; // 0=Mon
+  start.setDate(start.getDate()-dow-(weeks-1)*7);
+  let html='',lit=0;
+  for(let d=0;d<weeks*7;d++){
+    const cur=new Date(start); cur.setDate(start.getDate()+d);
+    const key=cur.getFullYear()+'-'+String(cur.getMonth()+1).padStart(2,'0')+'-'+String(cur.getDate()).padStart(2,'0');
+    const ck=DB.checkins[key];
+    let lv=0;
+    if(ck&&ck.checked){
+      lit++;
+      const done=ck.tasks?Object.values(ck.tasks).filter(Boolean).length:0;
+      lv=1+Math.min(3,done);
+    }
+    const future=cur>new Date();
+    html+=`<i class="${future?'lv0':'lv'+lv}" title="${key}${lv?(' · '+['','暗火','微光','明亮','璀璨'][lv]):''}"></i>`;
+  }
+  document.getElementById('heatGrid').innerHTML=html;
+  document.getElementById('heatSum').textContent='近 20 周 · 已点亮 '+lit+' 盏灯';
+}
+function renderRecent(){
+  const box=document.getElementById('recentBox');
+  const p=DB.papers[0];
+  if(!p){ box.innerHTML='<div class="empty">众里寻他千百度——你的第一次练习还没记录。</div>'; return; }
+  const tg=targetFor(p.type,p.et); const gap=tg>0?Math.round((p.score-tg)*10)/10:null;
+  const gapHtml=gap==null?'':('　距目标 '+(gap>=0?'+':'')+gap);
+  box.innerHTML=`<div class="flex-between"><div>
+    <span class="tag">${esc(p.type)}</span><b>${esc(p.year)}</b>
+    <span class="muted small">${p.date}</span></div>
+    <div class="small">得分 <b style="color:var(--gold);font-size:17px">${p.score}</b>/${p.full}${gapHtml}</div></div>
+  <p class="tip">${esc(p.note||'')}</p>`;
+}
+function toggleTask(k,v){
+  const d=todayStr(); DB.checkins[d]=DB.checkins[d]||{tasks:{}};
+  DB.checkins[d].tasks[k]=v; save(); renderDashboard();
+}
+function doCheckin(){
+  const d=todayStr(); DB.checkins[d]=DB.checkins[d]||{tasks:{}};
+  if(DB.checkins[d].checked){ toast('今天这盏灯已经亮了 🏮'); return; }
+  DB.checkins[d].checked=true; save(); renderDashboard(); toast('灯火已点，继续前行');
+}
+function resetToday(){
+  const d=todayStr(); if(DB.checkins[d]){ DB.checkins[d].tasks={}; save(); renderDashboard(); toast('今日功课已重置'); }
+}
+function togglePlanEdit(){ const e=document.getElementById('planEdit'); e.classList.toggle('hidden'); if(!e.classList.contains('hidden')) renderPlanEdit(); }
+function renderPlanEdit(){
+  const box=document.getElementById('planEditList'); if(!box) return;
+  box.innerHTML=DB.dailyTasks.map(x=>`<div class="row" style="margin-bottom:8px">
+    <div style="flex:2"><input value="${esc(x.text)}" onchange="updateDailyTask('${x.id}',this.value,'text')"></div>
+    <div style="flex:2"><input value="${esc(x.desc||'')}" onchange="updateDailyTask('${x.id}',this.value,'desc')"></div>
+    <div style="flex:0"><button class="btn danger sm" onclick="deleteDailyTask('${x.id}')">删</button></div>
+  </div>`).join('');
+}
+function updateDailyTask(id,val,field){ const t=DB.dailyTasks.find(x=>x.id===id); if(t){ t[field]=val; save(); } }
+function addDailyTask(){
+  const t=document.getElementById('newTaskText').value.trim();
+  if(!t){ toast('请输入任务名称'); return; }
+  DB.dailyTasks.push({id:uid(),text:t,desc:document.getElementById('newTaskDesc').value.trim()});
+  document.getElementById('newTaskText').value=''; document.getElementById('newTaskDesc').value='';
+  save(); renderDashboard(); toast('已添加日常任务');
+}
+function deleteDailyTask(id){ DB.dailyTasks=(DB.dailyTasks||[]).filter(x=>x.id!==id); save(); renderDashboard(); }
+function calcStreak(){
+  let s=0; const d=new Date();
+  for(;;){
+    const key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    if(DB.checkins[key]&&DB.checkins[key].checked) s++; else break;
+    d.setDate(d.getDate()-1);
+    if(s>4000) break;
+  }
+  return s;
+}
+function saveProfile(){
+  DB.profile.name=document.getElementById('pName').value.trim();
+  DB.profile.goal=document.getElementById('pGoal').value.trim();
+  DB.profile.examDate=document.getElementById('pExam').value;
+  DB.profile.vocabGoal=parseInt(document.getElementById('pVocabGoal').value)||30;
+  save(); renderBanner(); renderDashboard(); toast('目标已保存');
+}
+function fillProfile(){
+  document.getElementById('pName').value=DB.profile.name||'';
+  document.getElementById('pGoal').value=DB.profile.goal||'';
+  document.getElementById('pExam').value=DB.profile.examDate||'';
+  document.getElementById('pVocabGoal').value=DB.profile.vocabGoal||30;
+}
+/* 星雨 */
+(function makeRain(){
+  let h='';
+  for(let i=0;i<16;i++){
+    const l=(Math.random()*96).toFixed(1), dur=(7+Math.random()*8).toFixed(1),
+          del=(Math.random()*10).toFixed(1), op=(0.4+Math.random()*0.5).toFixed(2);
+    h+=`<span style="left:${l}%;animation-duration:${dur}s;animation-delay:${del}s;opacity:${op}"></span>`;
+  }
+  document.getElementById('rainBox').innerHTML=h;
+})();
+
+/* ===================== 词汇 ===================== */
+function importBuiltin(){
+  if(DB.words.length>0 && !confirm('当前已有单词，导入将追加 '+(BUILTIN_WORDS.length)+' 个核心词，确定？')) return;
+  BUILTIN_WORDS.forEach(w=>DB.words.push({id:uid(),term:w[0],phon:w[1],pos:w[2],mean:w[3],tag:'核心',mastery:0}));
+  save(); renderWords(); renderDashboard(); toast('已导入核心高频词库');
+}
+function importWordFile(e){
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const text=ev.target.result||'';
+    let added=0, first=true;
+    text.split(/\r?\n/).forEach(line=>{
+      line=line.trim(); if(!line) return;
+      if(first){ first=false; if(/^(单词|word|term|词语|英文)/i.test(line)) return; }
+      let parts=line.split(/\t|[,;，；]| {2,}/);
+      if(parts.length<2){ const sp=line.indexOf(' '); if(sp>0) parts=[line.slice(0,sp),line.slice(sp+1)]; }
+      const term=parts[0].trim(), mean=parts.slice(1).join(' ').trim();
+      if(term&&mean){ DB.words.push({id:uid(),term,phon:'',pos:'',mean,tag:'导入',mastery:0}); added++; }
+    });
+    save(); renderWords(); renderDashboard();
+    if(added>0) toast('已导入 '+added+' 个单词'); else toast('未识别到「单词 释义」格式，请检查文件');
+  };
+  reader.readAsText(file,'utf-8'); e.target.value='';
+}
+function addWord(){
+  const t=document.getElementById('wTerm').value.trim(), m=document.getElementById('wMean').value.trim();
+  if(!t||!m){ toast('请填写单词和释义'); return; }
+  DB.words.push({id:uid(),term:t,phon:document.getElementById('wPhon').value.trim(),
+    pos:document.getElementById('wPos').value.trim(),mean:m,tag:document.getElementById('wTag').value.trim(),mastery:0});
+  ['wTerm','wPhon','wPos','wMean','wTag'].forEach(i=>document.getElementById(i).value='');
+  save(); renderWords(); toast('已添加单词');
+}
+function setMastery(id,v){ const w=DB.words.find(x=>x.id===id); if(w){ w.mastery=v; save(); renderWords(); } }
+function deleteWord(id){ DB.words=DB.words.filter(x=>x.id!==id); save(); renderWords(); renderDashboard(); }
+function renderWords(){
+  const f=document.getElementById('wFilter').value;
+  const q=document.getElementById('wSearch').value.trim().toLowerCase();
+  let list=DB.words.slice();
+  if(f!=='all') list=list.filter(w=>String(w.mastery)===f);
+  if(q) list=list.filter(w=>(w.term+' '+w.mean+' '+(w.tag||'')).toLowerCase().includes(q));
+  if(list.length===0){ document.getElementById('wordList').innerHTML='<div class="empty">灯火未起，先添一盏——导入词库或添加第一个单词。</div>'; return; }
+  const labels=['未学','生疏','熟悉','已掌握'];
+  document.getElementById('wordList').innerHTML=`<table><thead><tr>
+    <th>单词</th><th>词性</th><th>释义</th><th>标签</th><th>状态</th><th>操作</th></tr></thead><tbody>`+
+    list.map(w=>`<tr>
+    <td><b>${esc(w.term)}</b> <span class="muted small">${esc(w.phon||'')}</span></td>
+    <td>${esc(w.pos||'')}</td><td>${esc(w.mean)}</td>
+    <td>${w.tag?('<span class="tag">'+esc(w.tag)+'</span>'):''}</td>
+    <td><span class="pill p${w.mastery}">${labels[w.mastery]}</span></td>
+    <td><select onchange="setMastery('${w.id}',parseInt(this.value))" style="width:auto;padding:4px 6px">
+      ${[0,1,2,3].map(v=>`<option value="${v}" ${w.mastery===v?'selected':''}>${labels[v]}</option>`).join('')}
+    </select> <button class="btn danger sm" onclick="deleteWord('${w.id}')">删</button></td></tr>`).join('')+
+    '</tbody></table>';
+}
+function startReview(){
+  reviewQueue=DB.words.filter(w=>w.mastery<2);
+  if(reviewQueue.length===0){ toast('没有需要复习的单词 🏮'); return; }
+  reviewIdx=0; document.getElementById('reviewBox').classList.remove('hidden'); revRefresh();
+}
+function revRefresh(){
+  const w=reviewQueue[reviewIdx];
+  document.getElementById('revTerm').textContent=w.term;
+  document.getElementById('revPhon').textContent=w.phon||'';
+  document.getElementById('revMean').textContent=(w.pos?('['+w.pos+'] '):'')+w.mean+(w.tag?(' · '+w.tag):'');
+  document.getElementById('revMean').classList.add('hidden');
+  document.getElementById('revProgress').textContent='('+(reviewIdx+1)+'/'+reviewQueue.length+')';
+}
+function revReveal(){ document.getElementById('revMean').classList.remove('hidden'); }
+function revResult(level){
+  const w=reviewQueue[reviewIdx];
+  if(level===0) w.mastery=0; else if(level===1) w.mastery=1; else w.mastery=Math.min(3,w.mastery+1);
+  save(); reviewIdx++;
+  if(reviewIdx>=reviewQueue.length){ toast('复习完成！'); document.getElementById('reviewBox').classList.add('hidden'); renderWords(); renderDashboard(); }
+  else revRefresh();
+}
+function endReview(){ document.getElementById('reviewBox').classList.add('hidden'); renderWords(); renderDashboard(); }
+
+/* ===================== 整套模考 / 全部记录 ===================== */
+function addPaper(){
+  const year=document.getElementById('pYear').value.trim();
+  const score=parseFloat(document.getElementById('pScore').value);
+  const full=parseFloat(document.getElementById('pFull').value)||100;
+  if(!year||isNaN(score)){ toast('请填写来源和得分'); return; }
+  DB.papers.unshift({id:uid(),date:todayStr(),year,type:'整套模考',score,full,note:document.getElementById('pNote').value.trim()});
+  ['pYear','pScore','pNote'].forEach(i=>document.getElementById(i).value='');
+  save(); renderPapers(); renderRecent(); toast('模考记录已保存');
+}
+function deletePaper(id){ DB.papers=DB.papers.filter(x=>x.id!==id); save(); renderPapers(); TOPICS.forEach(t=>renderTopic(t.key)); renderRecent(); }
+function renderPapers(){
+  if(DB.papers.length===0){ document.getElementById('paperList').innerHTML='<div class="empty">还没有练习记录。建议从早年份真题开始，按题型分册精练。</div>'; return; }
+  document.getElementById('paperList').innerHTML=`<table><thead><tr>
+    <th>日期</th><th>来源</th><th>题型</th><th>得分</th><th>得分率</th><th>距目标</th><th>备注</th><th>操作</th></tr></thead><tbody>`+
+    DB.papers.map(p=>{
+      const tg=targetFor(p.type,p.et); const gap=tg>0?Math.round((p.score-tg)*10)/10:null;
+      const g=gap==null?'—':(gap>=0?`<span class="gap-pos">+${gap}</span>`:`<span class="gap-neg">${gap}</span>`);
+      return `<tr><td>${p.date}</td><td>${esc(p.year)}</td><td><span class="tag">${esc(p.type)}</span></td>
+      <td><b>${p.score}</b>/${p.full}</td><td>${p.full?Math.round(p.score/p.full*100):0}%</td><td>${g}</td>
+      <td class="muted small">${esc(p.note||'')}</td>
+      <td><button class="btn danger sm" onclick="deletePaper('${p.id}')">删</button></td></tr>`;
+    }).join('')+'</tbody></table>';
+}
+
+/* ===================== 长难句 ===================== */
+function addSentence(){
+  const t=document.getElementById('sText').value.trim();
+  if(!t){ toast('请填写原句'); return; }
+  DB.sentences.unshift({id:uid(),text:t,anal:document.getElementById('sAnal').value.trim(),trans:document.getElementById('sTrans').value.trim(),date:todayStr()});
+  ['sText','sAnal','sTrans'].forEach(i=>document.getElementById(i).value='');
+  save(); renderSentences(); toast('长难句已收藏');
+}
+function deleteSentence(id){ DB.sentences=DB.sentences.filter(x=>x.id!==id); save(); renderSentences(); }
+function renderSentences(){
+  const box=document.getElementById('sentenceList'); if(!box) return;
+  if(DB.sentences.length===0){ box.innerHTML='<div class="empty">还没有收藏的长难句。</div>'; return; }
+  box.innerHTML=DB.sentences.map(s=>`<div style="border-bottom:1px solid var(--line);padding:10px 0">
+    <div><b>${esc(s.text)}</b> <span class="muted small">${s.date}</span></div>
+    ${s.anal?('<div class="small" style="margin-top:4px"><span class="tag">分析</span>'+esc(s.anal)+'</div>'):''}
+    ${s.trans?('<div class="small muted" style="margin-top:3px">译：'+esc(s.trans)+'</div>'):''}
+    <button class="btn danger sm" style="margin-top:5px" onclick="deleteSentence('${s.id}')">删除</button></div>`).join('');
+}
+
+/* ===================== 写作 ===================== */
+function renderTemplates(){
+  const box=document.getElementById('tplList'); if(!box) return;
+  box.innerHTML=Object.keys(TEMPLATES).map(k=>
+    `<button class="template-btn" onclick="loadTpl('${k.replace(/'/g,"\\'")}')">${esc(k)}</button>`).join('');
+}
+function loadTpl(k){ document.getElementById('wTitle').value=k; document.getElementById('wContent').value=TEMPLATES[k]; updateWc(); }
+function clearEditor(){ document.getElementById('wTitle').value=''; document.getElementById('wContent').value=''; updateWc(); }
+function updateWc(){
+  const t=document.getElementById('wContent').value;
+  document.getElementById('wcCount').textContent=t?('字数(约): '+t.replace(/\s/g,'').length):'';
+}
+function saveWriting(){
+  const title=document.getElementById('wTitle').value.trim();
+  const content=document.getElementById('wContent').value.trim();
+  if(!content){ toast('内容为空'); return; }
+  DB.writings.unshift({id:uid(),title:title||('练习 '+todayStr()),content,date:todayStr()});
+  save(); renderWritings(); toast('已保存到我的文库');
+}
+function deleteWriting(id){ DB.writings=DB.writings.filter(x=>x.id!==id); save(); renderWritings(); }
+function renderWritings(){
+  const box=document.getElementById('writingList'); if(!box) return;
+  if(DB.writings.length===0){ box.innerHTML='<div class="empty">文库为空，写完作文点「保存到我的文库」。</div>'; return; }
+  box.innerHTML=DB.writings.map(w=>`<div style="border-bottom:1px solid var(--line);padding:10px 0">
+    <div class="flex-between"><b>${esc(w.title)}</b><span class="muted small">${w.date}</span></div>
+    <div class="small muted" style="white-space:pre-wrap;margin-top:4px">${esc(w.content.slice(0,160))}${w.content.length>160?'…':''}</div>
+    <div style="margin-top:6px"><button class="btn ghost sm" onclick="editWriting('${w.id}')">编辑</button>
+    <button class="btn danger sm" onclick="deleteWriting('${w.id}')">删除</button></div></div>`).join('');
+}
+function editWriting(id){
+  const w=DB.writings.find(x=>x.id===id); if(!w) return;
+  document.getElementById('wTitle').value=w.title; document.getElementById('wContent').value=w.content; updateWc();
+  switchTab('writing'); toast('已载入编辑器');
+}
+function saveMaterial(){ DB.materials=document.getElementById('materialBox').value; save(); toast('素材库已保存'); }
+
+/* ===================== AI 润色 · 智能修改打分 ===================== */
+function fillEditorToAi(){ document.getElementById('aiInput').value=document.getElementById('wContent').value; toast('已从编辑器载入'); }
+async function aiPolish(){
+  const key=document.getElementById('aiKey').value.trim();
+  const input=document.getElementById('aiInput').value.trim();
+  const full=parseInt(document.getElementById('aiType').value);
+  const model=document.getElementById('aiModel').value;
+  const endpoint=document.getElementById('aiEndpoint').value.trim()||'https://api.deepseek.com/chat/completions';
+  if(!key){ toast('请先填写 API Key'); return; }
+  if(!input){ toast('请先输入作文'); return; }
+  DB.aiKey=key; DB.aiEndpoint=endpoint; save();
+  const btn=document.getElementById('aiBtn'); btn.disabled=true; btn.textContent='润色中…';
+  document.getElementById('aiStatus').textContent='正在调用模型，请稍候…';
+  const sys=`你是一位考研英语一阅卷组资深教师，请对学生作文进行批改与润色。
+评分标准：总分 ${full} 分，按「内容(40%) / 语言(40%) / 结构(20%)」三项给分。
+请严格按以下格式输出（不要多余寒暄，除润色全文外均用中文）：
+【评分】X/${full}   （如 8/10）
+【分项】内容 X｜语言 X｜结构 X
+【润色后全文】
+（给出修改后的完整作文，保持原意，修正语法与用词，提升表达）
+【修改点】
+1. 原句：… ｜ 改为：… ｜ 原因：…
+2. …
+3. …`;
+  const user=`这是一篇考研英语一${full===10?'小作文':'大作文'}，请批改、润色并打分：\n\n`+input;
+  try{
+    const resp=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+      body:JSON.stringify({model,messages:[{role:'system',content:sys},{role:'user',content:user}],temperature:0.6,max_tokens:2500})});
+    if(!resp.ok){ const t=await resp.text(); throw new Error('接口返回 '+resp.status+'：'+t.slice(0,140)); }
+    const data=await resp.json();
+    const out=data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content;
+    if(!out) throw new Error('返回内容为空');
+    renderAiResult(out,full);
+    document.getElementById('aiStatus').textContent='已完成 ✓';
+  }catch(err){
+    document.getElementById('aiStatus').textContent='调用失败：'+(err.message||err);
+    toast('AI 调用失败：检查 Key / 接口 / 网络（CORS 受限时可用中转地址）');
+  }finally{ btn.disabled=false; btn.textContent='✨ 润色并打分'; }
+}
+function renderAiResult(out,full){
+  const scoreM=out.match(/【评分】\s*([\d.]+)\s*\/\s*(\d+)/);
+  const score=scoreM?scoreM[1]:'—';
+  const subM=out.match(/【分项】\s*([\s\S]*?)(?=\n【|\Z)/);
+  const fullM=out.match(/【润色后全文】\s*([\s\S]*?)\s*【修改点】/);
+  const ptsM=out.match(/【修改点】\s*([\s\S]*)$/);
+  const polished=fullM?fullM[1].trim():'';
+  const points=ptsM?ptsM[1].trim():'';
+  window._aiPolished=polished;
+  const box=document.getElementById('aiResult'); box.classList.remove('hidden');
+  box.innerHTML=`<div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap">
+      <div style="font-family:var(--serif);font-size:40px;font-weight:800;color:${scoreM&&(+score>=full*0.7)?'var(--teng)':'var(--zhu)'}">${score}<span style="font-size:18px;color:var(--yan)"> / ${full}</span></div>
+      <div class="small">${subM?('<div>分项：'+esc(subM[1].trim())+'</div>'):''}<div class="muted">考研英语一阅卷标准 · 内容/语言/结构</div></div>
+      <button class="btn ghost sm" style="margin-left:auto" onclick="copyAi()">复制润色全文</button>
+    </div>
+    <div class="card" style="background:rgba(16,24,48,.45);border-color:var(--line);margin-bottom:12px">
+      <b class="small">润色后全文</b>
+      <div style="white-space:pre-wrap;margin-top:6px;line-height:1.8">${esc(polished)}</div>
+    </div>
+    <div class="card" style="background:rgba(16,24,48,.45);border-color:var(--line)">
+      <b class="small">主要修改点</b>
+      <div style="white-space:pre-wrap;margin-top:6px;line-height:1.8" class="small">${esc(points)}</div>
+    </div>`;
+}
+function copyAi(){ if(window._aiPolished){ navigator.clipboard.writeText(window._aiPolished).then(()=>toast('已复制'),()=>toast('复制失败，请手动选择')); } }
+
+/* ===================== 错题本 ===================== */
+function addMistake(){
+  const q=document.getElementById('mQ').value.trim();
+  if(!q){ toast('请填写题目/错误点'); return; }
+  DB.mistakes.unshift({id:uid(),type:document.getElementById('mType').value,q,a:document.getElementById('mA').value.trim(),
+    why:document.getElementById('mWhy').value.trim(),date:todayStr()});
+  ['mQ','mA','mWhy'].forEach(i=>document.getElementById(i).value='');
+  save(); renderMistakes(); TOPICS.forEach(t=>renderTopic(t.key)); toast('错题已记录');
+}
+function deleteMistake(id){ DB.mistakes=DB.mistakes.filter(x=>x.id!==id); save(); renderMistakes(); TOPICS.forEach(t=>renderTopic(t.key)); }
+function renderMistakes(){
+  const f=document.getElementById('mFilter').value;
+  let list=DB.mistakes.slice();
+  if(f!=='all') list=list.filter(m=>m.type===f);
+  if(list.length===0){ document.getElementById('mistakeList').innerHTML='<div class="empty">蓦然回首，这里还没有错题。</div>'; return; }
+  document.getElementById('mistakeList').innerHTML=`<table><thead><tr>
+    <th>题型</th><th>题目/错误点</th><th>正确答案</th><th>原因</th><th>操作</th></tr></thead><tbody>`+
+    list.map(m=>`<tr><td><span class="tag">${esc(m.type)}</span></td>
+    <td>${esc(m.q)}</td><td>${esc(m.a||'—')}</td><td class="muted small">${esc(m.why||'—')}</td>
+    <td><button class="btn danger sm" onclick="deleteMistake('${m.id}')">删</button></td></tr>`).join('')+'</tbody></table>';
+}
+
+/* ===================== 统计图表 ===================== */
+function groupedBarChart(data){
+  const W=620,H=250,pad=36,gap=18;
+  const maxV=Math.max(...data.flatMap(d=>[d.actual,d.target]),10);
+  const gw=(W-pad*2-gap*(data.length-1))/data.length;
+  const bw=Math.min(gw/2.6,26);
+  let svg=`<svg viewBox="0 0 ${W} ${H+34}" width="100%">`;
+  for(let g=0;g<=4;g++){const y=pad+g*((H-pad*2)/4);const val=Math.round(maxV*(1-g/4));
+    svg+=`<line x1="${pad}" y1="${y}" x2="${W-pad}" y2="${y}" stroke="#2c3d6b"></line>
+    <text x="${pad-6}" y="${y+4}" font-size="10" text-anchor="end" fill="#8d99b5">${val}</text>`;}
+  data.forEach((d,i)=>{
+    const x0=pad+i*(gw+gap);
+    const ha=(d.actual/maxV)*(H-pad*2), ht=(d.target/maxV)*(H-pad*2);
+    const ya=H-ha, yt=H-ht;
+    svg+=`<rect x="${x0}" y="${ya}" width="${bw}" height="${ha}" rx="4" fill="#d95b32"></rect>`;
+    svg+=`<rect x="${x0+bw+4}" y="${yt}" width="${bw}" height="${ht}" rx="4" fill="#cdb277"></rect>`;
+    svg+=`<text x="${x0+bw/2}" y="${ya-5}" font-size="10" text-anchor="middle" fill="#ece7d9">${d.actual}</text>`;
+    svg+=`<text x="${x0+bw+4+bw/2}" y="${yt-5}" font-size="10" text-anchor="middle" fill="#cdb277">${d.target}</text>`;
+    svg+=`<text x="${x0+gw/2}" y="${H+16}" font-size="11" text-anchor="middle" fill="#8d99b5">${d.label}</text>`;
+  });
+  svg+='</svg>';
+  return svg+`<div class="legend"><span><i style="background:#d95b32"></i>实际平均分</span><span><i style="background:#cdb277"></i>目标分</span></div>`;
+}
+function lineChart(data){
+  const W=600,H=240,pad=34;
+  if(data.length===0) return '<div class="empty">暂无练习数据</div>';
+  const maxV=100,n=data.length,stepX=(W-pad*2)/Math.max(n-1,1);
+  const pts=data.map((v,i)=>{const x=pad+i*stepX,y=H-(v/maxV)*(H-pad*2);return [x,y];});
+  const path='M'+pts.map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' L');
+  let svg=`<svg viewBox="0 0 ${W} ${H}" width="100%">`;
+  for(let g=0;g<=4;g++){const y=pad+g*((H-pad*2)/4);const val=100-g*25;
+    svg+=`<line x1="${pad}" y1="${y}" x2="${W-pad}" y2="${y}" stroke="#2c3d6b"></line>
+    <text x="${pad-6}" y="${y+4}" font-size="10" text-anchor="end" fill="#8d99b5">${val}</text>`;}
+  svg+=`<path d="${path}" fill="none" stroke="#e3aa4e" stroke-width="2.5"></path>`;
+  pts.forEach((p,i)=>{ svg+=`<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="#e3aa4e"></circle>`;
+    if(i%Math.ceil(n/8||1)===0||i===n-1) svg+=`<text x="${p[0]}" y="${H-6}" font-size="9" text-anchor="middle" fill="#8d99b5">#${i+1}</text>`; });
+  svg+='</svg>'; return svg;
+}
+function donutChart(data){
+  const total=data.reduce((s,d)=>s+d.value,0);
+  const W=300,H=200,cx=100,cy=100,r=70,ir=42;
+  let a=-Math.PI/2, svg=`<svg viewBox="0 0 ${W} ${H}" width="100%">`;
+  if(!total){ svg+='<text x="150" y="105" font-size="12" text-anchor="middle" fill="#8d99b5">暂无词汇</text></svg>'; return svg; }
+  data.forEach(d=>{
+    const ang=a+d.value/total*Math.PI*2;
+    const x1=cx+r*Math.cos(a),y1=cy+r*Math.sin(a),x2=cx+r*Math.cos(ang),y2=cy+r*Math.sin(ang);
+    const xi2=cx+ir*Math.cos(ang),yi2=cy+ir*Math.sin(ang),xi1=cx+ir*Math.cos(a),yi1=cy+ir*Math.sin(a);
+    const large=(ang-a)>Math.PI?1:0;
+    svg+=`<path d="M${x1} ${y1} A${r} ${r} 0 ${large} 1 ${x2} ${y2} L${xi2} ${yi2} A${ir} ${ir} 0 ${large} 0 ${xi1} ${yi1} Z" fill="${d.color}"></path>`;
+    a=ang;
+  });
+  svg+=`<text x="${cx}" y="${cy-2}" font-size="15" text-anchor="middle" fill="#cdb277" font-weight="700">${total}</text>
+        <text x="${cx}" y="${cy+14}" font-size="10" text-anchor="middle" fill="#8d99b5">总词汇</text></svg>`;
+  return svg;
+}
+function renderStats(){
+  const byType={};
+  DB.papers.forEach(p=>{ if(p.type!=='整套模考') (byType[p.type]=byType[p.type]||[]).push(p.score); });
+  const typeData=Object.keys(byType).map(k=>({label:k,
+    actual:+(byType[k].reduce((a,b)=>a+b,0)/byType[k].length).toFixed(1),target:targetFor(k)}));
+  document.getElementById('chartType').innerHTML=typeData.length?groupedBarChart(typeData):'<div class="empty">暂无练习数据。先在各题型专题记录几次得分，即可看到与目标的差距。</div>';
+  const trend=DB.papers.slice().reverse().map(p=>p.full?Math.round(p.score/p.full*100):0);
+  document.getElementById('chartTrend').innerHTML=lineChart(trend);
+  const m=[0,0,0,0]; DB.words.forEach(w=>m[w.mastery]++);
+  const labels=['未学','生疏','熟悉','已掌握'];
+  const mcolors=['#d95b32','#a06b3f','#e3aa4e','#cdb277'];
+  document.getElementById('chartMastery').innerHTML=donutChart(m.map((v,i)=>({label:labels[i],value:v,color:mcolors[i]})));
+  document.getElementById('chartMastery').insertAdjacentHTML('beforeend',
+    `<div class="legend">${labels.map((l,i)=>`<span><i style="background:${mcolors[i]}"></i>${l} ${m[i]}</span>`).join('')}</div>`);
+  document.getElementById('overviewText').innerHTML=
+    `<div class="stat" style="margin-bottom:10px"><div class="num">${DB.papers.length}</div><div class="lbl">练习次数</div></div>
+    <p class="small">· 目标总分：<b style="color:var(--gold)">${targetFor('整套模考')}</b> 分<br>
+    · 词汇总量：<b>${DB.words.length}</b>，已掌握 <b>${m[3]}</b><br>
+    · 长难句：<b>${DB.sentences.length}</b> 句　错题：<b>${DB.mistakes.length}</b> 条<br>
+    · 连续点灯：<b>${calcStreak()}</b> 天</p>`;
+}
+
+/* ===================== 数据管理 ===================== */
+function exportData(){
+  const blob=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='考研英语学习台_备份_'+todayStr()+'.json'; a.click(); toast('已导出备份');
+}
+function importData(e){
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{ try{ const d=JSON.parse(ev.target.result); if(!d.words) throw 0;
+    if(confirm('导入将覆盖当前数据，确定？')){ DB=d; if(!DB.v){DB.targets={完形填空:7,阅读理解:37,新题型:8,翻译:6,小作文:7,大作文:15};DB.v=2;}
+      if(DB.profile.cohort==null) DB.profile.cohort=1; save(); fullRender(); toast('导入成功'); } }
+    catch(err){ toast('文件格式不正确'); } };
+  reader.readAsText(file); e.target.value='';
+}
+function clearAll(){
+  if(confirm('确定清空全部数据？此操作不可恢复，建议先导出备份。')){ DB=defaultDB(); save(); fullRender(); toast('已清空'); }
+}
+
+/* ===================== 启动 ===================== */
+/* ===================== 目标分可视化编辑面板 ===================== */
+function renderTargetsUI(){
+  const et=DB.profile.examType;
+  const nm=document.getElementById('tgtEtName'); if(nm) nm.textContent='英语'+(et===1?'一':'二');
+  const box=document.getElementById('tgtRows'); if(!box) return;
+  box.innerHTML=TARGET_TYPES.map(t=>{
+    const max=fullFor(t,et), cur=targetFor(t,et);
+    const step=(t==='完形填空')?0.5:1;
+    return `<div class="tgt-row"><label>${t}</label>
+      <input type="range" min="0" max="${max}" step="${step}" value="${cur}" oninput="onTgtInput('${t}',this.value)">
+      <span class="tv"><span id="tv_${t}">${cur}</span> / ${max}</span></div>`;
+  }).join('');
+  updateTgtSum();
+}
+function onTgtInput(t,v){ const el=document.getElementById('tv_'+t); if(el) el.textContent=v; updateTgtSum(); }
+function updateTgtSum(){
+  const et=DB.profile.examType; let s=0;
+  TARGET_TYPES.forEach(t=>{ const el=document.getElementById('tv_'+t); s+=parseFloat(el?el.textContent:targetFor(t,et))||0; });
+  const sum=document.getElementById('tgtSum'); if(sum) sum.textContent=Math.round(s*10)/10;
+}
+function saveTargetsUI(){
+  const et=DB.profile.examType;
+  TARGET_TYPES.forEach(t=>{ const el=document.getElementById('tv_'+t); DB.targets[et][t]=parseFloat(el?el.textContent:'0')||0; });
+  save(); toast('目标分已保存（英语'+(et===1?'一':'二')+'）');
+}
+function resetTargetsUI(){
+  const et=DB.profile.examType; const def=DEFAULT_TARGETS[et];
+  TARGET_TYPES.forEach(t=>DB.targets[et][t]=def[t]); save(); renderTargetsUI(); toast('已恢复默认 80 分档');
+}
+
+/* ===================== 真题库 · IndexedDB ===================== */
+let _idb=null;
+function idbOpen(){ return new Promise((res,rej)=>{ if(_idb) return res(_idb);
+  const rq=indexedDB.open('ky_library',1);
+  rq.onupgradeneeded=e=>{ const db=e.target.result; if(!db.objectStoreNames.contains('pdfs')) db.createObjectStore('pdfs',{keyPath:'id'}); };
+  rq.onsuccess=e=>{ _idb=e.target.result; res(_idb); }; rq.onerror=e=>rej(e); }); }
+async function idbPut(rec){ const db=await idbOpen(); return new Promise((res,rej)=>{ const tx=db.transaction('pdfs','readwrite'); tx.objectStore('pdfs').put(rec); tx.oncomplete=()=>res(); tx.onerror=()=>rej(tx.error); }); }
+async function idbGetAll(){ const db=await idbOpen(); return new Promise((res,rej)=>{ const tx=db.transaction('pdfs','readonly'); const r=tx.objectStore('pdfs').getAll(); r.onsuccess=()=>res(r.result||[]); r.onerror=()=>rej(r.error); }); }
+async function idbGet(id){ const db=await idbOpen(); return new Promise((res,rej)=>{ const tx=db.transaction('pdfs','readonly'); const r=tx.objectStore('pdfs').get(id); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
+async function idbDelete(id){ const db=await idbOpen(); return new Promise((res,rej)=>{ const tx=db.transaction('pdfs','readwrite'); tx.objectStore('pdfs').delete(id); tx.oncomplete=()=>res(); tx.onerror=()=>rej(tx.error); }); }
+
+let curGrader=null;
+const ANS_LETTERS=['A','B','C','D','E'];
+async function libUpload(e){
+  const f=e.target.files[0]; if(!f) return;
+  if(f.type!=='application/pdf' && !f.name.toLowerCase().endsWith('.pdf')){ toast('请选择 PDF 文件'); e.target.value=''; return; }
+  const et=parseInt(document.getElementById('libEt').value)||DB.profile.examType;
+  const nm=(document.getElementById('libName').value.trim())||f.name.replace(/\.pdf$/i,'');
+  try{
+    const buf=await f.arrayBuffer();
+    const rec={id:uid(),name:nm,et,date:todayStr(),blob:new Blob([buf],{type:'application/pdf'}),answers:null,keys:null,subj:null};
+    await idbPut(rec); e.target.value=''; document.getElementById('libName').value='';
+    await renderLibrary(); toast('已存入真题库：'+nm);
+  }catch(err){ toast('上传失败：'+(err.message||err)); }
+}
+async function renderLibrary(){
+  const box=document.getElementById('pdfList'); if(!box) return;
+  let list=[];
+  try{ list=await idbGetAll(); }catch(err){ box.innerHTML='<div class="empty">本环境 IndexedDB 不可用（多见于隐私模式）。请改用常规浏览器窗口。</div>'; return; }
+  if(!list.length){ box.innerHTML='<div class="empty">真题库为空。上传一份 PDF（历年真题 / 模考卷），即可在左侧看卷、右侧答题卡作答。</div>'; return; }
+  box.innerHTML=list.sort((a,b)=>(b.date||'').localeCompare(a.date||'')).map(p=>`<div class="lib-item">
+    <div><b>${esc(p.name)}</b> <span class="tag">英语${p.et}</span> <span class="muted small">${esc(p.date||'')}</span></div>
+    <div><button class="btn ghost sm" onclick="libOpen('${p.id}')">打开作答</button>
+    <button class="btn danger sm" onclick="libDelete('${p.id}')">删除</button></div></div>`).join('');
+}
+async function libDelete(id){ if(!confirm('确定从真题库删除该 PDF？')) return; try{ await idbDelete(id); await renderLibrary(); toast('已删除'); }catch(e){ toast('删除失败'); } }
+async function libOpen(id){
+  let rec; try{ rec=await idbGet(id); }catch(e){ toast('读取失败'); return; }
+  if(!rec){ toast('未找到'); return; }
+  curGrader={id:rec.id,name:rec.name,et:rec.et,date:rec.date,blob:rec.blob,
+    answers:rec.answers||{cloze:Array(20).fill(''),reading:Array(20).fill(''),newtype:Array(5).fill('')},
+    keys:rec.keys||{cloze:'',reading:'',newtype:''},
+    subj:rec.subj||{trans:'',sw:'',bw:''}, mode:'exam', instant:false, doc:null, numPages:0, page:1};
+  document.getElementById('graderCard').classList.remove('hidden');
+  document.getElementById('graderCard').scrollIntoView({behavior:'smooth'});
+  document.getElementById('graderTitle').textContent=rec.name+' · 英语'+rec.et;
+  buildAnsCard(); await loadPdf(rec.blob);
+}
+async function loadPdf(blob){
+  if(!window.pdfjsLib){ toast('pdf.js 未加载'); return; }
+  try{
+    if(!pdfjsLib.GlobalWorkerOptions.workerSrc) pdfjsLib.GlobalWorkerOptions.workerSrc='pdf.worker.min.js';
+    const buf=await blob.arrayBuffer();
+    const doc=await pdfjsLib.getDocument({data:buf}).promise;
+    curGrader.doc=doc; curGrader.numPages=doc.numPages; curGrader.page=1;
+    await renderPdfPage();
+  }catch(err){ console.error(err);
+    document.getElementById('pdfPages').innerHTML='<div class="empty">PDF 渲染失败：'+(err.message||err)+'<br>若以 file:// 直接打开，请用本地服务器（python -m http.server）后通过 http 访问。</div>';
+  }
+}
+async function renderPdfPage(){
+  if(!curGrader||!curGrader.doc) return;
+  const doc=curGrader.doc; const page=await doc.getPage(curGrader.page);
+  const wrap=document.getElementById('pdfPages'); wrap.innerHTML='';
+  const canvas=document.createElement('canvas'); const ctx=canvas.getContext('2d');
+  const baseW=Math.min((wrap.clientWidth||600),900);
+  const maxH=(document.fullscreenElement?window.innerHeight:wrap.clientHeight||window.innerHeight) - 40;
+  const vp0=page.getViewport({scale:1});
+  let scale=baseW/vp0.width;
+  if(vp0.height*scale > maxH && maxH>0) scale=maxH/vp0.height;
+  const vp=page.getViewport({scale});
+  canvas.width=vp.width; canvas.height=vp.height;
+  await page.render({canvasContext:ctx, viewport:vp}).promise;
+  canvas.style.width='auto'; canvas.style.maxWidth='100%'; canvas.ondblclick=toggleFullScreen; wrap.appendChild(canvas);
+  const pi=document.getElementById('pdfPageInfo'); if(pi) pi.textContent='第 '+curGrader.page+' / '+curGrader.numPages+' 页';
+}
+function pdfPrev(){ if(curGrader&&curGrader.doc&&curGrader.page>1){ curGrader.page--; renderPdfPage(); } }
+function pdfNext(){ if(curGrader&&curGrader.doc&&curGrader.page<curGrader.numPages){ curGrader.page++; renderPdfPage(); } }
+
+/* ===================== 全屏看卷（仅左侧试卷区） ===================== */
+function toggleFullScreen(){
+  const el=document.getElementById('pdfPages');
+  if(!el) return;
+  if(document.fullscreenElement){ document.exitFullscreen(); }
+  else { el.requestFullscreen().catch(err=>toast('全屏失败：'+ (err.message||'浏览器可能禁止了全屏'))); }
+}
+function updateFsBtn(){
+  const btn=document.getElementById('fsBtn');
+  if(document.fullscreenElement){ if(btn) btn.textContent='退出全屏'; }
+  else { if(btn) btn.textContent='⛶ 全屏看卷'; }
+  if(curGrader&&curGrader.doc) renderPdfPage();
+}
+document.addEventListener('fullscreenchange', updateFsBtn);
+
+function setGraderMode(mode){
+  if(!curGrader) return;
+  curGrader.mode=mode; curGrader.instant=(mode==='grade');
+  buildAnsCard();
+  toast(mode==='exam'?'已进入模拟考试模式':'已进入答案校对模式');
+}
+function buildAnsCard(){
+  const et=curGrader.et; const secs=GRADE_SECTIONS[et];
+  const isGrade=curGrader.mode==='grade';
+  let html='<div class="card"><div class="flex-between"><h2><span class="dot"></span>电子答题卡</h2>';
+  if(isGrade){
+    html+='<label class="small" style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" '+(curGrader.instant?'checked':'')+' onchange="curGrader.instant=this.checked; buildAnsCard()"> 立即批改</label>';
+  } else {
+    html+='<span class="phase" style="background:rgba(120,160,200,.25);color:#c2d6f0">模拟考试</span>';
+  }
+  html+='</div>';
+  if(!isGrade){
+    html+='<p class="tip">当前为<b>模拟考试模式</b>：只记录你的作答，不显示答案键；右侧不会展示对错颜色。答题卡题号与真题答题卡一致：完形 1-20、阅读 21-40、新题型 41-45、翻译 46-50（主观题不计入选择格）。完成整套卷后，点下方「进入对答案」再贴答案键批改。</p>';
+  } else {
+    html+='<p class="tip">当前为<b>答案校对模式</b>：填写答案键后自动判分。答案键需你自己从真题答案册/解析获取，本工具不内置任何答案。客观题按 1-45 连续题号对应；翻译 46-50、小作文、大作文请按参考答案自评。</p>';
+  }
+  /* 客观题按真实题号连续排布：完形 1-20 / 阅读 21-40 / 新题型 41-45 */
+  let objNum=1;
+  secs.forEach(s=>{
+    if(!s.subj){
+      const start=objNum; const end=objNum+s.n-1;
+      if(isGrade){
+        html+=`<div style="margin:10px 0"><div class="small" style="margin-bottom:4px"><b>${s.title}</b> <span class="muted">（第 ${start}-${end} 题）</span> 答案键：<input id="key_${s.key}" value="${esc(curGrader.keys[s.key]||'')}" oninput="onKey('${s.key}',this.value)" style="width:210px;display:inline-block" placeholder="${start}-${end} 题答案，如 ${'A'.repeat(s.n)}"></div>`;
+      } else {
+        html+=`<div style="margin:10px 0 4px"><b>${s.title}</b> <span class="muted small">（第 ${start}-${end} 题）</span></div>`;
+      }
+      let cells='';
+      for(let i=0;i<s.n;i++){ const a=curGrader.answers[s.key][i]||''; cells+=`<div class="qcell ${a?'sel':''}" id="qc_${s.key}_${i}" onclick="selAns('${s.key}',${i})"><span class="qn">${start+i}</span><span class="qa">${a}</span></div>`; }
+      html+=`<div class="qgrid">${cells}</div></div>`;
+      objNum+=s.n;
+    }
+  });
+  /* 主观题：翻译对应答题卡 46-50，之后是大小作文 */
+  let subjNum=46;
+  secs.forEach(s=>{
+    if(s.subj && isGrade){
+      const numText=s.type==='翻译'?`（第 ${subjNum}-${subjNum+4} 题）`:'';
+      html+=`<div class="subscore"><label>${s.title} <span class="muted small">${numText}</span></label><input type="number" min="0" max="${s.full}" step="0.5" id="sub_${s.key}" value="${curGrader.subj[s.key]||''}" oninput="onSub('${s.key}',this.value)" placeholder="自评 0–${s.full}"></div>`;
+      if(s.type==='翻译') subjNum+=5;
+    }
+  });
+  html+='<div class="row" style="margin-top:8px">';
+  if(!isGrade){
+    html+='<button class="btn" onclick="setGraderMode(\'grade\')">我答完了 · 进入对答案</button>';
+  } else {
+    html+='<button class="btn" onclick="gradeNow()">批改 / 结算</button><button class="btn ghost sm" onclick="setGraderMode(\'exam\')">返回继续答题</button><button class="btn ghost sm" onclick="document.getElementById(\'keyFile\').click()">⬆ 导入答案键</button><input type="file" id="keyFile" accept=".txt,.csv,.md" class="hidden" onchange="importKeyFile(event)">';
+  }
+  html+='<button class="btn ghost sm" onclick="saveGraderProgress()">保存答题进度</button></div>';
+  html+='<div id="gradeResult"></div></div>';
+  document.getElementById('ansCard').innerHTML=html;
+  if(isGrade && curGrader.instant){ secs.forEach(s=>{ if(!s.subj) regradeSection(s.key); }); }
+}
+function importKeyFile(e){
+  const f=e.target.files[0]; if(!f) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const text=ev.target.result||'';
+    const keyMap=[
+      ['完形填空','cloze'],['完形','cloze'],['cloze','cloze'],
+      ['阅读理解','reading'],['阅读','reading'],['reading','reading'],
+      ['新题型','newtype'],['new题型','newtype'],['newtype','newtype']
+    ];
+    text.split(/\r?\n/).forEach(line=>{
+      let clean=line.trim().replace(/\s+/g,''); if(!clean) return;
+      for(let i=0;i<keyMap.length;i++){
+        const [name,sec]=keyMap[i];
+        if(clean.startsWith(name)){
+          let rest=clean.slice(name.length).replace(/^[\s:：,，\/]/,'');
+          const cfg=GRADE_SECTIONS[curGrader.et].find(s=>s.key===sec);
+          curGrader.keys[sec]=rest.toUpperCase().replace(/[^A-E]/g,'').slice(0,cfg?cfg.n:rest.length);
+          break;
+        }
+      }
+    });
+    e.target.value=''; buildAnsCard(); toast('已导入答案键，请核对后点「批改/结算」');
+  };
+  reader.readAsText(f,'utf-8');
+}
+function selAns(section,qi){
+  const cur=curGrader.answers[section][qi]; const idx=ANS_LETTERS.indexOf(cur);
+  const next=ANS_LETTERS[(idx+1)%ANS_LETTERS.length];
+  curGrader.answers[section][qi]=next;
+  const cell=document.getElementById('qc_'+section+'_'+qi);
+  if(cell){ cell.querySelector('.qa').textContent=next; cell.classList.add('sel'); }
+  if(curGrader.instant) gradeCell(section,qi); else if(cell) cell.classList.remove('ok','bad');
+}
+function onKey(section,v){ curGrader.keys[section]=v.trim().toUpperCase(); if(curGrader.instant) regradeSection(section); }
+function onSub(k,v){ curGrader.subj[k]=v; }
+function gradeCell(section,qi){
+  const cell=document.getElementById('qc_'+section+'_'+qi); if(!cell) return;
+  const ans=curGrader.answers[section][qi]; const key=curGrader.keys[section]?curGrader.keys[section][qi]:'';
+  cell.classList.remove('ok','bad');
+  if(ans && key){ if(ans===key) cell.classList.add('ok'); else cell.classList.add('bad'); }
+}
+function regradeSection(section){ const cfg=GRADE_SECTIONS[curGrader.et].find(s=>s.key===section); for(let i=0;i<cfg.n;i++) gradeCell(section,i); }
+function gradeNow(){
+  const et=curGrader.et; const secs=GRADE_SECTIONS[et]; let total=0; const lines=[];
+  secs.forEach(s=>{
+    if(!s.subj){
+      let correct=0; for(let i=0;i<s.n;i++){ const a=curGrader.answers[s.key][i]; const k=curGrader.keys[s.key]?curGrader.keys[s.key][i]:''; if(a&&a===k) correct++; }
+      const sc=Math.round(correct*s.per*10)/10; total+=sc;
+      lines.push(`${s.title.split('（')[0]}：答对 ${correct}/${s.n} → <b>${sc}</b> 分`);
+    } else {
+      const sc=parseFloat(curGrader.subj[s.key])||0; total+=sc;
+      lines.push(`${s.title.split('（')[0]}：自评 <b>${sc}</b> / ${s.full} 分`);
+    }
+  });
+  total=Math.round(total*10)/10;
+  document.getElementById('gradeResult').innerHTML=`<div class="grade-sum" style="margin-top:12px"><b>总分 ${total} / 100</b><div style="margin-top:6px">${lines.join('<br>')}</div><div style="margin-top:10px"><button class="btn" onclick="saveGrade()">记入练习（存入各题型 + 收错题）</button></div></div>`;
+}
+async function saveGraderProgress(){
+  try{ const old=await idbGet(curGrader.id); old.answers=curGrader.answers; old.keys=curGrader.keys; old.subj=curGrader.subj;
+    await idbPut(old); toast('答题进度已保存，可随时回来继续'); }catch(e){ toast('保存失败'); }
+}
+async function saveGrade(){
+  const et=curGrader.et;
+  const map={cloze:'完形填空',reading:'阅读理解',newtype:'新题型',trans:'翻译',sw:'小作文',bw:'大作文'};
+  const typeFull={完形填空:10,阅读理解:40,新题型:10,翻译:fullFor('翻译',et),小作文:10,大作文:fullFor('大作文',et)};
+  const secs=GRADE_SECTIONS[et];
+  secs.forEach(s=>{
+    let sc;
+    if(!s.subj){ let c=0; for(let i=0;i<s.n;i++){ const a=curGrader.answers[s.key][i]; const k=curGrader.keys[s.key]?curGrader.keys[s.key][i]:''; if(a&&a===k) c++; } sc=Math.round(c*s.per*10)/10; }
+    else sc=parseFloat(curGrader.subj[s.key])||0;
+    const t=map[s.key];
+    DB.papers.unshift({id:uid(),date:todayStr(),year:curGrader.name,type:t,score:sc,full:typeFull[t],et,note:'真题库作答'});
+  });
+  const mTypeMap={cloze:'完形',reading:'阅读',newtype:'阅读'};
+  secs.forEach(s=>{ if(!s.subj){ for(let i=0;i<s.n;i++){ const a=curGrader.answers[s.key][i]; const k=curGrader.keys[s.key]?curGrader.keys[s.key][i]:''; if(a && a!==k){ DB.mistakes.unshift({id:uid(),type:mTypeMap[s.key]||'其他',q:(s.title.split('（')[0])+' 第'+(i+1)+'题',a:'正确答案 '+k,why:'你的选择 '+a,date:todayStr()}); } } } });
+  save(); renderPapers(); renderMistakes(); TOPICS.forEach(t=>renderTopic(t.key)); renderRecent();
+  toast('成绩已记入各题型专题，错题已入库');
+}
+
+function fullRender(){
+  renderExamTypeSeg();
+  renderTargetsUI();
+  buildTopics();
+  renderLibrary();
+  document.getElementById('wContent').addEventListener('input',updateWc);
+  renderBanner(); renderDashboard(); renderWords();
+  TOPICS.forEach(t=>{ renderTopic(t.key); autoFullTopic(t.key); });
+  renderPapers(); renderMistakes(); renderTemplates(); renderWritings(); renderSentences();
+  document.getElementById('materialBox').value=DB.materials||'';
+  if(document.getElementById('aiKey')) document.getElementById('aiKey').value=DB.aiKey||'';
+  if(document.getElementById('aiEndpoint')) document.getElementById('aiEndpoint').value=DB.aiEndpoint||'';
+  fillProfile();
+}
+fullRender();
+save();
+</script>
+</body>
+</html>
