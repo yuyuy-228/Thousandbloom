@@ -808,7 +808,7 @@ function buildTopics(){
           <div style="flex:2"><label>API Key（仅存本机，不上传）</label>
             <input id="aiKey" type="password" placeholder="sk-...（DeepSeek 等兼容 OpenAI 的 Key）"></div>
           <div style="flex:1"><label>模型</label>
-            <select id="aiModel"><option value="deepseek-chat">deepseek-chat</option><option value="deepseek-reasoner">deepseek-reasoner</option></select></div>
+            <select id="aiModel"><option value="deepseek-chat">deepseek-chat</option><option value="deepseek-reasoner">deepseek-reasoner</option><option value="qwen-plus">qwen-plus（通义千问）</option><option value="gpt-4o-mini">gpt-4o-mini</option><option value="moonshot-v1-8k">moonshot-v1-8k（Kimi）</option></select></div>
         </div>
         <div class="row" style="margin-bottom:8px">
           <div style="flex:2"><label>接口地址（可填中转 / 兼容端点）</label>
@@ -822,6 +822,7 @@ function buildTopics(){
           <span id="aiStatus" class="muted small"></span>
         </div>
         <div id="aiResult" class="hidden" style="margin-top:14px"></div>
+        <div id="aiHistory" style="margin-top:14px"></div>
       </div>
       <div class="card"><h2><span class="dot"></span>交卷前自查清单</h2>
         <div class="grid g2">
@@ -1270,7 +1271,7 @@ function editWriting(id){
 function saveMaterial(){ DB.materials=document.getElementById('materialBox').value; save(); toast('素材库已保存'); }
 
 /* ===================== AI 润色 · 智能修改打分 ===================== */
-function fillEditorToAi(){ document.getElementById('aiInput').value=document.getElementById('wContent').value; toast('已从编辑器载入'); }
+function fillEditorToAi(){ document.getElementById('aiInput').value=document.getElementById('wContent').value; renderAiHistory(); toast('已从编辑器载入'); }
 async function aiPolish(){
   const key=document.getElementById('aiKey').value.trim();
   const input=document.getElementById('aiInput').value.trim();
@@ -1317,11 +1318,14 @@ function renderAiResult(out,full){
   const polished=fullM?fullM[1].trim():'';
   const points=ptsM?ptsM[1].trim():'';
   window._aiPolished=polished;
+  const aiInput=document.getElementById('aiInput').value.trim();
+  saveAiHistory({time:new Date().toLocaleString('zh-CN'),type:full===10?'小作文':'大作文',input:aiInput,score,sub:subM?subM[1].trim():'',polished,points});
   const box=document.getElementById('aiResult'); box.classList.remove('hidden');
   box.innerHTML=`<div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap">
       <div style="font-family:var(--serif);font-size:40px;font-weight:800;color:${scoreM&&(+score>=full*0.7)?'var(--teng)':'var(--zhu)'}">${score}<span style="font-size:18px;color:var(--yan)"> / ${full}</span></div>
       <div class="small">${subM?('<div>分项：'+esc(subM[1].trim())+'</div>'):''}<div class="muted">考研英语一阅卷标准 · 内容/语言/结构</div></div>
       <button class="btn ghost sm" style="margin-left:auto" onclick="copyAi()">复制润色全文</button>
+      <button class="btn ghost sm" onclick="polishedToEditor()">载入编辑器</button>
     </div>
     <div class="card" style="background:rgba(16,24,48,.45);border-color:var(--line);margin-bottom:12px">
       <b class="small">润色后全文</b>
@@ -1331,8 +1335,68 @@ function renderAiResult(out,full){
       <b class="small">主要修改点</b>
       <div style="white-space:pre-wrap;margin-top:6px;line-height:1.8" class="small">${esc(points)}</div>
     </div>`;
+  renderAiHistory();
 }
 function copyAi(){ if(window._aiPolished){ navigator.clipboard.writeText(window._aiPolished).then(()=>toast('已复制'),()=>toast('复制失败，请手动选择')); } }
+
+/* 润色后全文一键载入编辑器，方便继续改或存进文库 */
+function polishedToEditor(){
+  if(!window._aiPolished){ toast('没有润色结果'); return; }
+  document.getElementById('wContent').value=window._aiPolished;
+  toast('已载入编辑器，可保存到文库');
+}
+
+/* 润色历史存本机，最多留 20 条 */
+function saveAiHistory(item){
+  let h=[]; try{ h=JSON.parse(localStorage.getItem('ai_polish_history')||'[]'); }catch{ h=[]; }
+  h.unshift(item);
+  if(h.length>20) h=h.slice(0,20);
+  localStorage.setItem('ai_polish_history',JSON.stringify(h));
+}
+function renderAiHistory(){
+  const box=document.getElementById('aiHistory'); if(!box) return;
+  let h=[]; try{ h=JSON.parse(localStorage.getItem('ai_polish_history')||'[]'); }catch{ h=[]; }
+  if(!h.length){ box.innerHTML=''; return; }
+  box.innerHTML=`<div class="card" style="background:rgba(16,24,48,.3);border-color:var(--line)">
+    <b class="small">润色历史（近 ${h.length} 次，存本机）</b>
+    <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px">
+      ${h.map((it,i)=>`<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:6px 8px;background:rgba(16,24,48,.4);border-radius:8px;cursor:pointer" onclick="viewAiHistory(${i})">
+        <span class="tag">${it.type}</span>
+        <b style="color:var(--gold)">${it.score}</b>
+        <span class="muted small" style="flex:1;min-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(it.input.slice(0,40))}</span>
+        <span class="muted small">${it.time}</span>
+      </div>`).join('')}
+    </div>
+    <button class="btn ghost sm" style="margin-top:8px" onclick="clearAiHistory()">清空历史</button>
+  </div>`;
+}
+function viewAiHistory(i){
+  let h=[]; try{ h=JSON.parse(localStorage.getItem('ai_polish_history')||'[]'); }catch{ h=[]; }
+  const it=h[i]; if(!it) return;
+  window._aiPolished=it.polished;
+  const full=it.type==='小作文'?10:20;
+  const box=document.getElementById('aiResult'); box.classList.remove('hidden');
+  box.innerHTML=`<div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap">
+      <div style="font-family:var(--serif);font-size:40px;font-weight:800;color:${(+it.score)>=full*0.7?'var(--teng)':'var(--zhu)'}">${it.score}<span style="font-size:18px;color:var(--yan)"> / ${full}</span></div>
+      <div class="small">${it.sub?('<div>分项：'+esc(it.sub)+'</div>'):''}<div class="muted">${it.time} · 回看</div></div>
+      <button class="btn ghost sm" style="margin-left:auto" onclick="copyAi()">复制润色全文</button>
+      <button class="btn ghost sm" onclick="polishedToEditor()">载入编辑器</button>
+    </div>
+    <div class="card" style="background:rgba(16,24,48,.45);border-color:var(--line);margin-bottom:12px">
+      <b class="small">润色后全文</b>
+      <div style="white-space:pre-wrap;margin-top:6px;line-height:1.8">${esc(it.polished)}</div>
+    </div>
+    <div class="card" style="background:rgba(16,24,48,.45);border-color:var(--line)">
+      <b class="small">主要修改点</b>
+      <div style="white-space:pre-wrap;margin-top:6px;line-height:1.8" class="small">${esc(it.points)}</div>
+    </div>`;
+}
+function clearAiHistory(){
+  if(!confirm('确定清空润色历史？')) return;
+  localStorage.removeItem('ai_polish_history');
+  renderAiHistory();
+  toast('已清空润色历史');
+}
 
 /* ===================== 错题本 ===================== */
 function addMistake(){
