@@ -217,7 +217,76 @@
     padding:12px 14px;font-size:13.5px;line-height:1.95}
   .lib-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
   .lib-item:last-child{border-bottom:none}
-  @media (max-width:900px){ .pdf-wrap{flex-direction:column} .ans-card{max-height:none} }
+  @media (max-width:860px){ .pdf-wrap{flex-direction:column} .ans-card{max-height:none} }
+
+  /* ===== 云同步 ===== */
+  .cloud{font-size:12px;background:rgba(141,153,181,.1);color:var(--yan);padding:4px 12px;border-radius:20px;
+    border:1px solid rgba(141,153,181,.25);cursor:pointer;transition:.2s;user-select:none}
+  .cloud:hover{color:var(--teng)}
+  .cloud.on{background:rgba(205,178,119,.12);color:var(--gold);border-color:rgba(205,178,119,.3)}
+  .cloud.busy{background:rgba(217,91,50,.14);color:#f0b49a;border-color:rgba(240,180,154,.35)}
+  .cloud.off{background:rgba(160,107,63,.12);color:#c9a06b;border-color:rgba(201,160,107,.3)}
+  .sync-state{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--yan);margin-top:10px}
+  .sync-state b{color:var(--gold)}
+  .sync-log{margin-top:12px;display:flex;flex-direction:column;gap:5px;max-height:200px;overflow:auto}
+  .sync-log div{font-size:12px;color:var(--yan);padding:6px 10px;background:rgba(16,24,48,.5);border-radius:8px;line-height:1.5}
+  .sync-log b{color:var(--gold)}
+
+  /* ===== 移动端适配 ===== */
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .table-scroll table{margin-bottom:0}
+  @media (max-width:860px){
+    nav{flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+    nav button{flex:0 0 auto}
+    nav::-webkit-scrollbar{height:3px}
+    nav::-webkit-scrollbar-thumb{background:var(--line);border-radius:2px}
+    .qgrid{grid-template-columns:repeat(auto-fill,minmax(34px,1fr))}
+  }
+
+  /* ===== 桌宠 · 灯灵小灯 ===== */
+  #petBox{position:fixed;right:26px;bottom:26px;z-index:150;width:96px;user-select:none;touch-action:none}
+  #petAvatar{width:96px;height:112px;cursor:grab;filter:drop-shadow(0 6px 18px rgba(217,91,50,.35));
+    animation:petBob 3.4s ease-in-out infinite;transition:filter .3s}
+  #petAvatar:active{cursor:grabbing}
+  #petBox.dim #petAvatar{filter:drop-shadow(0 4px 10px rgba(217,91,50,.15)) brightness(.75)}
+  @keyframes petBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  .pet-flame{animation:petFlick 1.7s ease-in-out infinite;transform-origin:50px 66px}
+  @keyframes petFlick{0%,100%{transform:scale(1)}30%{transform:scale(1.12,.94)}60%{transform:scale(.94,1.08)}}
+  .pet-eyes{animation:petBlink 4.6s infinite}
+  @keyframes petBlink{0%,93%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}
+  #petAvatar.happy{animation:petHappy .65s ease 2}
+  @keyframes petHappy{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-15px) scale(1.07)}}
+  #petBubble{position:absolute;bottom:calc(100% + 10px);right:0;min-width:160px;max-width:250px;
+    background:#0e1629;border:1px solid var(--line);border-radius:12px;padding:10px 13px;
+    font-size:12.5px;line-height:1.65;color:var(--moon);box-shadow:0 14px 34px -12px rgba(0,0,0,.7);
+    animation:viewIn .3s ease}
+  #petBubble:after{content:'';position:absolute;bottom:-6px;right:26px;width:10px;height:10px;
+    background:#0e1629;border-right:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(45deg)}
+  #petTools{position:absolute;top:-8px;left:-34px;display:flex;flex-direction:column;gap:5px;opacity:0;transition:.2s}
+  #petBox:hover #petTools{opacity:1}
+  #petTools button{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);
+    background:rgba(16,24,48,.92);color:var(--yan);font-size:12px;cursor:pointer;line-height:1}
+  #petTools button:hover{color:var(--teng);border-color:var(--teng)}
+  #petPanel{position:absolute;bottom:calc(100% + 10px);right:0;width:250px;background:#0e1629;
+    border:1px solid var(--line);border-radius:14px;padding:13px 14px;box-shadow:0 18px 40px -14px rgba(0,0,0,.75);
+    animation:viewIn .25s ease}
+  #petPanel h4{margin:0 0 2px;font-family:var(--serif);color:var(--gold);font-size:14.5px;display:flex;align-items:center;gap:6px}
+  #petPanel .pet-sub{font-size:11px;color:var(--yan);margin-bottom:8px}
+  #petChatLog{max-height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+  #petChatLog .pu,#petChatLog .pa{font-size:12px;line-height:1.55;padding:7px 10px;border-radius:10px;max-width:92%}
+  #petChatLog .pu{align-self:flex-end;background:rgba(217,91,50,.18);border:1px solid rgba(217,91,50,.3)}
+  #petChatLog .pa{align-self:flex-start;background:rgba(227,170,78,.1);border:1px solid rgba(227,170,78,.25)}
+  #petChatLog .pt{align-self:center;font-size:11px;color:var(--yan)}
+  #petRestore{position:fixed;right:18px;bottom:18px;z-index:149;width:42px;height:42px;border-radius:50%;
+    border:1px solid var(--line);background:rgba(16,24,48,.92);color:var(--teng);font-size:19px;cursor:pointer;
+    box-shadow:0 8px 22px -8px rgba(0,0,0,.6)}
+  #petRestore:hover{border-color:var(--teng);box-shadow:0 0 16px rgba(227,170,78,.35)}
+  @media (max-width:860px){
+    #petBox{width:70px;right:14px;bottom:14px}
+    #petAvatar{width:70px;height:82px}
+    #petBubble{max-width:200px}
+    #petPanel{width:225px;right:-30px}
+  }
 </style>
 </head>
 <body>
@@ -233,6 +302,7 @@
       <button data-et="2">英语二</button>
     </div>
     <div class="saved" id="savedTag">● 已保存</div>
+    <div class="cloud" id="cloudTag" onclick="switchTab('sync')" title="云同步状态，点击进入云同步页">☁ 未连接</div>
   </div>
 </header>
 
@@ -244,6 +314,7 @@
   <button data-tab="mistakes">错题本</button>
   <button data-tab="stats">统计</button>
   <button data-tab="data">数据管理</button>
+  <button data-tab="sync">云同步</button>
 </nav>
 
 <main>
@@ -540,9 +611,118 @@
       </div>
     </div>
   </section>
+
+  <!-- ============ 云同步 ============ -->
+  <section class="view" id="view-sync">
+    <div class="grid g2">
+      <div class="card">
+        <h2><span class="dot"></span>账号</h2>
+        <div id="syncLoginForm">
+          <p class="tip">注册后，词汇、打卡、练习记录、错题、写作、润色历史都会同步到你自己的服务器；
+          电脑和手机登录同一账号，两边数据自动保持一致。数据仍然先存本机，断网时一切功能照常可用。</p>
+          <label>用户名</label><input id="syUser" placeholder="3-50 个字符" autocomplete="username">
+          <label>密码</label><input id="syPass" type="password" placeholder="至少 6 位" autocomplete="current-password">
+          <div class="row" style="margin-top:14px">
+            <button class="btn" onclick="syncRegister()">注册并开启同步</button>
+            <button class="btn ghost" onclick="syncLogin()">登录</button>
+          </div>
+        </div>
+        <div id="syncUserInfo" class="hidden">
+          <div class="sync-state"><span>当前账号</span><b id="syName">—</b></div>
+          <div class="sync-state"><span>上次同步</span><b id="syLast">—</b></div>
+          <p class="tip" style="margin-top:8px">修改数据后约 3 秒自动推送到云端；每分钟自动拉取其他设备的改动。</p>
+          <div class="row" style="margin-top:10px">
+            <button class="btn danger" onclick="syncLogout()">退出登录</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h2><span class="dot"></span>同步</h2>
+        <label>服务器地址（本机版默认留空即可；手机端填电脑的 http://局域网IP:8010）</label>
+        <input id="syApiBase" placeholder="例如 http://192.168.1.5:8010" onchange="syncSaveApiBase(this.value)">
+        <div class="row" style="margin-top:12px">
+          <button class="btn" onclick="syncNow(true)">⇅ 立即同步</button>
+          <label style="display:flex;align-items:center;gap:6px;margin:0;cursor:pointer">
+            <input type="checkbox" id="syAuto" checked onchange="syncSetAuto(this.checked)" style="width:auto"> 自动同步
+          </label>
+        </div>
+        <label style="margin-top:16px">恢复（二选一，谨慎操作）</label>
+        <div class="row">
+          <button class="btn ghost" onclick="syncForcePull()">用云端覆盖本机</button>
+          <button class="btn ghost" onclick="syncForcePush()">用本机覆盖云端</button>
+        </div>
+        <p class="tip">覆盖操作不可撤销，建议先在「数据管理」导出一份 JSON 备份。</p>
+        <div class="sync-log" id="syncLog"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2><span class="dot"></span>说明</h2>
+      <p class="tip">· 同步协议：本机为唯一真源，改动按「集合」推送（词汇 / 练习 / 打卡……），多端按记录合并，删除靠墓碑防复活。<br>
+      · 真题 PDF 在登录后也会备份到云端（含答题卡进度），换设备登录自动找回。<br>
+      · AI 各供应商的 Key / 模型选择、润色历史、桌宠小灯的设置，都随账号同步，换设备不必重配。<br>
+      · 不登录时，一切功能与从前完全一致，数据只存本机浏览器。</p>
+    </div>
+  </section>
 </main>
 
 <div class="toast" id="toast"></div>
+
+<!-- ============ 桌宠 · 灯灵小灯 ============ -->
+<div id="petBox">
+  <div id="petBubble" class="hidden"></div>
+  <div id="petPanel" class="hidden">
+    <h4>🏮 灯灵 · 小灯</h4>
+    <div class="pet-sub">花千树的第一盏灯，陪你备考</div>
+    <div id="petChatLog"></div>
+    <div class="row">
+      <input id="petChatInput" placeholder="和小灯说点什么…" style="flex:2;min-width:0" onkeydown="if(event.key==='Enter')petChatSend()">
+      <button class="btn sm" style="flex:0" onclick="petChatSend()">发送</button>
+    </div>
+    <p class="tip" style="margin-top:7px">闲聊走「写作 → AI 润色」里配置的模型与 Key。</p>
+  </div>
+  <div id="petTools">
+    <button title="和小灯聊天" onclick="petTogglePanel()">💬</button>
+    <button title="收起小灯" onclick="petToggle(false)">✕</button>
+  </div>
+  <div id="petAvatar" title="点我一下，拖我搬家">
+    <svg viewBox="0 0 100 122" width="100%" height="100%" aria-hidden="true">
+      <defs>
+        <radialGradient id="petGlow" cx="50%" cy="52%" r="55%">
+          <stop offset="0" stop-color="#f0a04b" stop-opacity=".55"/>
+          <stop offset=".6" stop-color="#e3aa4e" stop-opacity=".18"/>
+          <stop offset="1" stop-color="#d95b32" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <!-- 提梁与顶盖 -->
+      <path d="M32 24 Q50 4 68 24" stroke="#a06b3f" fill="none" stroke-width="4" stroke-linecap="round"/>
+      <rect x="35" y="21" width="30" height="7" rx="3" fill="#a06b3f"/>
+      <!-- 灯体 -->
+      <ellipse cx="50" cy="64" rx="33" ry="39" fill="#d95b32"/>
+      <ellipse cx="50" cy="64" rx="33" ry="39" fill="url(#petGlow)"/>
+      <path d="M50 25 C 36 44 36 84 50 103" stroke="rgba(112,32,12,.35)" fill="none" stroke-width="2"/>
+      <path d="M50 25 C 64 44 64 84 50 103" stroke="rgba(112,32,12,.35)" fill="none" stroke-width="2"/>
+      <ellipse cx="38" cy="52" rx="7" ry="12" fill="rgba(255,235,205,.22)" transform="rotate(-14 38 52)"/>
+      <!-- 眼睛与嘴 -->
+      <g class="pet-eyes">
+        <circle cx="40" cy="50" r="2.8" fill="#3a1508"/>
+        <circle cx="60" cy="50" r="2.8" fill="#3a1508"/>
+        <circle cx="41" cy="49" r=".9" fill="#fff" opacity=".85"/>
+        <circle cx="61" cy="49" r=".9" fill="#fff" opacity=".85"/>
+      </g>
+      <path class="pet-mouth" d="M45 58 Q50 62 55 58" stroke="#3a1508" fill="none" stroke-width="2" stroke-linecap="round"/>
+      <!-- 灯芯火苗（连击天数越长越亮：亮度由 JS 调整） -->
+      <g class="pet-flame" id="petFlameG">
+        <path d="M50 68 C 43.5 78 44 86.5 50 90.5 C 56 86.5 56.5 78 50 68 Z" fill="#f0a04b"/>
+        <path d="M50 74 C 46.6 79.5 47 84.5 50 86.5 C 53 84.5 53.4 79.5 50 74 Z" fill="#f7f4ec"/>
+      </g>
+      <!-- 底盖与流苏 -->
+      <rect x="38" y="100" width="24" height="6" rx="3" fill="#a06b3f"/>
+      <line x1="50" y1="106" x2="50" y2="114" stroke="#a06b3f" stroke-width="2.5"/>
+      <circle cx="50" cy="117" r="3.2" fill="#e3aa4e"/>
+    </svg>
+  </div>
+</div>
+<button id="petRestore" class="hidden" title="唤回小灯" onclick="petToggle(true)">🏮</button>
 
 <script src="pdf.min.js"></script>
 <script>
@@ -562,10 +742,12 @@ function defaultDB(){
     profile:{name:'',goal:'',examDate:'',vocabGoal:30,cohort:1},
     words:[], papers:[], writings:[], sentences:[], mistakes:[],
     checkins:{}, materials:'', dailyTasks:DEFAULT_DAILY_TASKS.map(t=>({...t})),
-    aiKey:'', aiEndpoint:'',
+    aiKey:'', aiEndpoint:'', aiHistory:[],
+    aiCfg:{provider:'deepseek',model:'deepseek-chat',keys:{},endpoints:{}},
+    petCfg:{on:true,x:null,y:null},
     targets:{1:{完形填空:7,阅读理解:37,新题型:8,翻译:6,小作文:7,大作文:15},
              2:{完形填空:6,阅读理解:34,新题型:8,翻译:11,小作文:7,大作文:14}},
-    v:2
+    v:4
   };
 }
 /* 数据规范化与版本升级（载入 / 导入时共用） */
@@ -583,9 +765,34 @@ function normalizeDB(){
   if(!DB.dailyTasks||!DB.dailyTasks.length) DB.dailyTasks=DEFAULT_DAILY_TASKS.map(t=>({...t}));
   if(DB.aiKey==null) DB.aiKey='';
   if(DB.aiEndpoint==null) DB.aiEndpoint='';
+  /* v3：润色历史从独立 key 迁入 DB，随账号云同步 */
+  if(!DB.v||DB.v<3){
+    if(!DB.aiHistory) DB.aiHistory=[];
+    try{
+      const oldH=JSON.parse(localStorage.getItem('ai_polish_history')||'[]');
+      if(oldH.length&&!DB.aiHistory.length) DB.aiHistory=oldH;
+    }catch(e){}
+    localStorage.removeItem('ai_polish_history');
+    DB.v=3;
+  }
+  if(!DB.aiHistory) DB.aiHistory=[];
+  /* v4：多供应商 AI 配置 + 桌宠设置；老的单 Key/端点迁入 deepseek 槽位 */
+  if(!DB.v||DB.v<4){
+    if(!DB.aiCfg){
+      DB.aiCfg={provider:'deepseek',model:'deepseek-chat',
+        keys:(DB.aiKey?{deepseek:DB.aiKey}:{}),
+        endpoints:(DB.aiEndpoint&&DB.aiEndpoint!=='https://api.deepseek.com/chat/completions')?{deepseek:DB.aiEndpoint}:{}};
+    }
+    if(!DB.petCfg) DB.petCfg={on:true,x:null,y:null};
+    DB.v=4;
+  }
+  if(!DB.aiCfg||typeof DB.aiCfg!=='object') DB.aiCfg={provider:'deepseek',model:'deepseek-chat',keys:{},endpoints:{}};
+  if(!DB.aiCfg.keys) DB.aiCfg.keys={};
+  if(!DB.aiCfg.endpoints) DB.aiCfg.endpoints={};
+  if(!DB.petCfg||typeof DB.petCfg!=='object') DB.petCfg={on:true,x:null,y:null};
   /* 旧练习记录补全考试类型，默认当前选中的类型 */
   if(DB.papers&&DB.papers.length) DB.papers.forEach(p=>{ if(p.et==null) p.et=DB.profile.examType; });
-  DB.v=2;
+  DB.v=4;
 }
 
 let DB = load() || defaultDB();
@@ -594,6 +801,8 @@ function save(){
   localStorage.setItem(STORE_KEY, JSON.stringify(DB));
   const t=document.getElementById('savedTag');
   t.textContent='● 已保存 '+new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
+  /* 云同步钩子：所有本地改动都经过 save()，在这里统一标记脏集合并调度推送 */
+  if(typeof syncMarkDirty==='function' && !SYNC.applyingRemote) syncMarkDirty();
 }
 function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
 function todayStr(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
@@ -736,6 +945,20 @@ const BUILTIN_WORDS = [
 ["constitute","ˈkɒnstɪtjuːt","v.","构成，组成"],["consume","kənˈsjuːm","v.","消耗，消费"]
 ];
 
+/* ===================== AI 供应商注册表 =====================
+   与后端 /api/v1/ai/providers 保持一致；后端不在时用它兜底。
+   direct=true 的厂商允许浏览器直连（CORS 友好），其余必须走本机服务器转发。 */
+const AI_PROVIDERS=[
+ {id:'deepseek',name:'DeepSeek 深度求索',endpoint:'https://api.deepseek.com/chat/completions',models:['deepseek-chat','deepseek-reasoner'],direct:true,note:'国内直连、便宜量足，润色首选'},
+ {id:'qwen',name:'通义千问（阿里百炼）',endpoint:'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',models:['qwen-plus','qwen-max','qwen-turbo','qwen-long'],direct:false,note:'需百炼 API-Key，经服务器转发'},
+ {id:'openai',name:'OpenAI',endpoint:'https://api.openai.com/v1/chat/completions',models:['gpt-4o-mini','gpt-4o','gpt-4.1-mini'],direct:false,note:'需海外网络或中转地址'},
+ {id:'moonshot',name:'Kimi 月之暗面',endpoint:'https://api.moonshot.cn/v1/chat/completions',models:['moonshot-v1-8k','moonshot-v1-32k','moonshot-v1-128k'],direct:true,note:'长上下文强项，适合整篇大作文'},
+ {id:'zhipu',name:'智谱 GLM',endpoint:'https://open.bigmodel.cn/api/paas/v4/chat/completions',models:['glm-4-flash','glm-4-air','glm-4-plus'],direct:false,note:'glm-4-flash 免费额度足'},
+ {id:'doubao',name:'豆包（火山方舟）',endpoint:'https://ark.cn-beijing.volces.com/api/v3/chat/completions',models:['doubao-pro-32k','doubao-1-5-pro-32k'],direct:false,note:'模型名可填方舟接入点 ID'},
+ {id:'siliconflow',name:'硅基流动 SiliconFlow',endpoint:'https://api.siliconflow.cn/v1/chat/completions',models:['deepseek-ai/DeepSeek-V3','Qwen/Qwen2.5-72B-Instruct'],direct:false,note:'聚合平台，一个 Key 用多家模型'},
+ {id:'custom',name:'自定义 / 中转',endpoint:'',models:[],direct:false,note:'任意 OpenAI 兼容端点（one-api 中转等）'}
+];
+
 /* ===================== 写作模板 ===================== */
 const TEMPLATES = {
   "小作文·建议信":`Dear ______,\n\nI am writing to express my views concerning ______. In my opinion, it would be beneficial if you could ______. To begin with, ______. Besides, ______. I hope my suggestions will be of some help to you.\n\nYours sincerely,\nLi Ming`,
@@ -803,17 +1026,23 @@ function buildTopics(){
       <div class="card">
         <h2><span class="dot"></span>🤖 AI 润色 · 智能修改打分</h2>
         <div class="row" style="margin-bottom:8px">
-          <div style="flex:1"><label>作文类型</label>
-            <select id="aiType"><option value="10">小作文（满分 10 分）</option><option value="${fullFor('大作文')}">大作文（满分 ${fullFor('大作文')} 分）</option></select></div>
-          <div style="flex:2"><label>API Key（仅存本机，不上传）</label>
-            <input id="aiKey" type="password" placeholder="sk-...（DeepSeek 等兼容 OpenAI 的 Key）"></div>
+          <div style="flex:1"><label>供应商</label>
+            <select id="aiProvider" onchange="aiProviderChanged()"></select></div>
           <div style="flex:1"><label>模型</label>
-            <select id="aiModel"><option value="deepseek-chat">deepseek-chat</option><option value="deepseek-reasoner">deepseek-reasoner</option><option value="qwen-plus">qwen-plus（通义千问）</option><option value="gpt-4o-mini">gpt-4o-mini</option><option value="moonshot-v1-8k">moonshot-v1-8k（Kimi）</option></select></div>
+            <select id="aiModel" onchange="saveAiCfg()"></select>
+            <input id="aiModelCustom" class="hidden" placeholder="模型名，如 deepseek-chat" onchange="saveAiCfg()"></div>
+          <div style="flex:2"><label>API Key（按供应商分别保存，仅存本机与你的账号）</label>
+            <input id="aiKey" type="password" placeholder="sk-...（当前供应商的 Key）"></div>
         </div>
         <div class="row" style="margin-bottom:8px">
-          <div style="flex:2"><label>接口地址（可填中转 / 兼容端点）</label>
-            <input id="aiEndpoint" placeholder="https://api.deepseek.com/chat/completions"></div>
+          <div style="flex:2"><label>接口地址（一般无需修改；自定义 / 中转时填写）</label>
+            <input id="aiEndpoint" placeholder="https://.../chat/completions"></div>
           <div style="flex:0"><button class="btn ghost sm" onclick="fillEditorToAi()">从编辑器载入</button></div>
+        </div>
+        <p class="tip" id="aiModeTip">正在检测 AI 通道…</p>
+        <div class="row" style="margin-bottom:8px">
+          <div style="flex:1"><label>作文类型</label>
+            <select id="aiType"><option value="小作文">小作文（满分 10 分）</option><option value="大作文">大作文（满分 ${fullFor('大作文')} 分）</option></select></div>
         </div>
         <label>作文正文</label>
         <textarea id="aiInput" style="min-height:160px" placeholder="在此粘贴或输入你的作文，点「润色并打分」获得修改建议与评分…"></textarea>
@@ -882,6 +1111,7 @@ function addTopicRecord(key){
   DB.papers.unshift({id:uid(),date:todayStr(),year,type,score,full,et:DB.profile.examType,note:document.getElementById('pn_'+key).value.trim()});
   ['py_'+key,'ps_'+key,'pn_'+key].forEach(i=>document.getElementById(i).value='');
   save(); renderTopic(key); renderPapers(); renderRecent(); toast('已记录 · 距目标 '+(score-targetFor(type,DB.profile.examType)>=0?'+':'')+(Math.round((score-targetFor(type,DB.profile.examType))*10)/10)+' 分');
+  petSay(pickPetLine('record'));
 }
 function addTopicMistake(key){
   const q=document.getElementById('mq_'+key).value.trim();
@@ -891,6 +1121,7 @@ function addTopicMistake(key){
     why:document.getElementById('mw_'+key).value.trim(),date:todayStr()});
   ['mq_'+key,'ma_'+key,'mw_'+key].forEach(i=>document.getElementById(i).value='');
   save(); renderTopic(key); renderMistakes(); toast('错题已记录');
+  petSay(pickPetLine('mistake'));
 }
 function renderTopic(key){
   const t=TOPICS.find(x=>x.key===key);
@@ -898,7 +1129,7 @@ function renderTopic(key){
   const recBox=document.getElementById('rec_'+key);
   if(recs.length===0){ recBox.innerHTML='<div class="empty">灯火未起，先添一盏——记录第一次练习。</div>'; }
   else{
-    recBox.innerHTML=`<table><thead><tr><th>日期</th><th>来源</th><th>得分</th><th>得分率</th><th>距目标</th><th>备注</th><th>操作</th></tr></thead><tbody>`+
+    recBox.innerHTML=`<div class="table-scroll"><table><thead><tr><th>日期</th><th>来源</th><th>得分</th><th>得分率</th><th>距目标</th><th>备注</th><th>操作</th></tr></thead><tbody>`+
     recs.map(p=>{
       const tg=targetFor(p.type,p.et); const gap=tg>0?Math.round((p.score-tg)*10)/10:null;
       const g=gap==null?'—':(gap>=0?`<span class="gap-pos">+${gap}</span>`:`<span class="gap-neg">${gap}</span>`);
@@ -906,7 +1137,7 @@ function renderTopic(key){
       <td>${p.full?Math.round(p.score/p.full*100):0}%</td><td>${g}</td>
       <td class="muted small">${esc(p.note||'')}</td>
       <td><button class="btn danger sm" onclick="deletePaper('${p.id}')">删</button></td></tr>`;
-    }).join('')+'</tbody></table>';
+    }).join('')+'</tbody></table></div>';
   }
   const typeMap={cloze:'完形',reading:'阅读',newtype:'新题型',trans:'翻译',writing:'写作'};
   const mis=DB.mistakes.filter(m=>m.type===typeMap[key]);
@@ -1051,11 +1282,13 @@ function renderRecent(){
 function toggleTask(k,v){
   const d=todayStr(); DB.checkins[d]=DB.checkins[d]||{tasks:{}};
   DB.checkins[d].tasks[k]=v; save(); renderDashboard();
+  if(v&&DB.dailyTasks.length&&DB.dailyTasks.every(t=>DB.checkins[d].tasks[t.id])) petSay(pickPetLine('taskDone'),'happy');
 }
 function doCheckin(){
   const d=todayStr(); DB.checkins[d]=DB.checkins[d]||{tasks:{}};
   if(DB.checkins[d].checked){ toast('今天这盏灯已经亮了 🏮'); return; }
   DB.checkins[d].checked=true; save(); renderDashboard(); toast('灯火已点，继续前行');
+  petCheckinHook(); petFlameLevel();
 }
 function resetToday(){
   const d=todayStr(); if(DB.checkins[d]){ DB.checkins[d].tasks={}; save(); renderDashboard(); toast('今日功课已重置'); }
@@ -1117,6 +1350,7 @@ function importBuiltin(){
   if(DB.words.length>0 && !confirm('当前已有单词，导入将追加 '+(BUILTIN_WORDS.length)+' 个核心词，确定？')) return;
   BUILTIN_WORDS.forEach(w=>DB.words.push({id:uid(),term:w[0],phon:w[1],pos:w[2],mean:w[3],tag:'核心',mastery:0}));
   save(); renderWords(); renderDashboard(); toast('已导入核心高频词库');
+  petSay('核心词库已入库，长征正式开始。','happy');
 }
 function importWordFile(e){
   const file=e.target.files[0]; if(!file) return;
@@ -1133,7 +1367,8 @@ function importWordFile(e){
       if(term&&mean){ DB.words.push({id:uid(),term,phon:'',pos:'',mean,tag:'导入',mastery:0}); added++; }
     });
     save(); renderWords(); renderDashboard();
-    if(added>0) toast('已导入 '+added+' 个单词'); else toast('未识别到「单词 释义」格式，请检查文件');
+    if(added>0){ toast('已导入 '+added+' 个单词'); petSay('一次多了 '+added+' 个新伙伴。'); }
+    else toast('未识别到「单词 释义」格式，请检查文件');
   };
   reader.readAsText(file,'utf-8'); e.target.value='';
 }
@@ -1144,9 +1379,10 @@ function addWord(){
     pos:document.getElementById('wPos').value.trim(),mean:m,tag:document.getElementById('wTag').value.trim(),mastery:0});
   ['wTerm','wPhon','wPos','wMean','wTag'].forEach(i=>document.getElementById(i).value='');
   save(); renderWords(); toast('已添加单词');
+  petSay(pickPetLine('word'));
 }
 function setMastery(id,v){ const w=DB.words.find(x=>x.id===id); if(w){ w.mastery=v; save(); renderWords(); } }
-function deleteWord(id){ DB.words=DB.words.filter(x=>x.id!==id); save(); renderWords(); renderDashboard(); }
+function deleteWord(id){ DB.words=DB.words.filter(x=>x.id!==id); syncTomb('words',id); save(); renderWords(); renderDashboard(); }
 function renderWords(){
   const f=document.getElementById('wFilter').value;
   const q=document.getElementById('wSearch').value.trim().toLowerCase();
@@ -1155,7 +1391,7 @@ function renderWords(){
   if(q) list=list.filter(w=>(w.term+' '+w.mean+' '+(w.tag||'')).toLowerCase().includes(q));
   if(list.length===0){ document.getElementById('wordList').innerHTML='<div class="empty">灯火未起，先添一盏——导入词库或添加第一个单词。</div>'; return; }
   const labels=['未学','生疏','熟悉','已掌握'];
-  document.getElementById('wordList').innerHTML=`<table><thead><tr>
+  document.getElementById('wordList').innerHTML=`<div class="table-scroll"><table><thead><tr>
     <th>单词</th><th>词性</th><th>释义</th><th>标签</th><th>状态</th><th>操作</th></tr></thead><tbody>`+
     list.map(w=>`<tr>
     <td><b>${esc(w.term)}</b> <span class="muted small">${esc(w.phon||'')}</span></td>
@@ -1165,7 +1401,7 @@ function renderWords(){
     <td><select onchange="setMastery('${w.id}',parseInt(this.value))" style="width:auto;padding:4px 6px">
       ${[0,1,2,3].map(v=>`<option value="${v}" ${w.mastery===v?'selected':''}>${labels[v]}</option>`).join('')}
     </select> <button class="btn danger sm" onclick="deleteWord('${w.id}')">删</button></td></tr>`).join('')+
-    '</tbody></table>';
+    '</tbody></table></div>';
 }
 function startReview(){
   reviewQueue=DB.words.filter(w=>w.mastery<2);
@@ -1185,7 +1421,8 @@ function revResult(level){
   const w=reviewQueue[reviewIdx];
   if(level===0) w.mastery=0; else if(level===1) w.mastery=1; else w.mastery=Math.min(3,w.mastery+1);
   save(); reviewIdx++;
-  if(reviewIdx>=reviewQueue.length){ toast('复习完成！'); document.getElementById('reviewBox').classList.add('hidden'); renderWords(); renderDashboard(); }
+  if(level===2) petSay(pickPetLine('reviewGood'));
+  if(reviewIdx>=reviewQueue.length){ toast('复习完成！'); document.getElementById('reviewBox').classList.add('hidden'); renderWords(); renderDashboard(); petSay('这轮复习收官，词库又扎实一分。','happy'); }
   else revRefresh();
 }
 function endReview(){ document.getElementById('reviewBox').classList.add('hidden'); renderWords(); renderDashboard(); }
@@ -1200,10 +1437,10 @@ function addPaper(){
   ['pYear','pScore','pNote'].forEach(i=>document.getElementById(i).value='');
   save(); renderPapers(); renderRecent(); toast('模考记录已保存');
 }
-function deletePaper(id){ DB.papers=DB.papers.filter(x=>x.id!==id); save(); renderPapers(); TOPICS.forEach(t=>renderTopic(t.key)); renderRecent(); }
+function deletePaper(id){ DB.papers=DB.papers.filter(x=>x.id!==id); syncTomb('papers',id); save(); renderPapers(); TOPICS.forEach(t=>renderTopic(t.key)); renderRecent(); }
 function renderPapers(){
   if(DB.papers.length===0){ document.getElementById('paperList').innerHTML='<div class="empty">还没有练习记录。建议从早年份真题开始，按题型分册精练。</div>'; return; }
-  document.getElementById('paperList').innerHTML=`<table><thead><tr>
+  document.getElementById('paperList').innerHTML=`<div class="table-scroll"><table><thead><tr>
     <th>日期</th><th>来源</th><th>题型</th><th>得分</th><th>得分率</th><th>距目标</th><th>备注</th><th>操作</th></tr></thead><tbody>`+
     DB.papers.map(p=>{
       const tg=targetFor(p.type,p.et); const gap=tg>0?Math.round((p.score-tg)*10)/10:null;
@@ -1212,7 +1449,7 @@ function renderPapers(){
       <td><b>${p.score}</b>/${p.full}</td><td>${p.full?Math.round(p.score/p.full*100):0}%</td><td>${g}</td>
       <td class="muted small">${esc(p.note||'')}</td>
       <td><button class="btn danger sm" onclick="deletePaper('${p.id}')">删</button></td></tr>`;
-    }).join('')+'</tbody></table>';
+    }).join('')+'</tbody></table></div>';
 }
 
 /* ===================== 长难句 ===================== */
@@ -1223,7 +1460,7 @@ function addSentence(){
   ['sText','sAnal','sTrans'].forEach(i=>document.getElementById(i).value='');
   save(); renderSentences(); toast('长难句已收藏');
 }
-function deleteSentence(id){ DB.sentences=DB.sentences.filter(x=>x.id!==id); save(); renderSentences(); }
+function deleteSentence(id){ DB.sentences=DB.sentences.filter(x=>x.id!==id); syncTomb('sentences',id); save(); renderSentences(); }
 function renderSentences(){
   const box=document.getElementById('sentenceList'); if(!box) return;
   if(DB.sentences.length===0){ box.innerHTML='<div class="empty">还没有收藏的长难句。</div>'; return; }
@@ -1253,7 +1490,7 @@ function saveWriting(){
   DB.writings.unshift({id:uid(),title:title||('练习 '+todayStr()),content,date:todayStr()});
   save(); renderWritings(); toast('已保存到我的文库');
 }
-function deleteWriting(id){ DB.writings=DB.writings.filter(x=>x.id!==id); save(); renderWritings(); }
+function deleteWriting(id){ DB.writings=DB.writings.filter(x=>x.id!==id); syncTomb('writings',id); save(); renderWritings(); }
 function renderWritings(){
   const box=document.getElementById('writingList'); if(!box) return;
   if(DB.writings.length===0){ box.innerHTML='<div class="empty">文库为空，写完作文点「保存到我的文库」。</div>'; return; }
@@ -1272,18 +1509,113 @@ function saveMaterial(){ DB.materials=document.getElementById('materialBox').val
 
 /* ===================== AI 润色 · 智能修改打分 ===================== */
 function fillEditorToAi(){ document.getElementById('aiInput').value=document.getElementById('wContent').value; renderAiHistory(); toast('已从编辑器载入'); }
+
+/* AI 通道探测：null=未探测。true=本机服务器代理可用（无 CORS 限制，全供应商通行）；
+   false=直连模式（仅 direct=true 的供应商可用）。 */
+let AI_PROXY_OK=null;
+async function aiProbeProxy(){
+  if(AI_PROXY_OK!==null) return AI_PROXY_OK;
+  try{
+    const ctl=new AbortController(); setTimeout(()=>ctl.abort(),1500);
+    const r=await fetch((typeof SYNC!=='undefined'&&SYNC.apiBase||'')+'/health',{signal:ctl.signal});
+    AI_PROXY_OK=r.ok;
+  }catch(e){ AI_PROXY_OK=false; }
+  renderAiModeTip();
+  return AI_PROXY_OK;
+}
+function aiCurProvider(){
+  return AI_PROVIDERS.find(x=>x.id===DB.aiCfg.provider)||AI_PROVIDERS[0];
+}
+function renderAiModeTip(){
+  const tip=document.getElementById('aiModeTip'); if(!tip) return;
+  const p=aiCurProvider();
+  let mode;
+  if(AI_PROXY_OK===true) mode='请求将经你的服务器转发（任意供应商，无 CORS 限制）。';
+  else if(p.direct) mode='后端未启动：浏览器直连模式（该供应商支持直连）。';
+  else mode='⚠ 后端未启动，该供应商不支持浏览器直连——请启动后端服务，或换 DeepSeek / Kimi。';
+  tip.innerHTML=esc(p.name)+'：'+esc(p.note||'')+'<br>'+mode;
+}
+/* 供应商切换：重填模型下拉 / Key / 端点 */
+function aiProviderChanged(){
+  const sel=document.getElementById('aiProvider'); if(!sel) return;
+  DB.aiCfg.provider=sel.value;
+  const p=aiCurProvider();
+  const mSel=document.getElementById('aiModel'), mIn=document.getElementById('aiModelCustom');
+  if(p.id==='custom'||!p.models.length){
+    mSel.classList.add('hidden'); mIn.classList.remove('hidden');
+    mIn.value=DB.aiCfg.model||'';
+  }else{
+    mSel.classList.remove('hidden'); mIn.classList.add('hidden');
+    mSel.innerHTML=p.models.map(m=>`<option value="${esc(m)}" ${m===DB.aiCfg.model?'selected':''}>${esc(m)}</option>`).join('');
+    if(!p.models.includes(DB.aiCfg.model)){ DB.aiCfg.model=p.models[0]; mSel.value=p.models[0]; }
+  }
+  document.getElementById('aiEndpoint').value=DB.aiCfg.endpoints[p.id]||p.endpoint||'';
+  document.getElementById('aiKey').value=DB.aiCfg.keys[p.id]||'';
+  saveAiCfg(); renderAiModeTip();
+}
+/* 保存当前供应商的 Key / 端点 / 模型到 aiCfg；兼容旧直连字段（aiKey/aiEndpoint） */
+function saveAiCfg(){
+  const sel=document.getElementById('aiProvider');
+  const pid=sel?sel.value:DB.aiCfg.provider;
+  const p=AI_PROVIDERS.find(x=>x.id===pid)||AI_PROVIDERS[0];
+  const keyEl=document.getElementById('aiKey'), epEl=document.getElementById('aiEndpoint');
+  const key=keyEl?keyEl.value.trim():'';
+  const ep=epEl?epEl.value.trim():'';
+  const mSel=document.getElementById('aiModel'), mIn=document.getElementById('aiModelCustom');
+  let model=DB.aiCfg.model;
+  if(p.id==='custom'||!p.models.length){ if(mIn&&!mIn.classList.contains('hidden')) model=mIn.value.trim()||model; }
+  else if(mSel&&!mSel.classList.contains('hidden')&&mSel.value) model=mSel.value;
+  DB.aiCfg.provider=pid; DB.aiCfg.model=model||'deepseek-chat';
+  DB.aiCfg.keys[pid]=key; DB.aiCfg.endpoints[pid]=ep;
+  /* 旧字段存"当前供应商"的值，保证直连降级路径仍可用 */
+  DB.aiKey=key; DB.aiEndpoint=ep||p.endpoint||'';
+  if(typeof SYNC!=='undefined'&&!SYNC.applyingRemote) save();
+}
+/* 初始化供应商下拉（fullRender 时调用） */
+function renderAiProviderUI(){
+  const sel=document.getElementById('aiProvider'); if(!sel) return;
+  sel.innerHTML=AI_PROVIDERS.map(p=>`<option value="${p.id}" ${p.id===DB.aiCfg.provider?'selected':''}>${esc(p.name)}</option>`).join('');
+  aiProviderChanged();
+}
 async function aiPolish(){
+  saveAiCfg();
+  const p=aiCurProvider();
   const key=document.getElementById('aiKey').value.trim();
   const input=document.getElementById('aiInput').value.trim();
-  const full=parseInt(document.getElementById('aiType').value);
-  const model=document.getElementById('aiModel').value;
-  const endpoint=document.getElementById('aiEndpoint').value.trim()||'https://api.deepseek.com/chat/completions';
-  if(!key){ toast('请先填写 API Key'); return; }
+  const type=document.getElementById('aiType').value;
+  const full=fullFor(type);
+  const model=document.getElementById('aiModelCustom').classList.contains('hidden')
+    ? document.getElementById('aiModel').value
+    : document.getElementById('aiModelCustom').value.trim();
+  const endpoint=document.getElementById('aiEndpoint').value.trim()||p.endpoint||'';
+  if(!model){ toast('请填写模型名'); return; }
+  if(!key){ toast('请先填写 '+p.name+' 的 API Key'); return; }
   if(!input){ toast('请先输入作文'); return; }
-  DB.aiKey=key; DB.aiEndpoint=endpoint; save();
   const btn=document.getElementById('aiBtn'); btn.disabled=true; btn.textContent='润色中…';
-  document.getElementById('aiStatus').textContent='正在调用模型，请稍候…';
-  const sys=`你是一位考研英语一阅卷组资深教师，请对学生作文进行批改与润色。
+  document.getElementById('aiStatus').textContent='正在调用 '+model+'，请稍候…';
+  let out=null, via='直连';
+  /* 通道一：本机服务器转发（全供应商可用） */
+  if(AI_PROXY_OK!==false){
+    try{
+      const r=await fetch((typeof SYNC!=='undefined'&&SYNC.apiBase||'')+'/api/v1/ai/polish',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({provider:p.id,model,api_key:key,endpoint,essay_type:type,full_score:full,content:input})});
+      const j=await r.json();
+      if(!r.ok) throw new Error(typeof j.detail==='string'?j.detail:('HTTP '+r.status));
+      out=j.content; via='服务器转发';
+      if(AI_PROXY_OK===null){ AI_PROXY_OK=true; renderAiModeTip(); }
+    }catch(err){
+      if(AI_PROXY_OK===true){ showAiFail(err,via); return; }  /* 代理本该可用却失败：上游问题，如实报错 */
+      AI_PROXY_OK=false; renderAiModeTip();  /* 探测失败，降级直连 */
+    }
+  }
+  /* 通道二：浏览器直连（仅 CORS 友好的供应商） */
+  if(out==null){
+    if(!p.direct){
+      showAiFail(new Error('该供应商不支持浏览器直连，请启动本机后端服务'),via);
+      return;
+    }
+    const sys=`你是一位考研英语阅卷组资深教师，请对学生作文进行批改与润色。
 评分标准：总分 ${full} 分，按「内容(40%) / 语言(40%) / 结构(20%)」三项给分。
 请严格按以下格式输出（不要多余寒暄，除润色全文外均用中文）：
 【评分】X/${full}   （如 8/10）
@@ -1294,22 +1626,28 @@ async function aiPolish(){
 1. 原句：… ｜ 改为：… ｜ 原因：…
 2. …
 3. …`;
-  const user=`这是一篇考研英语一${full===10?'小作文':'大作文'}，请批改、润色并打分：\n\n`+input;
-  try{
-    const resp=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
-      body:JSON.stringify({model,messages:[{role:'system',content:sys},{role:'user',content:user}],temperature:0.6,max_tokens:2500})});
-    if(!resp.ok){ const t=await resp.text(); throw new Error('接口返回 '+resp.status+'：'+t.slice(0,140)); }
-    const data=await resp.json();
-    const out=data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content;
-    if(!out) throw new Error('返回内容为空');
-    renderAiResult(out,full);
-    document.getElementById('aiStatus').textContent='已完成 ✓';
-  }catch(err){
-    document.getElementById('aiStatus').textContent='调用失败：'+(err.message||err);
-    toast('AI 调用失败：检查 Key / 接口 / 网络（CORS 受限时可用中转地址）');
-  }finally{ btn.disabled=false; btn.textContent='✨ 润色并打分'; }
+    const user=`这是一篇考研英语${type}，请批改、润色并打分：\n\n`+input;
+    try{
+      const resp=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+        body:JSON.stringify({model,messages:[{role:'system',content:sys},{role:'user',content:user}],temperature:0.6,max_tokens:2500})});
+      if(!resp.ok){ const t=await resp.text(); throw new Error('接口返回 '+resp.status+'：'+t.slice(0,140)); }
+      const data=await resp.json();
+      out=data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content;
+      if(!out) throw new Error('返回内容为空');
+    }catch(err){ showAiFail(err,via); return; }
+  }
+  renderAiResult(out,full,type);
+  document.getElementById('aiStatus').textContent='已完成 ✓（'+model+' · '+via+'）';
+  btn.disabled=false; btn.textContent='✨ 润色并打分';
+  if(typeof petSay==='function') petSay(pickPetLine('aiDone'),'happy');
 }
-function renderAiResult(out,full){
+function showAiFail(err,via){
+  document.getElementById('aiBtn').disabled=false;
+  document.getElementById('aiBtn').textContent='✨ 润色并打分';
+  document.getElementById('aiStatus').textContent='调用失败（'+via+'）：'+(err.message||err);
+  toast('AI 调用失败：检查 Key / 模型名 / 网络');
+}
+function renderAiResult(out,full,essayType){
   const scoreM=out.match(/【评分】\s*([\d.]+)\s*\/\s*(\d+)/);
   const score=scoreM?scoreM[1]:'—';
   const subM=out.match(/【分项】\s*([\s\S]*?)(?=\n【|\Z)/);
@@ -1319,7 +1657,7 @@ function renderAiResult(out,full){
   const points=ptsM?ptsM[1].trim():'';
   window._aiPolished=polished;
   const aiInput=document.getElementById('aiInput').value.trim();
-  saveAiHistory({time:new Date().toLocaleString('zh-CN'),type:full===10?'小作文':'大作文',input:aiInput,score,sub:subM?subM[1].trim():'',polished,points});
+  saveAiHistory({time:new Date().toLocaleString('zh-CN'),type:essayType||'小作文',full,input:aiInput,score,sub:subM?subM[1].trim():'',polished,points});
   const box=document.getElementById('aiResult'); box.classList.remove('hidden');
   box.innerHTML=`<div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap">
       <div style="font-family:var(--serif);font-size:40px;font-weight:800;color:${scoreM&&(+score>=full*0.7)?'var(--teng)':'var(--zhu)'}">${score}<span style="font-size:18px;color:var(--yan)"> / ${full}</span></div>
@@ -1346,16 +1684,15 @@ function polishedToEditor(){
   toast('已载入编辑器，可保存到文库');
 }
 
-/* 润色历史存本机，最多留 20 条 */
+/* 润色历史随账号云同步（v3 起存 DB），最多留 20 条 */
 function saveAiHistory(item){
-  let h=[]; try{ h=JSON.parse(localStorage.getItem('ai_polish_history')||'[]'); }catch{ h=[]; }
-  h.unshift(item);
-  if(h.length>20) h=h.slice(0,20);
-  localStorage.setItem('ai_polish_history',JSON.stringify(h));
+  DB.aiHistory.unshift(item);
+  if(DB.aiHistory.length>20) DB.aiHistory=DB.aiHistory.slice(0,20);
+  save();
 }
 function renderAiHistory(){
   const box=document.getElementById('aiHistory'); if(!box) return;
-  let h=[]; try{ h=JSON.parse(localStorage.getItem('ai_polish_history')||'[]'); }catch{ h=[]; }
+  const h=DB.aiHistory||[];
   if(!h.length){ box.innerHTML=''; return; }
   box.innerHTML=`<div class="card" style="background:rgba(16,24,48,.3);border-color:var(--line)">
     <b class="small">润色历史（近 ${h.length} 次，存本机）</b>
@@ -1371,10 +1708,10 @@ function renderAiHistory(){
   </div>`;
 }
 function viewAiHistory(i){
-  let h=[]; try{ h=JSON.parse(localStorage.getItem('ai_polish_history')||'[]'); }catch{ h=[]; }
+  const h=DB.aiHistory||[];
   const it=h[i]; if(!it) return;
   window._aiPolished=it.polished;
-  const full=it.type==='小作文'?10:20;
+  const full=it.full||(it.type==='小作文'?10:20);
   const box=document.getElementById('aiResult'); box.classList.remove('hidden');
   box.innerHTML=`<div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap">
       <div style="font-family:var(--serif);font-size:40px;font-weight:800;color:${(+it.score)>=full*0.7?'var(--teng)':'var(--zhu)'}">${it.score}<span style="font-size:18px;color:var(--yan)"> / ${full}</span></div>
@@ -1393,7 +1730,8 @@ function viewAiHistory(i){
 }
 function clearAiHistory(){
   if(!confirm('确定清空润色历史？')) return;
-  localStorage.removeItem('ai_polish_history');
+  DB.aiHistory=[];
+  save();
   renderAiHistory();
   toast('已清空润色历史');
 }
@@ -1406,18 +1744,19 @@ function addMistake(){
     why:document.getElementById('mWhy').value.trim(),date:todayStr()});
   ['mQ','mA','mWhy'].forEach(i=>document.getElementById(i).value='');
   save(); renderMistakes(); TOPICS.forEach(t=>renderTopic(t.key)); toast('错题已记录');
+  petSay(pickPetLine('mistake'));
 }
-function deleteMistake(id){ DB.mistakes=DB.mistakes.filter(x=>x.id!==id); save(); renderMistakes(); TOPICS.forEach(t=>renderTopic(t.key)); }
+function deleteMistake(id){ DB.mistakes=DB.mistakes.filter(x=>x.id!==id); syncTomb('mistakes',id); save(); renderMistakes(); TOPICS.forEach(t=>renderTopic(t.key)); }
 function renderMistakes(){
   const f=document.getElementById('mFilter').value;
   let list=DB.mistakes.slice();
   if(f!=='all') list=list.filter(m=>m.type===f);
   if(list.length===0){ document.getElementById('mistakeList').innerHTML='<div class="empty">蓦然回首，这里还没有错题。</div>'; return; }
-  document.getElementById('mistakeList').innerHTML=`<table><thead><tr>
+  document.getElementById('mistakeList').innerHTML=`<div class="table-scroll"><table><thead><tr>
     <th>题型</th><th>题目/错误点</th><th>正确答案</th><th>原因</th><th>操作</th></tr></thead><tbody>`+
     list.map(m=>`<tr><td><span class="tag">${esc(m.type)}</span></td>
     <td>${esc(m.q)}</td><td>${esc(m.a||'—')}</td><td class="muted small">${esc(m.why||'—')}</td>
-    <td><button class="btn danger sm" onclick="deleteMistake('${m.id}')">删</button></td></tr>`).join('')+'</tbody></table>';
+    <td><button class="btn danger sm" onclick="deleteMistake('${m.id}')">删</button></td></tr>`).join('')+'</tbody></table></div>';
 }
 
 /* ===================== 统计图表 ===================== */
@@ -1570,6 +1909,9 @@ async function libUpload(e){
     const rec={id:uid(),name:nm,et,date:todayStr(),blob:new Blob([buf],{type:'application/pdf'}),answers:null,keys:null,subj:null};
     await idbPut(rec); e.target.value=''; document.getElementById('libName').value='';
     await renderLibrary(); toast('已存入真题库：'+nm);
+    petSay(pickPetLine('libUpload'));
+    /* 已登录则后台备份到云端（失败不打扰，下次对账补传） */
+    pdfCloudUpload(rec);
   }catch(err){ toast('上传失败：'+(err.message||err)); }
 }
 async function renderLibrary(){
@@ -1582,7 +1924,15 @@ async function renderLibrary(){
     <div><button class="btn ghost sm" onclick="libOpen('${p.id}')">打开作答</button>
     <button class="btn danger sm" onclick="libDelete('${p.id}')">删除</button></div></div>`).join('');
 }
-async function libDelete(id){ if(!confirm('确定从真题库删除该 PDF？')) return; try{ await idbDelete(id); await renderLibrary(); toast('已删除'); }catch(e){ toast('删除失败'); } }
+async function libDelete(id){
+  if(!confirm('确定从真题库删除该 PDF？')) return;
+  try{
+    const rec=await idbGet(id);
+    if(rec&&rec.serverId&&SYNC.token){ try{ await syncApi('/api/v1/pdf_library/'+rec.serverId,{method:'DELETE'}); }catch(e){} }
+    syncTomb('pdfs',id);
+    await idbDelete(id); await renderLibrary(); toast('已删除');
+  }catch(e){ toast('删除失败'); }
+}
 async function libOpen(id){
   let rec; try{ rec=await idbGet(id); }catch(e){ toast('读取失败'); return; }
   if(!rec){ toast('未找到'); return; }
@@ -1754,11 +2104,21 @@ function gradeNow(){
     }
   });
   total=Math.round(total*10)/10;
+  curGrader.lastTotal=total;
   document.getElementById('gradeResult').innerHTML=`<div class="grade-sum" style="margin-top:12px"><b>总分 ${total} / 100</b><div style="margin-top:6px">${lines.join('<br>')}</div><div style="margin-top:10px"><button class="btn" onclick="saveGrade()">记入练习（存入各题型 + 收错题）</button></div></div>`;
 }
 async function saveGraderProgress(){
   try{ const old=await idbGet(curGrader.id); old.answers=curGrader.answers; old.keys=curGrader.keys; old.subj=curGrader.subj;
-    await idbPut(old); toast('答题进度已保存，可随时回来继续'); }catch(e){ toast('保存失败'); }
+    await idbPut(old); toast('答题进度已保存，可随时回来继续');
+    /* 云端只同步作答进度（很小的 JSON），PDF 本体不变 */
+    if(old.serverId&&SYNC.token){
+      try{
+        await syncApi('/api/v1/pdf_library/'+old.serverId+'/answers',{method:'PUT',body:JSON.stringify(old.answers||{})});
+        await syncApi('/api/v1/pdf_library/'+old.serverId+'/keys',{method:'PUT',body:JSON.stringify(old.keys||{})});
+        await syncApi('/api/v1/pdf_library/'+old.serverId+'/subjective',{method:'PUT',body:JSON.stringify(old.subj||{})});
+      }catch(e){}
+    }
+  }catch(e){ toast('保存失败'); }
 }
 async function saveGrade(){
   const et=curGrader.et;
@@ -1776,7 +2136,518 @@ async function saveGrade(){
   secs.forEach(s=>{ if(!s.subj){ for(let i=0;i<s.n;i++){ const a=curGrader.answers[s.key][i]; const k=curGrader.keys[s.key]?curGrader.keys[s.key][i]:''; if(a && a!==k){ DB.mistakes.unshift({id:uid(),type:mTypeMap[s.key]||'其他',q:(s.title.split('（')[0])+' 第'+(i+1)+'题',a:'正确答案 '+k,why:'你的选择 '+a,date:todayStr()}); } } } });
   save(); renderPapers(); renderMistakes(); TOPICS.forEach(t=>renderTopic(t.key)); renderRecent();
   toast('成绩已记入各题型专题，错题已入库');
+  const tg=targetFor('整套模考',et), ratio=tg>0?(curGrader.lastTotal||0)/tg:0;
+  if(curGrader.lastTotal!=null) petSay(ratio>=1?pickPetLine('gradeHigh'):(ratio>=0.8?pickPetLine('gradeMid'):pickPetLine('gradeLow')),ratio>=1?'happy':undefined);
 }
+
+/* ===================== 桌宠 · 灯灵小灯 ===================== */
+/* 花千树世界观的伴学桌宠：主人每天点灯（打卡），小灯是其中最早的一盏。
+   火苗亮度随连续天数增长；台词按事件触发 + 定时闲聊；可拖拽；可接 AI 真聊天。 */
+const PET_LINES={
+  morning:['早上好！新的一天，从点亮一盏灯开始。','晨光正好，先背几页单词醒醒脑子？','早呀，我先把火苗拨亮一点。'],
+  afternoon:['午后来杯茶，我们继续稳稳地学。','下午容易犯困，做篇阅读提提神？','午后时光最适合啃长难句啦。'],
+  evening:['晚上好，今晚也要稳稳收工。','夜深了，灯火为你留着。','学完记得早点休息，明天见。'],
+  night:['都这个点了，别熬啦，灯也要休息的。','熬夜伤记忆，睡个好觉胜过再刷十题。'],
+  checkin:['今日的灯，点亮了 ✨','打卡成功！灯火图又多了一盏。','今天也没有辜负自己。','点灯如常，惊喜都在路上。'],
+  milestone7:'连续 7 天了！东风夜放花千树，你就是那阵东风。',
+  milestone30:'整整一个月！这盏灯已经亮成一小片灯火啦。',
+  milestone100:'百日点灯！蓦然回首，你已是灯火阑珊处最亮的那盏。',
+  taskDone:['今日功课全部完成，收工！','功课清空，可以心安理得地休息了。','全部勾完的感觉，很踏实吧。'],
+  gradeHigh:['这个分数很能打，保持手感！','出色！照这个趋势，目标分稳了。','漂亮，把这股势头带进考场。'],
+  gradeMid:['中规中矩，错题吃透就是下一个加分点。','离目标又近一步，稳住别急。'],
+  gradeLow:['分数只是路标，错题才是宝藏，复盘走起。','一次模考而已，灯火未熄就还有机会。'],
+  record:['又记一笔，积少成多。','记录是最好的复盘，继续保持。'],
+  mistake:['错题入库，等于分数预存。','错过的题不会再错第二次，对吧？','把这道题吃透，它就归你了。'],
+  word:['词库 +1，长征又进一步。','又认识一个新朋友（单词）。'],
+  reviewGood:['记住了就好，下一张！','这个词已经归你了。'],
+  libUpload:['新卷子到货，先从哪套开刷？','真题入库，随时开战。'],
+  aiDone:['润色完成，看看修改点再存档。','又是一篇被点亮的作文。'],
+  idle:['学累了就眯十分钟，回来我们继续。','东风夜放花千树——你的每一盏灯我都记得。','我就在这儿，随叫随到。','持续的小步，胜过偶尔的大步。','今天复习昨天的错题了吗？'],
+  poke:['哎呀，别戳，火苗要歪啦。','戳我也不会多加分的（笑）。','灯灵也是要面子的。','再戳要收灯油费了哦。','好好好，看你学习辛苦，让你戳一下。'],
+  phase:{'基础阶段':'现在打的底子，秋天都会兑现。','强化阶段':'真题精练期，一篇一篇吃透它。','冲刺阶段':'限时模考安排上了吗？掐表练才有效。','临考阶段':'稳住节奏，你已经准备好了。'}
+};
+let petBubbleTimer=null, petLastSay=0, petChatMsgs=[];
+function petIsOn(){ return DB.petCfg&&DB.petCfg.on; }
+function petDays(){ if(!DB.profile.examDate) return null; return Math.ceil((new Date(DB.profile.examDate)-new Date())/86400000); }
+function pickPetLine(key){ const a=PET_LINES[key]; return Array.isArray(a)?a[Math.floor(Math.random()*a.length)]:a; }
+function petSay(text,mood){
+  if(!petIsOn()||!text) return;
+  const box=document.getElementById('petBubble'), av=document.getElementById('petAvatar');
+  if(!box||!av) return;
+  box.textContent=text; box.classList.remove('hidden');
+  if(mood==='happy'){ av.classList.remove('happy'); void av.offsetWidth; av.classList.add('happy'); }
+  clearTimeout(petBubbleTimer);
+  petBubbleTimer=setTimeout(()=>box.classList.add('hidden'),6000);
+  petLastSay=Date.now();
+}
+function petCheckinHook(){
+  const s=calcStreak();
+  if(s===100) petSay(PET_LINES.milestone100,'happy');
+  else if(s===30) petSay(PET_LINES.milestone30,'happy');
+  else if(s===7) petSay(PET_LINES.milestone7,'happy');
+  else petSay(pickPetLine('checkin'),'happy');
+}
+function petGreet(){
+  if(!petIsOn()) return;
+  const h=new Date().getHours();
+  const arr=h<6?PET_LINES.night:(h<12?PET_LINES.morning:(h<18?PET_LINES.afternoon:PET_LINES.evening));
+  let line=arr[Math.floor(Math.random()*arr.length)];
+  const d=petDays();
+  if(d!=null&&d>=0) line+='（距考研 '+d+' 天）';
+  setTimeout(()=>petSay(line),1000);
+}
+function petIdleChat(){
+  setInterval(()=>{
+    if(!petIsOn()||document.hidden) return;
+    if(Date.now()-petLastSay<4*60*1000) return;   /* 气泡刚说过话就先不打扰 */
+    if(Math.random()<0.45) return;
+    const d=petDays(), streak=calcStreak(), mastered=DB.words.filter(w=>w.mastery>=3).length;
+    const pool=[];
+    if(d!=null&&d>=0) pool.push('距考研还有 '+d+' 天，今天打算攻哪个题型？');
+    if(streak>0) pool.push('已连亮 '+streak+' 天，别断哦。');
+    if(mastered>0) pool.push('词汇已掌握 '+mastered+' 个，稳步增长。');
+    if(d!=null&&d>=0&&PET_LINES.phase[getPhase(d).name]) pool.push(PET_LINES.phase[getPhase(d).name]);
+    pool.push(pickPetLine('idle'));
+    petSay(pool[Math.floor(Math.random()*pool.length)]);
+  },5*60*1000);
+}
+/* 火苗亮度：连续天数越长越亮（0-3 档 → 0.55-1.0） */
+function petFlameLevel(){
+  const s=calcStreak();
+  const lv=Math.min(3,Math.floor(s/7));   /* 每 7 天升一档 */
+  const op=(0.55+lv*0.15).toFixed(2);
+  document.getElementById('petBox').classList.toggle('dim',lv===0&&s===0);
+  const g=document.getElementById('petFlameG');
+  if(g) g.setAttribute('opacity',op);
+}
+function petToggle(on){
+  DB.petCfg.on=(on===undefined)?!DB.petCfg.on:on;
+  save();
+  document.getElementById('petBox').classList.toggle('hidden',!DB.petCfg.on);
+  document.getElementById('petRestore').classList.toggle('hidden',DB.petCfg.on);
+  if(DB.petCfg.on){ petGreet(); petFlameLevel(); }
+}
+function petTogglePanel(){
+  document.getElementById('petPanel').classList.toggle('hidden');
+  const log=document.getElementById('petChatLog');
+  if(!log.childNodes.length) petAppendChat('pt','和我说说话吧，我盯着词库都盯累了。');
+}
+function petAppendChat(cls,text){
+  const log=document.getElementById('petChatLog');
+  const d=document.createElement('div');
+  d.className=cls; d.textContent=text;
+  log.appendChild(d); log.scrollTop=log.scrollHeight;
+  return d;
+}
+async function petChatSend(){
+  const inp=document.getElementById('petChatInput');
+  const q=inp.value.trim(); if(!q) return;
+  inp.value='';
+  petChatMsgs.push({role:'user',content:q});
+  petAppendChat('pu',q);
+  const key=(DB.aiCfg.keys[DB.aiCfg.provider]||'').trim();
+  if(!DB.aiCfg.model||!key){
+    petAppendChat('pa','（我还不会说话——先去「写作 → AI 润色」选好供应商、填上 Key，我就能陪你聊天啦。）');
+    return;
+  }
+  if(AI_PROXY_OK===null) await aiProbeProxy();
+  if(!AI_PROXY_OK){
+    petAppendChat('pt','（后端服务未启动，暂时只能听你说。启动服务器后我就能开口。）');
+    return;
+  }
+  const holder=petAppendChat('pt','小灯拨了拨火苗……');
+  try{
+    const r=await fetch((SYNC.apiBase||'')+'/api/v1/ai/chat',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({provider:DB.aiCfg.provider,model:DB.aiCfg.model,api_key:key,
+        endpoint:DB.aiCfg.endpoints[DB.aiCfg.provider]||'',messages:petChatMsgs.slice(-10)})});
+    const j=await r.json();
+    holder.remove();
+    const a=j.content||('（模型没接好：'+(typeof j.detail==='string'?j.detail:('HTTP '+r.status))+'）');
+    petChatMsgs.push({role:'assistant',content:a});
+    petAppendChat('pa',a);
+    petSay('聊天记录在面板里 ↑','happy');
+  }catch(e){
+    holder.remove();
+    petAppendChat('pt','（网络开小差了，稍后再试。）');
+  }
+}
+/* 拖拽搬家 + 点击戳一戳（位移小于 5px 视为点击） */
+(function petDrag(){
+  const box=document.getElementById('petBox'), av=document.getElementById('petAvatar');
+  let sx,sy,ox,oy,drag=false,moved=false;
+  av.addEventListener('pointerdown',e=>{
+    drag=true; moved=false; sx=e.clientX; sy=e.clientY;
+    const r=box.getBoundingClientRect(); ox=r.left; oy=r.top;
+    av.setPointerCapture(e.pointerId);
+  });
+  av.addEventListener('pointermove',e=>{
+    if(!drag) return;
+    const dx=e.clientX-sx, dy=e.clientY-sy;
+    if(Math.abs(dx)+Math.abs(dy)>5) moved=true;
+    box.style.left=Math.max(0,Math.min(window.innerWidth-box.offsetWidth-4,ox+dx))+'px';
+    box.style.top=Math.max(0,Math.min(window.innerHeight-box.offsetHeight-4,oy+dy))+'px';
+    box.style.right='auto'; box.style.bottom='auto';
+  });
+  av.addEventListener('pointerup',()=>{
+    drag=false;
+    if(!moved){ petSay(pickPetLine('poke'),'happy'); return; }
+    const r=box.getBoundingClientRect();
+    DB.petCfg.x=Math.round(r.left); DB.petCfg.y=Math.round(r.top); save();
+    petSay('新家不错，灯火照得更远了。');
+  });
+})();
+function petInit(){
+  const box=document.getElementById('petBox');
+  if(DB.petCfg.x!=null&&DB.petCfg.y!=null){
+    box.style.left=DB.petCfg.x+'px'; box.style.top=DB.petCfg.y+'px';
+    box.style.right='auto'; box.style.bottom='auto';
+  }
+  box.classList.toggle('hidden',!petIsOn());
+  document.getElementById('petRestore').classList.toggle('hidden',petIsOn());
+  petGreet(); petFlameLevel(); petIdleChat();
+}
+
+
+const SYNC_META_KEY='ky_sync_meta';
+const TOMB_KEY='ky_sync_tombstones';
+const SYNC_COLLECTIONS=['profile','words','papers','writings','sentences','mistakes','checkins','dailyTasks','targets','materials','aiHistory'];
+const ARRAY_COLS=['words','papers','writings','sentences','mistakes'];
+let SYNC={token:'',username:'',apiBase:'',auto:true,lastSync:'',relogin:null,
+  applyingRemote:false,pushing:false,pullTimer:null,logs:[]};
+try{
+  const m=JSON.parse(localStorage.getItem(SYNC_META_KEY)||'{}');
+  SYNC.token=m.token||''; SYNC.username=m.username||''; SYNC.apiBase=m.apiBase||'';
+  SYNC.auto=m.auto!==false; SYNC.lastSync=m.lastSync||''; SYNC.relogin=m.relogin||null;
+}catch(e){}
+function syncSaveMeta(){
+  localStorage.setItem(SYNC_META_KEY,JSON.stringify({token:SYNC.token,username:SYNC.username,
+    apiBase:SYNC.apiBase,auto:SYNC.auto,lastSync:SYNC.lastSync,relogin:SYNC.relogin}));
+}
+
+/* 删除墓碑：记录被删的本地 id，推送时让服务器也删，拉取时防止其他端复活 */
+let SYNC_TOMB={};
+try{ SYNC_TOMB=JSON.parse(localStorage.getItem(TOMB_KEY)||'{}'); }catch(e){ SYNC_TOMB={}; }
+function syncTomb(col,id){
+  if(!SYNC.token) return;
+  SYNC_TOMB[col]=SYNC_TOMB[col]||[];
+  if(!SYNC_TOMB[col].includes(id)) SYNC_TOMB[col].push(id);
+  localStorage.setItem(TOMB_KEY,JSON.stringify(SYNC_TOMB));
+}
+function syncTombHas(col,id){ return (SYNC_TOMB[col]||[]).includes(id); }
+
+/* fetch 封装：带 token、401 时用记住的密码静默重登一次 */
+async function syncApi(path,opt={},_retry=true){
+  const headers=Object.assign({'Content-Type':'application/json'},opt.headers||{});
+  if(SYNC.token) headers['Authorization']='Bearer '+SYNC.token;
+  const r=await fetch((SYNC.apiBase||'')+path,Object.assign({},opt,{headers}));
+  if(r.status===401&&_retry&&SYNC.relogin&&SYNC.relogin.u){
+    try{
+      const lr=await fetch((SYNC.apiBase||'')+'/api/v1/auth/login',{method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({username:SYNC.relogin.u,password:SYNC.relogin.p})});
+      if(lr.ok){
+        const j=await lr.json(); SYNC.token=j.access_token; syncSaveMeta();
+        return syncApi(path,opt,false);
+      }
+    }catch(e){}
+    SYNC.token=''; SYNC.relogin=null; syncSaveMeta(); renderSyncUI(); setCloudBadge('off','请重新登录');
+    throw new Error('登录已过期');
+  }
+  if(!r.ok){
+    let msg=r.statusText;
+    try{ const j=await r.json(); msg=(typeof j.detail==='string')?j.detail:msg; }catch(e){}
+    throw new Error(msg||('HTTP '+r.status));
+  }
+  return r.json();
+}
+
+/* 本地 DB → 线格式（后端按这些键名落库） */
+function dbToWire(col){
+  switch(col){
+    case 'profile': return {name:DB.profile.name||'',goal:DB.profile.goal||'',examDate:DB.profile.examDate||'',
+      vocabGoal:DB.profile.vocabGoal||30,cohort:String(DB.profile.cohort||1),examType:String(DB.profile.examType||1),
+      aiKey:DB.aiKey||'',aiEndpoint:DB.aiEndpoint||'',
+      aiCfg:DB.aiCfg,petCfg:DB.petCfg};
+    case 'words': return DB.words.map(w=>({id:w.id,term:w.term,phon:w.phon||'',pos:w.pos||'',mean:w.mean,tag:w.tag||'',mastery:w.mastery||0}));
+    case 'papers': return DB.papers.map(p=>({id:p.id,date:p.date,year:p.year||'',type:p.type,score:p.score,
+      full:p.full,et:p.et==null?DB.profile.examType:p.et,note:p.note||''}));
+    case 'writings': return DB.writings.map(x=>({id:x.id,title:x.title||'',content:x.content,date:x.date}));
+    case 'sentences': return DB.sentences.map(x=>({id:x.id,text:x.text,anal:x.anal||'',trans:x.trans||'',date:x.date}));
+    case 'mistakes': return DB.mistakes.map(x=>({id:x.id,type:x.type,q:x.q,a:x.a||'',why:x.why||'',date:x.date}));
+    case 'checkins': return DB.checkins;
+    case 'dailyTasks': return (DB.dailyTasks||[]).map(t=>({id:t.id,text:t.text,desc:t.desc||''}));
+    case 'targets': return DB.targets;
+    case 'materials': return DB.materials||'';
+    case 'aiHistory': return DB.aiHistory||[];
+  }
+  return null;
+}
+/* 线格式 → 本地：数字字段归一（服务端统一存字符串） */
+function coerceRemote(col,data){
+  if(col==='profile') return {name:data.name||'',goal:data.goal||'',examDate:data.examDate||'',
+    vocabGoal:parseInt(data.vocabGoal)||30,cohort:parseInt(data.cohort)||1,examType:parseInt(data.examType)||1};
+  if(col==='papers') return (data||[]).map(p=>Object.assign({},p,{et:parseInt(p.et)||1}));
+  if(col==='words') return (data||[]).map(w=>Object.assign({},w,{mastery:parseInt(w.mastery)||0}));
+  return data;
+}
+
+/* 脏集合：save() 时全量标记（单人数据量小，粗粒度足够），推送成功后清空 */
+const SYNC_DIRTY=new Set();
+function syncMarkDirty(){
+  if(!SYNC.token) return;
+  SYNC_COLLECTIONS.forEach(c=>SYNC_DIRTY.add(c));
+  syncSchedulePush();
+}
+let _pushTimer=null;
+function syncSchedulePush(){
+  if(!SYNC.token||!SYNC.auto) return;
+  clearTimeout(_pushTimer);
+  _pushTimer=setTimeout(()=>syncPush().catch(()=>{}),3000);
+}
+
+async function syncPush(force){
+  if(!SYNC.token||SYNC.pushing) return;
+  const cols=force?SYNC_COLLECTIONS:Array.from(SYNC_DIRTY);
+  if(!cols.length&&!Object.keys(SYNC_TOMB).length) return;
+  const collections={}; cols.forEach(c=>collections[c]=dbToWire(c));
+  const tomb={};
+  Object.keys(SYNC_TOMB).forEach(k=>{ if(SYNC_TOMB[k].length) tomb[k]=SYNC_TOMB[k]; });
+  SYNC.pushing=true; setCloudBadge('busy','同步中…');
+  try{
+    await syncApi('/api/v1/sync/push',{method:'POST',body:JSON.stringify({collections,tombstones:tomb})});
+    SYNC_DIRTY.clear(); SYNC_TOMB={}; localStorage.setItem(TOMB_KEY,'{}');
+    SYNC.lastSync=new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
+    syncSaveMeta();
+    setCloudBadge('on','已同步 '+SYNC.lastSync);
+    syncAddLog('推送完成（'+(cols.length?cols.length+' 个集合':'仅删除记录')+'）');
+    renderSyncUI();
+  }catch(e){
+    setCloudBadge('off','未同步'); syncAddLog('推送失败：'+(e.message||e));
+  }finally{ SYNC.pushing=false; }
+}
+
+/* 远端 → 本地合并。数组按 id 并集；本端有未推送改动时本端胜；
+   checkins 按日期合并（脏时任务逐键取或）；标量类脏则本端胜。 */
+function mergeRemote(remote,tombs,forceRemote){
+  const dirty=new Set(SYNC_DIRTY);
+  const keepLocal=col=>!forceRemote&&dirty.has(col);
+  ARRAY_COLS.forEach(col=>{
+    const r=coerceRemote(col,remote[col]);
+    if(r==null) return;
+    if(keepLocal(col)) return;
+    if(forceRemote){ DB[col]=r.filter(x=>!(tombs[col]||[]).includes(x.id)); return; }
+    const map=new Map(DB[col].map(x=>[x.id,x]));
+    r.forEach(x=>{ if(!syncTombHas(col,x.id)) map.set(x.id,x); });
+    DB[col]=Array.from(map.values());
+  });
+  if(remote.checkins&&!keepLocal('checkins')){
+    if(forceRemote){
+      DB.checkins={};
+      Object.keys(remote.checkins).forEach(d=>{ if(!(tombs.checkins||[]).includes(d)) DB.checkins[d]=remote.checkins[d]; });
+    }else{
+      Object.keys(remote.checkins).forEach(d=>{
+        if((tombs.checkins||[]).includes(d)) return;
+        const r=remote.checkins[d], l=DB.checkins[d];
+        if(!l){ DB.checkins[d]={tasks:r.tasks||{},checked:!!r.checked}; return; }
+        if(dirty.has('checkins')){
+          const t=Object.assign({},r.tasks||{});
+          Object.keys(l.tasks||{}).forEach(k=>{ t[k]=(l.tasks[k]||t[k]); });
+          DB.checkins[d]={tasks:t,checked:!!(l.checked||r.checked)};
+        }else{ DB.checkins[d]={tasks:r.tasks||{},checked:!!r.checked}; }
+      });
+    }
+  }
+  if(remote.profile&&!keepLocal('profile')){
+    DB.profile=Object.assign({},DB.profile,coerceRemote('profile',remote.profile));
+    DB.aiKey=remote.profile.aiKey||''; DB.aiEndpoint=remote.profile.aiEndpoint||'';
+    /* v4：多供应商 AI 配置与桌宠设置（仅在云端确有值时覆盖，避免老服务器清空本地） */
+    if(remote.profile.aiCfg&&Object.keys(remote.profile.aiCfg).length) DB.aiCfg=remote.profile.aiCfg;
+    if(remote.profile.petCfg&&Object.keys(remote.profile.petCfg).length) DB.petCfg=remote.profile.petCfg;
+  }
+  if(remote.dailyTasks&&!keepLocal('dailyTasks')) DB.dailyTasks=coerceRemote('dailyTasks',remote.dailyTasks);
+  if(remote.targets&&!keepLocal('targets')) DB.targets=remote.targets;
+  if(remote.materials!=null&&!keepLocal('materials')) DB.materials=remote.materials;
+  if(remote.aiHistory&&!keepLocal('aiHistory')) DB.aiHistory=remote.aiHistory||[];
+}
+
+async function syncPull(forceRemote){
+  if(!SYNC.token) return false;
+  setCloudBadge('busy','同步中…');
+  try{
+    const r=await syncApi('/api/v1/sync/pull');
+    const remote=r.collections||{}, tombs=r.tombstones||{};
+    const serverEmpty=!((remote.words||[]).length||(remote.papers||[]).length||(remote.sentences||[]).length
+      ||(remote.mistakes||[]).length||(remote.writings||[]).length||Object.keys(remote.checkins||{}).length);
+    const localHas=DB.words.length||DB.papers.length||DB.writings.length
+      ||DB.sentences.length||DB.mistakes.length||Object.keys(DB.checkins).length;
+    if(serverEmpty&&localHas&&!forceRemote){
+      /* 本机首登已有数据、云端为空：整包上云，不清空本地 */
+      await syncPush(true);
+    }else{
+      SYNC.applyingRemote=true;
+      try{
+        mergeRemote(remote,tombs,forceRemote);
+        normalizeDB(); save(); fullRender();
+      }finally{ SYNC.applyingRemote=false; }
+      /* 并集合并可能产生本地独有记录，回推一次让云端对齐 */
+      await syncPush(true);
+    }
+    SYNC.lastSync=new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
+    syncSaveMeta();
+    setCloudBadge('on','已同步 '+SYNC.lastSync);
+    syncAddLog('拉取完成'+(forceRemote?'（云端覆盖本机）':''));
+    pdfReconcile().catch(()=>{});
+    return true;
+  }catch(e){
+    setCloudBadge('off','离线'); syncAddLog('拉取失败：'+(e.message||e));
+    return false;
+  }
+}
+
+async function syncNow(manual){
+  if(!SYNC.token){ if(manual) toast('请先在下方登录或注册'); return; }
+  const ok=await syncPull();
+  if(ok) await syncPush(true);
+  if(manual) toast(ok?'同步完成':'同步失败，请检查服务器地址');
+}
+
+/* ---- 真题 PDF 云备份与对账 ---- */
+async function pdfCloudUpload(rec){
+  if(!SYNC.token||!rec||!rec.blob) return false;
+  try{
+    const fd=new FormData();
+    fd.append('file',rec.blob,rec.id+'.pdf');
+    fd.append('name',rec.name||'真题卷');
+    fd.append('exam_type',String(rec.et||1));
+    fd.append('client_id',rec.id);
+    const r=await fetch((SYNC.apiBase||'')+'/api/v1/pdf_library/upload',
+      {method:'POST',headers:{'Authorization':'Bearer '+SYNC.token},body:fd});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const j=await r.json();
+    rec.serverId=j.id; await idbPut(rec);
+    syncAddLog('PDF 已备份云端：'+(rec.name||''));
+    return true;
+  }catch(e){ syncAddLog('PDF 备份失败（下次对账重试）：'+(rec.name||'')); return false; }
+}
+async function pdfReconcile(){
+  if(!SYNC.token) return;
+  let local=[];
+  try{ local=await idbGetAll(); }catch(e){ return; }
+  const byId=new Map(local.map(r=>[r.id,r]));
+  let remote=[];
+  try{ remote=(await syncApi('/api/v1/pdf_library/?page_size=50')).items||[]; }
+  catch(e){ return; }
+  const tombs=SYNC_TOMB.pdfs||[];
+  for(const it of remote){
+    const cid=it.client_id||String(it.id);
+    if(tombs.includes(cid)) continue;
+    const l=byId.get(cid);
+    if(l){ if(!l.serverId){ l.serverId=it.id; await idbPut(l); } continue; }
+    /* 云端有、本机没有 → 拉回（换设备找回真题） */
+    try{
+      const d=await syncApi('/api/v1/pdf_library/'+it.id+'/data');
+      const blob=await (await fetch('data:application/pdf;base64,'+d.blob)).blob();
+      await idbPut({id:cid,name:d.name,et:parseInt(d.exam_type)||1,date:(d.date||'').slice(0,10),
+        blob,answers:d.answers||null,keys:d.keys||null,subj:d.subjective||null,serverId:it.id});
+      syncAddLog('已从云端找回真题：'+(d.name||''));
+    }catch(e){}
+  }
+  /* 本机有、云端没有 → 后台补备份 */
+  const remoteCids=new Set(remote.map(it=>it.client_id||String(it.id)));
+  for(const l of local){
+    if(!remoteCids.has(l.id)&&!tombs.includes(l.id)&&!l.serverId) await pdfCloudUpload(l);
+  }
+  await renderLibrary();
+}
+
+/* ---- 账号 ---- */
+async function syncRegister(){
+  const u=document.getElementById('syUser').value.trim(), p=document.getElementById('syPass').value;
+  if(u.length<3){ toast('用户名至少 3 个字符'); return; }
+  if(p.length<6){ toast('密码至少 6 位'); return; }
+  try{
+    SYNC.apiBase=document.getElementById('syApiBase').value.trim();
+    await syncApi('/api/v1/auth/register',{method:'POST',body:JSON.stringify({username:u,password:p})});
+    toast('注册成功，正在登录');
+    await doSyncLogin(u,p);
+  }catch(e){ toast('注册失败：'+(e.message||e)); }
+}
+async function syncLogin(){
+  const u=document.getElementById('syUser').value.trim(), p=document.getElementById('syPass').value;
+  if(!u||!p){ toast('请输入用户名和密码'); return; }
+  await doSyncLogin(u,p);
+}
+async function doSyncLogin(u,p){
+  try{
+    SYNC.apiBase=document.getElementById('syApiBase').value.trim();
+    const r=await syncApi('/api/v1/auth/login',{method:'POST',body:JSON.stringify({username:u,password:p})});
+    SYNC.token=r.access_token; SYNC.username=u;
+    SYNC.relogin={u,p}; syncSaveMeta();
+    toast('登录成功，开始同步'); renderSyncUI();
+    await syncPull();
+    syncEnsureTimer();
+  }catch(e){ toast('登录失败：'+(e.message||e)); }
+}
+function syncLogout(){
+  SYNC.token=''; SYNC.username=''; SYNC.relogin=null; syncSaveMeta();
+  if(SYNC.pullTimer){ clearInterval(SYNC.pullTimer); SYNC.pullTimer=null; }
+  setCloudBadge('','未连接'); renderSyncUI(); toast('已退出（本机数据保留）');
+}
+function syncForcePull(){
+  if(!SYNC.token){ toast('请先登录'); return; }
+  if(!confirm('将用云端数据覆盖本机全部学习数据，确定？（建议先导出备份）')) return;
+  syncPull(true);
+}
+async function syncForcePush(){
+  if(!SYNC.token){ toast('请先登录'); return; }
+  if(!confirm('将用本机数据覆盖云端，确定？')) return;
+  await syncPush(true); toast('已用本机数据覆盖云端');
+}
+function syncSaveApiBase(v){ SYNC.apiBase=(v||'').trim(); syncSaveMeta(); toast('服务器地址已保存'); }
+function syncSetAuto(v){
+  SYNC.auto=!!v; syncSaveMeta();
+  if(v&&SYNC.token){ syncEnsureTimer(); syncSchedulePush(); }
+}
+function syncEnsureTimer(){
+  if(SYNC.pullTimer) clearInterval(SYNC.pullTimer);
+  SYNC.pullTimer=setInterval(()=>{ if(SYNC.auto&&SYNC.token&&!SYNC.pushing) syncNow(false).catch(()=>{}); },60000);
+}
+
+/* ---- 同步界面 ---- */
+function setCloudBadge(cls,text){
+  const el=document.getElementById('cloudTag'); if(!el) return;
+  el.className='cloud'+(cls?' '+cls:'');
+  el.textContent='☁ '+text;
+}
+function syncAddLog(msg){
+  SYNC.logs.unshift(new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})+' '+msg);
+  if(SYNC.logs.length>10) SYNC.logs=SYNC.logs.slice(0,10);
+  const box=document.getElementById('syncLog');
+  if(box) box.innerHTML=SYNC.logs.map(l=>'<div>'+esc(l)+'</div>').join('');
+}
+function renderSyncUI(){
+  const f=document.getElementById('syncLoginForm'), i=document.getElementById('syncUserInfo');
+  if(!f||!i) return;
+  if(SYNC.token){
+    f.classList.add('hidden'); i.classList.remove('hidden');
+    document.getElementById('syName').textContent=SYNC.username||'—';
+    document.getElementById('syLast').textContent=SYNC.lastSync||'刚刚登录';
+  }else{
+    f.classList.remove('hidden'); i.classList.add('hidden');
+  }
+}
+(function syncInit(){
+  const b=document.getElementById('syApiBase'); if(b) b.value=SYNC.apiBase||'';
+  const a=document.getElementById('syAuto'); if(a) a.checked=SYNC.auto;
+  renderSyncUI();
+  if(SYNC.token){
+    setCloudBadge('busy','连接中…');
+    syncPull().then(()=>syncEnsureTimer());
+  }else{
+    setCloudBadge('','未连接');
+  }
+})();
 
 function fullRender(){
   renderExamTypeSeg();
@@ -1786,14 +2657,15 @@ function fullRender(){
   document.getElementById('wContent').addEventListener('input',updateWc);
   renderBanner(); renderDashboard(); renderWords();
   TOPICS.forEach(t=>{ renderTopic(t.key); autoFullTopic(t.key); });
-  renderPapers(); renderMistakes(); renderTemplates(); renderWritings(); renderSentences();
+  renderPapers(); renderMistakes(); renderTemplates(); renderWritings(); renderSentences(); renderAiHistory();
   document.getElementById('materialBox').value=DB.materials||'';
-  if(document.getElementById('aiKey')) document.getElementById('aiKey').value=DB.aiKey||'';
-  if(document.getElementById('aiEndpoint')) document.getElementById('aiEndpoint').value=DB.aiEndpoint||'';
-  fillProfile();
+  renderAiProviderUI();
+  fillProfile(); renderSyncUI();
 }
 fullRender();
 save();
+petInit();
+aiProbeProxy();
 </script>
 </body>
 </html>
