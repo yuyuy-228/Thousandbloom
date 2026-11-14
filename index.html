@@ -28,6 +28,15 @@
     padding:16px 26px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
   header h1{font-family:var(--serif);font-size:clamp(19px,2.4vw,24px);margin:0;color:var(--gold);letter-spacing:2px;font-weight:700}
   header .verse{font-family:var(--serif);font-size:12.5px;color:var(--yan);margin-top:2px;letter-spacing:1px}
+  .hdr-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .seg button,.saved,.cloud{white-space:nowrap}
+  @media(max-width:520px){
+    header{padding:14px 16px}
+    .hdr-actions{gap:6px}
+    header .seg button{padding:6px 11px}
+    header .saved{padding:4px 9px}
+    header .cloud{padding:4px 8px}
+  }
   .saved{font-size:12px;background:rgba(205,178,119,.12);color:var(--gold);padding:4px 12px;border-radius:20px;border:1px solid rgba(205,178,119,.25)}
 
   /* ===== 导航 ===== */
@@ -235,6 +244,7 @@
   /* ===== 移动端适配 ===== */
   .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
   .table-scroll table{margin-bottom:0}
+  @media(max-width:520px){ .table-scroll table{min-width:620px} }   /* 手机上真横向滚动，别把列压成竖排字 */
   @media (max-width:860px){
     nav{flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
     nav button{flex:0 0 auto}
@@ -256,6 +266,9 @@
   @keyframes petBlink{0%,93%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}
   #petAvatar.happy{animation:petHappy .65s ease 2}
   @keyframes petHappy{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-15px) scale(1.07)}}
+  #petAvatar.talking .pet-mouth{animation:petTalk .26s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+  @keyframes petTalk{from{transform:scaleY(.55)}to{transform:scaleY(1.9)}}
+  #petAvatar.talking .pet-flame{animation-duration:.9s}
   #petBubble{position:absolute;bottom:calc(100% + 10px);right:0;min-width:160px;max-width:250px;
     background:#0e1629;border:1px solid var(--line);border-radius:12px;padding:10px 13px;
     font-size:12.5px;line-height:1.65;color:var(--moon);box-shadow:0 14px 34px -12px rgba(0,0,0,.7);
@@ -264,6 +277,7 @@
     background:#0e1629;border-right:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(45deg)}
   #petTools{position:absolute;top:-8px;left:-34px;display:flex;flex-direction:column;gap:5px;opacity:0;transition:.2s}
   #petBox:hover #petTools{opacity:1}
+  @media (hover:none){ #petTools{opacity:1} }   /* 触屏没有 hover，按钮常显 */
   #petTools button{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);
     background:rgba(16,24,48,.92);color:var(--yan);font-size:12px;cursor:pointer;line-height:1}
   #petTools button:hover{color:var(--teng);border-color:var(--teng)}
@@ -287,6 +301,17 @@
     #petBubble{max-width:200px}
     #petPanel{width:225px;right:-30px}
   }
+
+  /* ===== 语音 ===== */
+  .row .voice-act{flex:none;min-width:0}
+  #vRate{min-width:0}
+  @media(max-width:520px){
+    .row .voice-act{flex:1 1 0;font-size:12.5px;padding:8px 4px;white-space:nowrap}
+  }
+  .vbtn{border:1px solid var(--line);background:rgba(16,24,48,.5);color:var(--teng);border-radius:7px;
+    padding:2px 8px;font-size:12.5px;cursor:pointer;margin-right:7px;vertical-align:1px;transition:.15s}
+  .vbtn:hover{border-color:var(--teng);color:var(--gold);box-shadow:0 0 10px rgba(227,170,78,.3)}
+  .dict-hidden{color:var(--yan);letter-spacing:5px;font-size:26px!important}
 </style>
 </head>
 <body>
@@ -296,7 +321,7 @@
     <h1>花千树 · 考研英语学习台</h1>
     <div class="verse">东风夜放花千树，更吹落、星如雨</div>
   </div>
-  <div style="display:flex;align-items:center;gap:12px">
+  <div class="hdr-actions">
     <div class="seg" id="examTypeSeg" title="选择你参加英语一还是英语二">
       <button data-et="1">英语一</button>
       <button data-et="2">英语二</button>
@@ -472,8 +497,23 @@
           <option value="2">熟悉</option><option value="3">已掌握</option>
         </select>
         <input id="wSearch" placeholder="搜索单词 / 释义…" oninput="renderWords()" style="flex:2">
-        <button class="btn ghost" onclick="startReview()">🎴 抽认卡复习（未掌握）</button>
       </div>
+      <div class="row" style="margin-top:8px">
+        <button class="btn ghost voice-act" onclick="startReview()">🎴 抽认卡复习</button>
+        <button class="btn ghost voice-act" onclick="startDictation()">🎧 听写模式</button>
+        <button class="btn ghost voice-act" id="readListBtn" onclick="readWordList(this)">🎵 连读本表</button>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <label style="display:flex;align-items:center;gap:6px;margin:0;cursor:pointer;flex:none;min-width:0">
+          <input type="checkbox" id="vAuto" style="width:auto" onchange="VPREFS.autoReview=this.checked;voiceSavePrefs()"> 复习自动发音
+        </label>
+        <label style="flex:none;margin:0;min-width:0">朗读语速</label>
+        <select id="vRate" style="flex:none;width:auto" onchange="VPREFS.vocabRate=parseFloat(this.value);voiceSavePrefs()">
+          <option value="0.6">慢速</option><option value="0.8">较慢</option>
+          <option value="1">正常</option><option value="1.2">较快</option>
+        </select>
+      </div>
+      <p class="tip">发音用浏览器内置语音（离线免费）；听写模式只播声音不显示单词，听音回想拼写与词义后翻面验证。</p>
     </div>
     <div class="card hidden" id="reviewBox">
       <h2><span class="dot"></span>复习 <span id="revProgress" class="muted small"></span></h2>
@@ -483,7 +523,8 @@
         <div class="mean hidden" id="revMean"></div>
       </div>
       <div class="row" style="margin-top:14px">
-        <button class="btn ghost" onclick="revReveal()">显示释义</button>
+        <button class="btn ghost" onclick="voiceWord(reviewQueue[reviewIdx]&&reviewQueue[reviewIdx].term)">🔊 再听</button>
+        <button class="btn ghost" id="revRevealBtn" onclick="revReveal()">显示释义</button>
         <button class="btn danger" onclick="revResult(0)">不认识</button>
         <button class="btn" style="background:var(--zhe)" onclick="revResult(1)">模糊</button>
         <button class="btn" style="background:var(--teng);color:#1c2313" onclick="revResult(2)">认识</button>
@@ -679,8 +720,13 @@
       <button class="btn sm" style="flex:0" onclick="petChatSend()">发送</button>
     </div>
     <p class="tip" style="margin-top:7px">闲聊走「写作 → AI 润色」里配置的模型与 Key。</p>
+    <label style="display:flex;align-items:center;gap:6px;margin-top:8px;cursor:pointer;font-size:12px">
+      <input type="checkbox" id="petVoiceChk" style="width:auto" onchange="petVoiceToggle(this.checked)"> 小灯出声（语音朗读）
+    </label>
+    <p class="tip" style="margin-top:4px;font-size:11px">语音来自浏览器内置音色，免费离线；首次播放可能有半秒延迟。</p>
   </div>
   <div id="petTools">
+    <button title="小灯出声 / 静音" id="petVoiceBtn" onclick="petVoiceToggle()">🔊</button>
     <button title="和小灯聊天" onclick="petTogglePanel()">💬</button>
     <button title="收起小灯" onclick="petToggle(false)">✕</button>
   </div>
@@ -728,7 +774,7 @@
 <script>
 /* ===================== 数据层 ===================== */
 const STORE_KEY = 'ky_en1_workbench_v1';
-let reviewQueue = [], reviewIdx = 0;
+let reviewQueue = [], reviewIdx = 0, reviewMode = 'card';
 
 const DEFAULT_DAILY_TASKS=[
   {id:'d_vocab',text:'背诵单词 30 个',desc:'完成今日词汇目标'},
@@ -1394,7 +1440,7 @@ function renderWords(){
   document.getElementById('wordList').innerHTML=`<div class="table-scroll"><table><thead><tr>
     <th>单词</th><th>词性</th><th>释义</th><th>标签</th><th>状态</th><th>操作</th></tr></thead><tbody>`+
     list.map(w=>`<tr>
-    <td><b>${esc(w.term)}</b> <span class="muted small">${esc(w.phon||'')}</span></td>
+    <td><button class="vbtn" data-w="${esc(w.term)}" onclick="voiceWord(this.dataset.w)" title="朗读单词">🔊</button><b>${esc(w.term)}</b> <span class="muted small">${esc(w.phon||'')}</span></td>
     <td>${esc(w.pos||'')}</td><td>${esc(w.mean)}</td>
     <td>${w.tag?('<span class="tag">'+esc(w.tag)+'</span>'):''}</td>
     <td><span class="pill p${w.mastery}">${labels[w.mastery]}</span></td>
@@ -1406,17 +1452,35 @@ function renderWords(){
 function startReview(){
   reviewQueue=DB.words.filter(w=>w.mastery<2);
   if(reviewQueue.length===0){ toast('没有需要复习的单词 🏮'); return; }
-  reviewIdx=0; document.getElementById('reviewBox').classList.remove('hidden'); revRefresh();
+  reviewMode='card'; reviewIdx=0;
+  document.getElementById('reviewBox').classList.remove('hidden'); revRefresh();
+}
+/* 听写模式：卡片不出单词，听发音回想拼写与词义，翻面验证 */
+function startDictation(){
+  reviewQueue=DB.words.filter(w=>w.mastery<2);
+  if(reviewQueue.length===0){ toast('没有需要复习的单词 🏮'); return; }
+  reviewMode='dict'; reviewIdx=0;
+  document.getElementById('reviewBox').classList.remove('hidden'); revRefresh();
 }
 function revRefresh(){
   const w=reviewQueue[reviewIdx];
-  document.getElementById('revTerm').textContent=w.term;
-  document.getElementById('revPhon').textContent=w.phon||'';
+  const dict=reviewMode==='dict';
+  const termEl=document.getElementById('revTerm');
+  if(dict){ termEl.textContent='🎧 · · ·'; termEl.classList.add('dict-hidden'); }
+  else{ termEl.textContent=w.term; termEl.classList.remove('dict-hidden'); }
+  document.getElementById('revPhon').textContent=dict?'听发音 · 想拼写和词义，想好了再翻面':(w.phon||'');
   document.getElementById('revMean').textContent=(w.pos?('['+w.pos+'] '):'')+w.mean+(w.tag?(' · '+w.tag):'');
   document.getElementById('revMean').classList.add('hidden');
-  document.getElementById('revProgress').textContent='('+(reviewIdx+1)+'/'+reviewQueue.length+')';
+  document.getElementById('revRevealBtn').textContent=dict?'显示答案':'显示释义';
+  document.getElementById('revProgress').textContent='('+(reviewIdx+1)+'/'+reviewQueue.length+')'+(dict?' · 听写模式':'');
+  if((dict||VPREFS.autoReview)&&w.term) voiceWord(w.term);
 }
-function revReveal(){ document.getElementById('revMean').classList.remove('hidden'); }
+function revReveal(){
+  const w=reviewQueue[reviewIdx];
+  const termEl=document.getElementById('revTerm');
+  if(reviewMode==='dict'){ termEl.textContent=w.term; termEl.classList.remove('dict-hidden'); }
+  document.getElementById('revMean').classList.remove('hidden');
+}
 function revResult(level){
   const w=reviewQueue[reviewIdx];
   if(level===0) w.mastery=0; else if(level===1) w.mastery=1; else w.mastery=Math.min(3,w.mastery+1);
@@ -1425,7 +1489,7 @@ function revResult(level){
   if(reviewIdx>=reviewQueue.length){ toast('复习完成！'); document.getElementById('reviewBox').classList.add('hidden'); renderWords(); renderDashboard(); petSay('这轮复习收官，词库又扎实一分。','happy'); }
   else revRefresh();
 }
-function endReview(){ document.getElementById('reviewBox').classList.add('hidden'); renderWords(); renderDashboard(); }
+function endReview(){ reviewMode='card'; document.getElementById('reviewBox').classList.add('hidden'); renderWords(); renderDashboard(); }
 
 /* ===================== 整套模考 / 全部记录 ===================== */
 function addPaper(){
@@ -2140,6 +2204,88 @@ async function saveGrade(){
   if(curGrader.lastTotal!=null) petSay(ratio>=1?pickPetLine('gradeHigh'):(ratio>=0.8?pickPetLine('gradeMid'):pickPetLine('gradeLow')),ratio>=1?'happy':undefined);
 }
 
+/* ===================== 语音 · Web Speech =====================
+   浏览器原生语音合成：免费、离线、无需 Key。
+   词汇发音用英文音色（优先 Google/微软自然音色），桌宠小灯用中文音色。
+   语音偏好按设备存 localStorage（各设备音色池不同，故不参与云同步）。 */
+const VOICE_PREF_KEY='ky_voice_prefs';
+let VPREFS={vocabRate:1,autoReview:true,petVoice:true};
+try{ Object.assign(VPREFS,JSON.parse(localStorage.getItem(VOICE_PREF_KEY)||'{}')); }catch(e){}
+function voiceSavePrefs(){ localStorage.setItem(VOICE_PREF_KEY,JSON.stringify(VPREFS)); }
+
+let _voices=[],_voiceWarned=false,_enVoiceWarned=false;
+function voiceInit(){
+  if(!('speechSynthesis' in window)) return;
+  const load=()=>{ _voices=speechSynthesis.getVoices()||[]; };
+  load();
+  /* Chrome 的音色列表是异步加载的 */
+  speechSynthesis.onvoiceschanged=load;
+  const auto=document.getElementById('vAuto'), rate=document.getElementById('vRate'), pv=document.getElementById('petVoiceChk');
+  if(auto) auto.checked=!!VPREFS.autoReview;
+  if(rate) rate.value=String(VPREFS.vocabRate);
+  if(pv) pv.checked=!!VPREFS.petVoice;
+  const vb=document.getElementById('petVoiceBtn');
+  if(vb){ vb.textContent=VPREFS.petVoice?'🔊':'🔇'; vb.title=VPREFS.petVoice?'小灯出声中（点击静音）':'小灯已静音（点击开声）'; }
+}
+function voicePick(lang){
+  /* 音色偏好：Google（云端最自然）> 微软自然音色 > 该语言第一个。
+     只比前两位语言码，en-US 也能用上 en-GB 的音色，避免系统只装了英式包时哑火。 */
+  const code=String(lang||'').toLowerCase().slice(0,2);
+  const vs=_voices.filter(v=>v.lang&&v.lang.toLowerCase().slice(0,2)===code);
+  if(!vs.length) return null;
+  return vs.find(v=>/google/i.test(v.name))||vs.find(v=>/natural|neural/i.test(v.name))||vs[0];
+}
+/* opt: {lang, rate, pitch, queue}；queue=true 时不打断当前朗读（连读拼接用）。
+   返回 utterance（供 onend 链式调用），环境不支持时返回 null。 */
+function voiceSpeak(text,opt){
+  if(!('speechSynthesis' in window)||!text) return null;
+  try{
+    if(!(opt&&opt.queue)) speechSynthesis.cancel();  /* 连点立即读新的，不排队堆积 */
+    const u=new SpeechSynthesisUtterance(String(text));
+    u.lang=(opt&&opt.lang)||'en-US';
+    const v=voicePick(u.lang);
+    if(v) u.voice=v;
+    else if(u.lang.toLowerCase().slice(0,2)==='en'&&!_enVoiceWarned){
+      /* 系统没装英文语音包时仍会出声（走默认音色），但口音会很怪，给一次可操作提示 */
+      _enVoiceWarned=true;
+      toast('未检测到英文语音包，暂用系统默认音色；可在 Windows「设置 → 时间和语言 → 语音」添加英语语音');
+    }
+    if(u.lang.toLowerCase().startsWith('zh')){
+      u.rate=1; u.pitch=1.12;   /* 小灯：语速平稳、音调微高更俏皮 */
+    }else{
+      u.rate=(opt&&opt.rate)||VPREFS.vocabRate;
+    }
+    speechSynthesis.speak(u);
+    return u;
+  }catch(e){ return null; }
+}
+function voiceWord(term){
+  if(!('speechSynthesis' in window)){ if(!_voiceWarned){_voiceWarned=true;toast('当前浏览器不支持语音合成');} return; }
+  voiceSpeak(String(term||'').trim(),{lang:'en-US'});
+}
+/* 连读本表：把当前筛选结果按「英文单词 → 中文释义」顺序朗读，再点停止 */
+let _readingList=false;
+function readWordList(btn){
+  if(_readingList){ _readingList=false; try{speechSynthesis.cancel();}catch(e){} btn.textContent='🎵 连读本表'; return; }
+  const f=document.getElementById('wFilter').value, q=document.getElementById('wSearch').value.trim().toLowerCase();
+  let list=DB.words.slice();
+  if(f!=='all') list=list.filter(w=>String(w.mastery)===f);
+  if(q) list=list.filter(w=>(w.term+' '+w.mean+' '+(w.tag||'')).toLowerCase().includes(q));
+  if(!list.length){ toast('当前筛选下没有单词'); return; }
+  if(!('speechSynthesis' in window)){ toast('当前浏览器不支持语音合成'); return; }
+  _readingList=true; btn.textContent='⏹ 停止连读';
+  let i=0;
+  const next=()=>{
+    if(!_readingList||i>=list.length){ _readingList=false; btn.textContent='🎵 连读本表'; if(i>=list.length) toast('连读完成，共 '+list.length+' 词'); return; }
+    const w=list[i++];
+    voiceSpeak(w.term,{lang:'en-US'});
+    const u=voiceSpeak(w.mean,{lang:'zh-CN',queue:true});
+    if(u) u.onend=()=>setTimeout(next,400);
+    else setTimeout(next,1600);  /* 释义没朗读成功的兜底间隔 */
+  };
+  next();
+}
+
 /* ===================== 桌宠 · 灯灵小灯 ===================== */
 /* 花千树世界观的伴学桌宠：主人每天点灯（打卡），小灯是其中最早的一盏。
    火苗亮度随连续天数增长；台词按事件触发 + 定时闲聊；可拖拽；可接 AI 真聊天。 */
@@ -2170,7 +2316,34 @@ let petBubbleTimer=null, petLastSay=0, petChatMsgs=[];
 function petIsOn(){ return DB.petCfg&&DB.petCfg.on; }
 function petDays(){ if(!DB.profile.examDate) return null; return Math.ceil((new Date(DB.profile.examDate)-new Date())/86400000); }
 function pickPetLine(key){ const a=PET_LINES[key]; return Array.isArray(a)?a[Math.floor(Math.random()*a.length)]:a; }
-function petSay(text,mood){
+/* 小灯开口：用中文音色把气泡里的话读出来。
+   三道闸门——小灯开着、用户没关「小灯出声」、页面可见；后台标签页不出声不打扰。 */
+let _petTalkSeq=0;
+function petSpeakText(text){
+  if(!petIsOn()||!text||!VPREFS.petVoice||document.hidden) return;
+  /* 括号里的旁白（如“距考研 88 天”）口语上略过，句子更顺 */
+  const s=String(text).replace(/（[^）]*）/g,'').trim();
+  if(!s) return;
+  const av=document.getElementById('petAvatar');
+  const u=voiceSpeak(s,{lang:'zh-CN'});
+  if(!u||!av) return;
+  const seq=++_petTalkSeq;
+  const stopTalk=()=>{ if(seq===_petTalkSeq) av.classList.remove('talking'); };
+  av.classList.add('talking');          /* 嘴型动画跟着朗读走 */
+  u.onstart=()=>{ if(seq===_petTalkSeq) av.classList.add('talking'); };
+  u.onend=stopTalk; u.onerror=stopTalk;
+}
+function petVoiceToggle(on){
+  VPREFS.petVoice=(on===undefined)?!VPREFS.petVoice:!!on;
+  voiceSavePrefs();
+  const chk=document.getElementById('petVoiceChk'), btn=document.getElementById('petVoiceBtn');
+  if(chk) chk.checked=VPREFS.petVoice;
+  if(btn){ btn.textContent=VPREFS.petVoice?'🔊':'🔇'; btn.title=VPREFS.petVoice?'小灯出声中（点击静音）':'小灯已静音（点击开声）'; }
+  if(VPREFS.petVoice) petSpeakText('好，我开口说话啦。');
+  else if(!_readingList){ try{speechSynthesis.cancel();}catch(e){} }
+}
+/* silent=true：只出气泡不出声（用于紧接着要说别的内容，避免互相打断） */
+function petSay(text,mood,silent){
   if(!petIsOn()||!text) return;
   const box=document.getElementById('petBubble'), av=document.getElementById('petAvatar');
   if(!box||!av) return;
@@ -2179,6 +2352,7 @@ function petSay(text,mood){
   clearTimeout(petBubbleTimer);
   petBubbleTimer=setTimeout(()=>box.classList.add('hidden'),6000);
   petLastSay=Date.now();
+  if(!silent) petSpeakText(text);
 }
 function petCheckinHook(){
   const s=calcStreak();
@@ -2266,7 +2440,9 @@ async function petChatSend(){
     const a=j.content||('（模型没接好：'+(typeof j.detail==='string'?j.detail:('HTTP '+r.status))+'）');
     petChatMsgs.push({role:'assistant',content:a});
     petAppendChat('pa',a);
-    petSay('聊天记录在面板里 ↑','happy');
+    /* 面板里显示全文，气泡只提示一句；真正朗读的是 AI 回复本身 */
+    petSpeakText(a);
+    petSay('聊天记录在面板里 ↑','happy',true);
   }catch(e){
     holder.remove();
     petAppendChat('pt','（网络开小差了，稍后再试。）');
@@ -2664,6 +2840,7 @@ function fullRender(){
 }
 fullRender();
 save();
+voiceInit();
 petInit();
 aiProbeProxy();
 </script>
