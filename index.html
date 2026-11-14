@@ -255,10 +255,14 @@
 
   /* ===== 桌宠 · 灯灵小灯 ===== */
   #petBox{position:fixed;right:26px;bottom:26px;z-index:150;width:96px;user-select:none;touch-action:none}
-  #petAvatar{width:96px;height:112px;cursor:grab;filter:drop-shadow(0 6px 18px rgba(217,91,50,.35));
+  #petAvatar{position:relative;width:96px;height:112px;cursor:grab;filter:drop-shadow(0 6px 22px rgba(240,160,75,.55)) brightness(1.06);
     animation:petBob 3.4s ease-in-out infinite;transition:filter .3s}
+  #petAvatar:before{content:'';position:absolute;inset:-26px;border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle,rgba(255,176,95,.3),rgba(255,176,95,0) 68%);
+    animation:petHalo 3.4s ease-in-out infinite}
+  @keyframes petHalo{0%,100%{opacity:.85;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
   #petAvatar:active{cursor:grabbing}
-  #petBox.dim #petAvatar{filter:drop-shadow(0 4px 10px rgba(217,91,50,.15)) brightness(.75)}
+  #petBox.dim #petAvatar{filter:drop-shadow(0 4px 14px rgba(240,160,75,.35)) brightness(.94)}
   @keyframes petBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
   .pet-flame{animation:petFlick 1.7s ease-in-out infinite;transform-origin:50px 66px}
   @keyframes petFlick{0%,100%{transform:scale(1)}30%{transform:scale(1.12,.94)}60%{transform:scale(.94,1.08)}}
@@ -750,20 +754,25 @@
     <svg viewBox="0 0 100 122" width="100%" height="100%" aria-hidden="true">
       <defs>
         <radialGradient id="petGlow" cx="50%" cy="52%" r="55%">
-          <stop offset="0" stop-color="#f0a04b" stop-opacity=".55"/>
-          <stop offset=".6" stop-color="#e3aa4e" stop-opacity=".18"/>
-          <stop offset="1" stop-color="#d95b32" stop-opacity="0"/>
+          <stop offset="0" stop-color="#ffc27a" stop-opacity=".68"/>
+          <stop offset=".6" stop-color="#ffb35c" stop-opacity=".24"/>
+          <stop offset="1" stop-color="#ff8a3d" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="petBody" cx="40%" cy="32%" r="74%">
+          <stop offset="0" stop-color="#ff9a5e"/>
+          <stop offset=".45" stop-color="#ee6d3a"/>
+          <stop offset="1" stop-color="#c24620"/>
         </radialGradient>
       </defs>
       <!-- 提梁与顶盖 -->
-      <path d="M32 24 Q50 4 68 24" stroke="#a06b3f" fill="none" stroke-width="4" stroke-linecap="round"/>
-      <rect x="35" y="21" width="30" height="7" rx="3" fill="#a06b3f"/>
+      <path d="M32 24 Q50 4 68 24" stroke="#c68a4a" fill="none" stroke-width="4" stroke-linecap="round"/>
+      <rect x="35" y="21" width="30" height="7" rx="3" fill="#c68a4a"/>
       <!-- 灯体 -->
-      <ellipse cx="50" cy="64" rx="33" ry="39" fill="#d95b32"/>
+      <ellipse cx="50" cy="64" rx="33" ry="39" fill="url(#petBody)" stroke="rgba(255,214,150,.3)" stroke-width="1.1"/>
       <ellipse cx="50" cy="64" rx="33" ry="39" fill="url(#petGlow)"/>
-      <path d="M50 25 C 36 44 36 84 50 103" stroke="rgba(112,32,12,.35)" fill="none" stroke-width="2"/>
-      <path d="M50 25 C 64 44 64 84 50 103" stroke="rgba(112,32,12,.35)" fill="none" stroke-width="2"/>
-      <ellipse cx="38" cy="52" rx="7" ry="12" fill="rgba(255,235,205,.22)" transform="rotate(-14 38 52)"/>
+      <path d="M50 25 C 36 44 36 84 50 103" stroke="rgba(112,32,12,.28)" fill="none" stroke-width="2"/>
+      <path d="M50 25 C 64 44 64 84 50 103" stroke="rgba(112,32,12,.28)" fill="none" stroke-width="2"/>
+      <ellipse cx="38" cy="52" rx="7" ry="12" fill="rgba(255,240,215,.34)" transform="rotate(-14 38 52)"/>
       <!-- 眼睛与嘴 -->
       <g class="pet-eyes">
         <circle cx="40" cy="50" r="2.8" fill="#3a1508"/>
@@ -774,13 +783,13 @@
       <path class="pet-mouth" d="M45 58 Q50 62 55 58" stroke="#3a1508" fill="none" stroke-width="2" stroke-linecap="round"/>
       <!-- 灯芯火苗（连击天数越长越亮：亮度由 JS 调整） -->
       <g class="pet-flame" id="petFlameG">
-        <path d="M50 68 C 43.5 78 44 86.5 50 90.5 C 56 86.5 56.5 78 50 68 Z" fill="#f0a04b"/>
-        <path d="M50 74 C 46.6 79.5 47 84.5 50 86.5 C 53 84.5 53.4 79.5 50 74 Z" fill="#f7f4ec"/>
+        <path d="M50 68 C 43.5 78 44 86.5 50 90.5 C 56 86.5 56.5 78 50 68 Z" fill="#ffb45f"/>
+        <path d="M50 74 C 46.6 79.5 47 84.5 50 86.5 C 53 84.5 53.4 79.5 50 74 Z" fill="#fff6e6"/>
       </g>
       <!-- 底盖与流苏 -->
-      <rect x="38" y="100" width="24" height="6" rx="3" fill="#a06b3f"/>
-      <line x1="50" y1="106" x2="50" y2="114" stroke="#a06b3f" stroke-width="2.5"/>
-      <circle cx="50" cy="117" r="3.2" fill="#e3aa4e"/>
+      <rect x="38" y="100" width="24" height="6" rx="3" fill="#c68a4a"/>
+      <line x1="50" y1="106" x2="50" y2="114" stroke="#c68a4a" stroke-width="2.5"/>
+      <circle cx="50" cy="117" r="3.2" fill="#f2bc63"/>
     </svg>
   </div>
 </div>
@@ -2454,7 +2463,7 @@ function petIdleChat(){
 function petFlameLevel(){
   const s=calcStreak();
   const lv=Math.min(3,Math.floor(s/7));   /* 每 7 天升一档 */
-  const op=(0.55+lv*0.15).toFixed(2);
+  const op=(0.82+lv*0.06).toFixed(2);     /* 底火也保持透亮，只在亮度上做细微区分 */
   document.getElementById('petBox').classList.toggle('dim',lv===0&&s===0);
   const g=document.getElementById('petFlameG');
   if(g) g.setAttribute('opacity',op);
