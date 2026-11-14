@@ -467,6 +467,25 @@
   .word-pager button:disabled{opacity:.35;cursor:default}
   .snap-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
   .snap-row:last-child{border-bottom:0}
+  /* 更新日志 */
+  .cl-list{position:relative;margin-top:18px;padding-left:24px}
+  .cl-list:before{content:'';position:absolute;left:7px;top:6px;bottom:6px;width:1px;background:var(--line)}
+  .cl-item{position:relative;padding:0 0 22px 6px}
+  .cl-item:last-child{padding-bottom:0}
+  .cl-dot{position:absolute;left:-22px;top:5px;width:11px;height:11px;border-radius:50%;
+    background:var(--zhu);border:2px solid var(--night);box-shadow:0 0 10px rgba(217,91,50,.55)}
+  .cl-item.latest .cl-dot{background:var(--teng);box-shadow:0 0 14px rgba(227,170,78,.75)}
+  .cl-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .cl-ver{font-family:var(--serif);font-size:19px;font-weight:800;color:var(--gold)}
+  .cl-date{font-size:11.5px;color:var(--yan)}
+  .cl-title{font-size:14px;font-weight:700;margin:5px 0 7px;color:var(--moon)}
+  .cl-item ul{margin:0;padding-left:18px;font-size:12.5px;line-height:1.85;color:var(--yan)}
+  .cl-item li::marker{color:var(--zhu)}
+  .cl-road{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+  .cl-road .ritem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:rgba(20,30,56,.5)}
+  .cl-road .ritem b{display:block;font-size:13px;color:var(--star)}
+  .cl-road .ritem span{display:block;font-size:11.5px;color:var(--yan);margin-top:3px;line-height:1.6}
+  @media(max-width:640px){ .cl-road{grid-template-columns:1fr} }
 </style>
 </head>
 <body>
@@ -495,6 +514,7 @@
   <button data-tab="stats">统计</button>
   <button data-tab="data">数据管理</button>
   <button data-tab="sync">云同步</button>
+  <button data-tab="changelog">更新日志</button>
 </nav>
 
 <main>
@@ -921,6 +941,23 @@
       · 真题 PDF 在登录后也会备份到云端（含答题卡进度），换设备登录自动找回。<br>
       · AI 各供应商的 Key / 模型选择、润色历史、桌宠小灯的设置，都随账号同步，换设备不必重配。<br>
       · 不登录时，一切功能与从前完全一致，数据只存本机浏览器。</p>
+    </div>
+  </section>
+
+  <!-- ============ 更新日志 ============ -->
+  <section class="view" id="view-changelog">
+    <div class="card">
+      <div class="flex-between" style="align-items:center">
+        <h2><span class="dot"></span>更新日志</h2>
+        <span class="tag" style="color:var(--gold)">应用 v1.6 · 数据 v6</span>
+      </div>
+      <p class="tip">从一盏灯到一间灯屋。这里记录每一次长出新的枝叶；版本号按大阶段递增，数据版本用于本地迁移。</p>
+      <div id="changelogList" class="cl-list"></div>
+    </div>
+    <div class="card">
+      <h2><span class="dot"></span>下一步计划</h2>
+      <p class="tip">路线图会随使用反馈调整，不承诺具体日期；做完一项就挪进上面的更新日志。</p>
+      <div id="roadmapList" class="cl-road"></div>
     </div>
   </section>
 </main>
@@ -1447,6 +1484,7 @@ function switchTab(tab){
   if(v) v.classList.add('active');
   if(tab==='stats') renderStats();
   if(tab==='data') renderSnapshots();
+  if(tab==='changelog') renderChangelog();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 document.addEventListener('click',e=>{
@@ -2832,6 +2870,78 @@ function onboardFinish(){
 }
 function onboardCheck(){
   try{ if(localStorage.getItem(ONBOARD_KEY)!=='1') setTimeout(()=>onboardStart(false),800); }catch(e){}
+}
+/* ===================== 更新日志 ===================== */
+const CHANGELOG=[
+  {v:'v1.6',date:'2026-11-14',tags:['陪伴','工程'],title:'自定义头像、季节限定与工程体验',
+   items:[
+    '小灯头像上传：PNG/JPG ≤300KB，存 IndexedDB，登录后独立 blob 同步，换设备自动拉回。',
+    '季节皮肤「春梅 / 秋月」、100 天限定挂件「状元帽」、百日暖金光晕与「百日长明」成就。',
+    'AI 润色流式输出；每日本地快照（保留 7 天）与一键恢复。',
+    '词表 100 行分页 + 搜索防抖；连读超过 50 词先确认时长。',
+    '首次使用 3 步引导；PWA 安装与离线缓存；关键路径冒烟脚本。',
+    '新增本页「更新日志」。'
+   ]},
+  {v:'v1.5',date:'2026-11-14',tags:['陪伴','学习'],title:'陪伴层 P2 与学习闭环增强',
+   items:[
+    '灯屋扩展为皮肤 / 挂件 / 身份 / 成就四页签；新增书生巾、围巾、梅花枝、小铃铛与 8 个成就。',
+    '小灯可改名、写性格设定；聊天时作为额外人设传给模型，服务端安全边界保留。',
+    '首页「今日复习」卡片、词汇「提前复习」；错题可一键把生词存进词库并建立关联。',
+    '学习报告支持往期周报、近 30 天月报、AI 点评与复制。'
+   ]},
+  {v:'v1.4',date:'2026-11-14',tags:['学习'],title:'学习闭环：间隔重复、错题重练、学习周报',
+   items:[
+    '词汇按简化 SM-2 安排下次复习：认识 1→3→8 天，模糊 2 天/×1.2，不认识明天再来。',
+    '首页与词汇工具栏显示待复习数；词表显示下次复习日。',
+    '错题重练：未复盘 / 复盘中 / 已掌握，支持显示答案、三档反馈与复盘次数。',
+    '统计页近 7 天学习周报：点灯、复习、练习、错题、平均得分率与「最该补」题型。'
+   ]},
+  {v:'v1.3',date:'2026-11-14',tags:['陪伴'],title:'小灯养成 P1：灯油、皮肤与灯屋',
+   items:[
+    '灯油经济：点灯 +5、功课全清 +8、复习 +2、模考 +8、判分 +12、每日开灯礼。',
+    '4 套皮肤（朱砂/青玉/月白/鎏金）与灯屋换装；灯油飘字、开灯礼。',
+    '小灯火苗与形象提亮，灯体渐变、暖色光晕。'
+   ]},
+  {v:'v1.2',date:'2026-11-14',tags:['语音'],title:'语音系统：词汇发音与小灯开口',
+   items:[
+    '词表逐词发音、抽认卡再听、听写模式、连读本表、语速与复习自动发音。',
+    '小灯用中文音色朗读气泡台词与 AI 回复，嘴型动画，可静音。',
+    '小灯音色下拉 + 四套语气（温软/清亮/沉稳/俏皮）+ 试听。'
+   ]},
+  {v:'v1.1',date:'2026-11-14',tags:['同步','AI','陪伴'],title:'云同步、多模型 AI 润色与桌宠小灯',
+   items:[
+    'FastAPI + MySQL 后端；账号云端同步（词汇/练习/打卡/写作/PDF 进度）。',
+    '8 家供应商 AI 代理，多模型切换、按供应商存 Key、润色历史。',
+    '伴学桌宠「小灯」：灯灵 SVG、拖拽、事件台词、定时闲聊、AI 对话。'
+   ]},
+  {v:'v1.0',date:'2026-11',tags:['基础'],title:'花千树学习台第一版',
+   items:[
+    '单文件前端：首页倒计时与灯火图、词汇、完形/阅读/新题型/翻译/写作专题。',
+    '真题库 PDF 作答与判分、错题本、统计图表、数据导入导出与云同步入口。',
+    '确立「点灯」学习仪式与《青玉案·元夕》视觉基调。'
+   ]}
+];
+const ROADMAP=[
+  {t:'月报历史与月度总结',d:'把每月报告也存快照，能回看每个月的成长曲线。'},
+  {t:'SRS 细化',d:'暂停某个词、每日新词上限、提前复习独立计划。'},
+  {t:'AI 长期记忆',d:'让小灯记住最近的学习状态和情绪，而不是只带 10 轮对话。'},
+  {t:'软著与毕设材料',d:'独创性说明、架构图、演示脚本与更新日志导出。'},
+  {t:'更多季节/节日内容',d:'春节、中秋限定皮肤与挂件，保持新鲜感。'},
+  {t:'手机交互细节',d:'手势、键盘快捷键、复习卡片滑动操作。'}
+];
+function renderChangelog(){
+  const box=document.getElementById('changelogList');
+  if(box){
+    box.innerHTML=CHANGELOG.map((e,i)=>`<div class="cl-item${i===0?' latest':''}">
+      <span class="cl-dot"></span>
+      <div class="cl-head"><span class="cl-ver">${e.v}</span>${i===0?'<span class="tag" style="color:var(--teng)">当前</span>':''}<span class="cl-date">${e.date}</span>
+        ${e.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      <div class="cl-title">${e.title}</div>
+      <ul>${e.items.map(x=>`<li>${x}</li>`).join('')}</ul>
+    </div>`).join('');
+  }
+  const road=document.getElementById('roadmapList');
+  if(road) road.innerHTML=ROADMAP.map(r=>`<div class="ritem"><b>${r.t}</b><span>${r.d}</span></div>`).join('');
 }
 function clearAll(){
   if(confirm('确定清空全部数据？此操作不可恢复，建议先导出备份。')){ snapshotNow(true); DB=defaultDB(); save(); fullRender(); petApplySkin(); petApplyIdentity(); petCoinUI(); toast('已清空'); }
