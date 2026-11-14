@@ -2973,6 +2973,7 @@ async function syncPull(forceRemote){
       try{
         mergeRemote(remote,tombs,forceRemote);
         normalizeDB(); save(); fullRender();
+        petApplySkin(); petCoinUI(); petFlameLevel();   /* 云端拉下来的装扮/灯油立刻反映到小灯上 */
       }finally{ SYNC.applyingRemote=false; }
       /* 并集合并可能产生本地独有记录，回推一次让云端对齐 */
       await syncPush(true);
