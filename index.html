@@ -184,6 +184,13 @@
   .wk-tile span{font-size:11.5px;color:var(--yan)}
   .wk-line{margin-top:12px;font-size:13px;line-height:1.8}
   .wk-line b{color:var(--gold)}
+  .wk-month{display:grid;grid-template-columns:repeat(15,1fr);gap:5px;margin-top:12px}
+  .wk-month .wm{height:12px;border-radius:3px;background:rgba(141,153,181,.12);border:1px solid rgba(141,153,181,.1)}
+  .wk-month .wm.chk{background:var(--teng)}
+  .wk-month .wm.rev{background:#7fd6a8}
+  .wk-month .wm.pp{background:var(--zhu)}
+  .wk-month .wm.mist{background:#c3a6ff}
+  @media(max-width:640px){ .wk-month{grid-template-columns:repeat(10,1fr)} }
   @media(max-width:640px){ .wk-grid{grid-template-columns:repeat(2,1fr)} .wk-day .wd{font-size:10px} }
 
   /* ===== 抽认卡 ===== */
@@ -314,11 +321,25 @@
   #petAvatar[data-skin="liujin"] .pet-cap{fill:#e8c270}
   #petAvatar[data-skin="liujin"] .pet-string{stroke:#e8c270}
   #petAvatar[data-skin="liujin"] .pet-bead{fill:#ffe9a8}
+  /* 挂件：同一副骨架，只显示当前 data-acc 对应的分组 */
+  .pet-acc{display:none}
+  #petAvatar[data-acc="shusheng"] .pet-acc-shusheng,
+  #petAvatar[data-acc="weijin"] .pet-acc-weijin,
+  #petAvatar[data-acc="meihua"] .pet-acc-meihua,
+  #petAvatar[data-acc="lingdang"] .pet-acc-lingdang{display:block}
   /* 灯油飘字 */
   .pet-coin-pop{position:absolute;right:calc(100% + 6px);bottom:34px;font-size:12.5px;font-weight:700;
     color:var(--gold);text-shadow:0 0 10px rgba(227,170,78,.6);pointer-events:none;white-space:nowrap;
     animation:coinPop 1.4s ease forwards}
   @keyframes coinPop{0%{opacity:0;transform:translateY(6px) scale(.9)}20%{opacity:1}100%{opacity:0;transform:translateY(-24px) scale(1.05)}}
+  /* 错题生词弹窗 */
+  #mWordModal{position:fixed;inset:0;z-index:230;display:flex;align-items:center;justify-content:center;
+    padding:20px;background:rgba(4,8,18,.72);backdrop-filter:blur(5px)}
+  #mWordModal.hidden{display:none}
+  .mw-card{width:min(430px,100%);background:linear-gradient(180deg,#101a31,#0d1526);border:1px solid var(--line);
+    border-radius:16px;padding:20px 22px;box-shadow:0 30px 70px -20px #000}
+  .mw-card h3{margin:0;font-family:var(--serif);color:var(--gold);font-size:18px}
+  .mw-card label{display:block;font-size:12px;color:var(--yan);margin:12px 0 4px}
   /* 灯屋 */
   #petShop{position:fixed;inset:0;z-index:220;display:flex;align-items:center;justify-content:center;
     padding:20px;background:rgba(4,8,18,.72);backdrop-filter:blur(5px);animation:viewIn .2s ease}
@@ -342,6 +363,22 @@
   .pet-skin .pr{font-size:12px;color:var(--gold);font-weight:700;margin-top:6px}
   .pet-skin .pr.owned{color:#7fd6a8}
   .pet-skin .pr.equipped{color:var(--teng)}
+  .shop-tabs{display:flex;gap:6px;margin-top:12px;border-bottom:1px solid var(--line);padding-bottom:8px;flex-wrap:wrap}
+  .shop-tabs button{border:1px solid var(--line);background:transparent;color:var(--yan);border-radius:8px;
+    padding:5px 12px;font-size:12.5px;cursor:pointer;font-family:var(--sans)}
+  .shop-tabs button.on{color:var(--gold);border-color:var(--teng);background:rgba(227,170,78,.1)}
+  .pet-acc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px}
+  @media(max-width:640px){ .pet-acc-grid{grid-template-columns:repeat(2,1fr)} }
+  .ach-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+  @media(max-width:640px){ .ach-grid{grid-template-columns:1fr} }
+  .ach{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:rgba(20,30,56,.5);opacity:.55}
+  .ach.on{opacity:1;border-color:rgba(227,170,78,.5)}
+  .ach b{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--star)}
+  .ach span{display:block;font-size:11px;color:var(--yan);margin-top:2px}
+  .ach .bar{height:4px;background:rgba(141,153,181,.15);border-radius:3px;margin-top:7px;overflow:hidden}
+  .ach .bar i{display:block;height:100%;background:var(--teng);border-radius:3px}
+  .id-form label{display:block;font-size:12px;color:var(--yan);margin:12px 0 4px}
+  .id-form textarea{min-height:72px;resize:vertical}
   #petBubble{position:absolute;bottom:calc(100% + 10px);right:0;min-width:160px;max-width:250px;
     background:#0e1629;border:1px solid var(--line);border-radius:12px;padding:10px 13px;
     font-size:12.5px;line-height:1.65;color:var(--moon);box-shadow:0 14px 34px -12px rgba(0,0,0,.7);
@@ -466,6 +503,20 @@
     </div>
 
     <div class="grid g4" id="dashStats"></div>
+
+    <div class="card" id="todayReviewCard" style="margin-top:18px">
+      <div class="flex-between" style="align-items:center">
+        <div>
+          <h2 style="margin-bottom:4px"><span class="dot"></span>今日复习 <span class="tag" id="todayReviewBadge">0 词</span></h2>
+          <p class="tip" id="todayReviewText" style="margin:0">正在读取复习计划…</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" id="todayReviewBtn" onclick="homeStartReview('card')">开始复习</button>
+          <button class="btn ghost" id="todayDictBtn" onclick="homeStartReview('dict')">听写模式</button>
+          <button class="btn ghost" onclick="homeStartAdvance()">⏩ 提前复习</button>
+        </div>
+      </div>
+    </div>
 
     <div class="grid g2" style="margin-top:18px">
       <div class="card">
@@ -705,6 +756,7 @@
           <button class="btn danger" onclick="mrRate(0)">还是不会</button>
           <button class="btn" style="background:var(--zhe)" onclick="mrRate(1)">有点模糊</button>
           <button class="btn" style="background:var(--teng);color:#1c2313" onclick="mrRate(2)">掌握了</button>
+          <button class="btn ghost" id="mrWordBtn" onclick="mrToWord()">＋存进词库</button>
           <button class="btn ghost" onclick="endMistakeReview()">结束</button>
         </div>
       </div>
@@ -715,10 +767,18 @@
   <section class="view" id="view-stats">
     <div class="card" id="weeklyCard">
       <div class="flex-between" style="align-items:center">
-        <h2><span class="dot"></span>本周学习周报</h2>
-        <div style="display:flex;gap:8px;align-items:center">
+        <h2><span class="dot"></span><span id="reportTitle">本周学习周报</span></h2>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
           <span class="small muted" id="weekRange"></span>
-          <button class="btn ghost sm" onclick="copyWeekly()">复制周报</button>
+          <div class="shop-tabs" style="margin:0;border:0;padding:0">
+            <button id="reportWeekBtn" class="on" onclick="reportModeSet(7)">近 7 天</button>
+            <button id="reportMonthBtn" onclick="reportModeSet(30)">近 30 天</button>
+          </div>
+          <select id="reportHistory" onchange="reportHistoryPick(this.value)" style="width:auto;flex:none" title="查看往期周报">
+            <option value="">当前报告</option>
+          </select>
+          <button class="btn ghost sm" onclick="copyWeekly()">复制报告</button>
+          <button class="btn ghost sm" id="reportAiBtn" onclick="weeklyAiComment()">🐾 让小灯点评</button>
         </div>
       </div>
       <div id="weeklyBody"></div>
@@ -813,13 +873,27 @@
   </section>
 </main>
 
+<div id="mWordModal" class="hidden" onclick="if(event.target===this)mWordClose()">
+  <div class="mw-card">
+    <h3>📥 存进词库</h3>
+    <p class="tip">从错题里揪出的生词，入库后会按遗忘曲线安排复习。</p>
+    <label>单词</label>
+    <input id="mwTerm" placeholder="例如：objective" onkeydown="if(event.key==='Enter')mWordSave()">
+    <label>中文释义</label>
+    <input id="mwMean" placeholder="可稍后补，例如：客观的" onkeydown="if(event.key==='Enter')mWordSave()">
+    <div class="row" style="margin-top:14px">
+      <button class="btn" onclick="mWordSave()">存入词库</button>
+      <button class="btn ghost" onclick="mWordClose()">取消</button>
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <!-- ============ 桌宠 · 灯灵小灯 ============ -->
 <div id="petBox">
   <div id="petBubble" class="hidden"></div>
   <div id="petPanel" class="hidden">
-    <h4>🏮 灯灵 · 小灯</h4>
+    <h4>🏮 灯灵 · <span id="petNameLabel">小灯</span></h4>
     <div class="pet-sub">花千树的第一盏灯，陪你备考</div>
     <div id="petChatLog"></div>
     <div class="row">
@@ -925,6 +999,24 @@
       <rect class="pet-cap" x="38" y="100" width="24" height="6" rx="3" fill="#c68a4a"/>
       <line class="pet-string" x1="50" y1="106" x2="50" y2="114" stroke="#c68a4a" stroke-width="2.5"/>
       <circle class="pet-bead" cx="50" cy="117" r="3.2" fill="#f2bc63"/>
+      <!-- 挂件（默认隐藏，data-acc 切换） -->
+      <g class="pet-acc pet-acc-shusheng">
+        <path d="M30 32 Q50 24 70 32" stroke="#6f8fbf" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M34 33 Q28 43 30 52" stroke="#6f8fbf" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M66 33 Q72 43 70 52" stroke="#6f8fbf" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </g>
+      <g class="pet-acc pet-acc-weijin">
+        <path d="M24 86 Q50 96 76 86" stroke="#b45a6a" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M64 92 L70 108 L62 104 Z" fill="#b45a6a"/>
+      </g>
+      <g class="pet-acc pet-acc-meihua">
+        <path d="M22 40 Q14 28 18 18" stroke="#8a5a3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <circle cx="17" cy="20" r="3.4" fill="#e9a3b8"/><circle cx="22" cy="30" r="2.6" fill="#f3c4d2"/><circle cx="13" cy="30" r="2.2" fill="#e9a3b8"/>
+      </g>
+      <g class="pet-acc pet-acc-lingdang">
+        <path d="M66 100 Q62 106 62 110 Q62 114 66 114 Q70 114 70 110 Q70 106 66 100 Z" fill="#e3aa4e"/>
+        <circle cx="66" cy="116" r="1.6" fill="#8a5a3a"/>
+      </g>
     </svg>
   </div>
 </div>
@@ -938,8 +1030,13 @@
       </div>
     </div>
     <p class="tip" style="margin-top:4px">点灯、清完当日功课、完成复习、记录模考都会添灯油；每天第一次见到小灯还有「开灯礼」。</p>
-    <div class="pet-skin-grid" id="petSkinGrid"></div>
-    <p class="tip" style="margin-top:12px">皮肤按等级定价：勇者 → 史诗 → 传说；挂件、成就和自定义形象下一轮加入。</p>
+    <div class="shop-tabs" id="petShopTabs">
+      <button data-tab="skin" class="on" onclick="petShopTabSet('skin')">皮肤</button>
+      <button data-tab="acc" onclick="petShopTabSet('acc')">挂件</button>
+      <button data-tab="me" onclick="petShopTabSet('me')">身份</button>
+      <button data-tab="ach" onclick="petShopTabSet('ach')">成就</button>
+    </div>
+    <div id="petShopBody"></div>
   </div>
 </div>
 <button id="petRestore" class="hidden" title="唤回小灯" onclick="petToggle(true)">🏮</button>
@@ -948,7 +1045,7 @@
 <script>
 /* ===================== 数据层 ===================== */
 const STORE_KEY = 'ky_en1_workbench_v1';
-let reviewQueue = [], reviewIdx = 0, reviewMode = 'card';
+let reviewQueue = [], reviewIdx = 0, reviewMode = 'card', reviewEarly = false;
 
 const DEFAULT_DAILY_TASKS=[
   {id:'d_vocab',text:'背诵单词 30 个',desc:'完成今日词汇目标'},
@@ -974,7 +1071,7 @@ function defaultDB(){
     profile:{name:'',goal:'',examDate:'',vocabGoal:30,cohort:1},
     words:[], papers:[], writings:[], sentences:[], mistakes:[],
     checkins:{}, materials:'', dailyTasks:DEFAULT_DAILY_TASKS.map(t=>({...t})),
-    aiKey:'', aiEndpoint:'', aiHistory:[],
+    aiKey:'', aiEndpoint:'', aiHistory:[], weekReports:[],
     aiCfg:{provider:'deepseek',model:'deepseek-chat',keys:{},endpoints:{}},
     petCfg:defaultPetCfg(),
     targets:{1:{完形填空:7,阅读理解:37,新题型:8,翻译:6,小作文:7,大作文:15},
@@ -1008,6 +1105,7 @@ function normalizeDB(){
     DB.v=3;
   }
   if(!DB.aiHistory) DB.aiHistory=[];
+  if(!Array.isArray(DB.weekReports)) DB.weekReports=[];
   /* v4：多供应商 AI 配置 + 桌宠设置；老的单 Key/端点迁入 deepseek 槽位 */
   if(!DB.v||DB.v<4){
     if(!DB.aiCfg){
@@ -1050,6 +1148,7 @@ function normalizeDB(){
       if(m.reviewCount==null) m.reviewCount=0;
       if(!isIso(m.lastReviewed)) m.lastReviewed='';
       if(m.lapses==null) m.lapses=0;
+      if(m.linkedWordId==null) m.linkedWordId='';
     });
     DB.v=6;
   }
@@ -1492,6 +1591,31 @@ function renderBanner(){
 function gotoProfile(){ switchTab('home'); setTimeout(()=>document.getElementById('pExam').focus(),350); }
 
 /* ===================== 首页 ===================== */
+function renderTodayReview(){
+  const badge=document.getElementById('todayReviewBadge');
+  if(!badge) return;
+  const due=dueWords().length;
+  const reviewed=DB.words.filter(w=>w.lastReview===todayStr()).length;
+  const text=document.getElementById('todayReviewText');
+  const b1=document.getElementById('todayReviewBtn'), b2=document.getElementById('todayDictBtn');
+  badge.textContent=due+' 词';
+  badge.style.color=due?'var(--zhu)':'var(--teng)';
+  if(!DB.words.length){
+    text.textContent='词库还是空的，先去「词汇」导入或添加单词，再回来复习。';
+    b1.disabled=true; b2.disabled=true; b1.textContent='暂无单词';
+  }else if(due){
+    text.innerHTML=`有 <b>${due}</b> 个词到期；今天已复习 <b>${reviewed}</b> 个。答对会按遗忘曲线把下次复习推远。`;
+    b1.disabled=false; b2.disabled=false; b1.textContent='开始复习';
+  }else{
+    text.innerHTML=`今天的词都复习完了；今天已复习 <b>${reviewed}</b> 个。想多练可以「提前复习」。`;
+    b1.disabled=true; b2.disabled=true; b1.textContent='今日已完成';
+  }
+}
+function homeStartReview(mode){
+  switchTab('vocab');
+  if(mode==='dict') startDictation(); else startReview();
+}
+function homeStartAdvance(){ switchTab('vocab'); startAdvanceReview(); }
 function renderDashboard(){
   const c = DB.checkins[todayStr()] || {tasks:{}};
   document.getElementById('todayPlan').innerHTML=DB.dailyTasks.map(x=>{
@@ -1510,7 +1634,7 @@ function renderDashboard(){
     const days=Math.ceil((new Date(DB.profile.examDate)-new Date())/86400000);
     cd.innerHTML='距离考试还有 '+(days>=0?days:0)+' 天'+(DB.profile.name?('　·　'+DB.profile.name+(DB.profile.goal?' / '+DB.profile.goal:'')):'');
   } else cd.textContent='尚未设置考试日期。';
-  renderQuick(); renderHeat(); renderRecent();
+  renderQuick(); renderHeat(); renderRecent(); renderTodayReview();
 }
 function renderQuick(){
   const due=dueWords().length;
@@ -1557,13 +1681,14 @@ function toggleTask(k,v){
   const d=todayStr(); DB.checkins[d]=DB.checkins[d]||{tasks:{}};
   DB.checkins[d].tasks[k]=v; save(); renderDashboard();
   if(v&&DB.dailyTasks.length&&DB.dailyTasks.every(t=>DB.checkins[d].tasks[t.id])){
+    DB.petCfg.stats.tasksDone=(DB.petCfg.stats.tasksDone||0)+1;
     petEarn('tasks:'+d,8); petSay(pickPetLine('taskDone'),'happy');
   }
 }
 function doCheckin(){
   const d=todayStr(); DB.checkins[d]=DB.checkins[d]||{tasks:{}};
   if(DB.checkins[d].checked){ toast('今天这盏灯已经亮了 🏮'); return; }
-  DB.checkins[d].checked=true; save(); renderDashboard();
+  DB.checkins[d].checked=true; DB.petCfg.stats.checkins=(DB.petCfg.stats.checkins||0)+1; save(); renderDashboard();
   petEarn('checkin:'+d,5);
   toast('灯火已点 · 灯油 +5');
   petCheckinHook(); petFlameLevel();
@@ -1679,7 +1804,7 @@ function renderWords(){
   const q=document.getElementById('wSearch').value.trim().toLowerCase();
   const dueN=dueWords().length;
   const dueEl=document.getElementById('dueInfo');
-  if(dueEl) dueEl.textContent='待复习 '+dueN+' 词';
+  if(dueEl) dueEl.innerHTML='待复习 '+dueN+' 词 · <a style="color:var(--teng);cursor:pointer" onclick="startAdvanceReview()">提前复习</a>';
   let list=DB.words.slice();
   if(f!=='all') list=list.filter(w=>String(w.mastery)===f);
   if(q) list=list.filter(w=>(w.term+' '+w.mean+' '+(w.tag||'')).toLowerCase().includes(q));
@@ -1729,17 +1854,28 @@ function srsRate(w,level){
   w.nextReview=addDaysStr(t,w.interval);
   w.mastery=level===0?0:(level===1?1:Math.min(3,(w.mastery||0)+1));
 }
+/* 提前复习：把还没到期的词按最近到期顺序拉来先过一遍，评完按今天重新排期 */
+function startAdvanceReview(){
+  const t=todayStr();
+  reviewQueue=DB.words.filter(w=>w.nextReview&&w.nextReview>t)
+    .sort((a,b)=>(a.nextReview||'').localeCompare(b.nextReview||'')||((a.mastery||0)-(b.mastery||0)))
+    .slice(0,30);
+  if(reviewQueue.length===0){ toast(DB.words.length?'没有可提前复习的词，先把到期的清掉吧':'词库还是空的，先添一盏灯'); return; }
+  reviewMode='card'; reviewEarly=true; reviewIdx=0;
+  document.getElementById('reviewBox').classList.remove('hidden'); revRefresh();
+  toast('提前复习：本轮 '+reviewQueue.length+' 词，评完按今天重新排期');
+}
 function startReview(){
   reviewQueue=dueWords(50);
   if(reviewQueue.length===0){ toast(DB.words.length?'今天没有到期的单词，明天再来 🏮':'词库还是空的，先添一盏灯'); return; }
-  reviewMode='card'; reviewIdx=0;
+  reviewMode='card'; reviewEarly=false; reviewIdx=0;
   document.getElementById('reviewBox').classList.remove('hidden'); revRefresh();
 }
 /* 听写模式：卡片不出单词，听发音回想拼写与词义，翻面验证 */
 function startDictation(){
   reviewQueue=dueWords(50);
   if(reviewQueue.length===0){ toast(DB.words.length?'今天没有到期的单词，明天再来 🏮':'词库还是空的，先添一盏灯'); return; }
-  reviewMode='dict'; reviewIdx=0;
+  reviewMode='dict'; reviewEarly=false; reviewIdx=0;
   document.getElementById('reviewBox').classList.remove('hidden'); revRefresh();
 }
 function revRefresh(){
@@ -1752,7 +1888,7 @@ function revRefresh(){
   document.getElementById('revMean').textContent=(w.pos?('['+w.pos+'] '):'')+w.mean+(w.tag?(' · '+w.tag):'');
   document.getElementById('revMean').classList.add('hidden');
   document.getElementById('revRevealBtn').textContent=dict?'显示答案':'显示释义';
-  document.getElementById('revProgress').textContent='('+(reviewIdx+1)+'/'+reviewQueue.length+')'+(dict?' · 听写模式':'');
+  document.getElementById('revProgress').textContent='('+(reviewIdx+1)+'/'+reviewQueue.length+')'+(dict?' · 听写模式':'')+(reviewEarly?' · 提前':'');
   if((dict||VPREFS.autoReview)&&w.term) voiceWord(w.term);
 }
 function revReveal(){
@@ -1764,12 +1900,13 @@ function revReveal(){
 function revResult(level){
   const w=reviewQueue[reviewIdx];
   srsRate(w,level);
+  DB.petCfg.stats.reviews=(DB.petCfg.stats.reviews||0)+1;
   save(); reviewIdx++;
   if(level===2) petSay(pickPetLine('reviewGood'));
-  if(reviewIdx>=reviewQueue.length){ toast('复习完成！'); document.getElementById('reviewBox').classList.add('hidden'); renderWords(); renderDashboard(); petEarnReview(); petSay('这轮复习收官，词库又扎实一分。','happy'); }
+  if(reviewIdx>=reviewQueue.length){ toast('复习完成！'); document.getElementById('reviewBox').classList.add('hidden'); reviewEarly=false; renderWords(); renderDashboard(); petEarnReview(); petSay('这轮复习收官，词库又扎实一分。','happy'); }
   else { toast(level===0?'没关系，明天再来一次':('记住了 · 下次 '+w.interval+' 天后复习')); revRefresh(); }
 }
-function endReview(){ reviewMode='card'; document.getElementById('reviewBox').classList.add('hidden'); renderWords(); renderDashboard(); }
+function endReview(){ reviewMode='card'; reviewEarly=false; document.getElementById('reviewBox').classList.add('hidden'); renderWords(); renderDashboard(); }
 
 /* ===================== 整套模考 / 全部记录 ===================== */
 function addPaper(){
@@ -1780,6 +1917,7 @@ function addPaper(){
   const p={id:uid(),date:todayStr(),year,type:'整套模考',score,full,note:document.getElementById('pNote').value.trim()};
   DB.papers.unshift(p);
   ['pYear','pScore','pNote'].forEach(i=>document.getElementById(i).value='');
+  DB.petCfg.stats.exams=(DB.petCfg.stats.exams||0)+1;
   save(); petEarn('paper:'+p.id,8); renderPapers(); renderRecent(); toast('模考记录已保存 · 灯油 +8');
 }
 function deletePaper(id){ DB.papers=DB.papers.filter(x=>x.id!==id); syncTomb('papers',id); save(); renderPapers(); TOPICS.forEach(t=>renderTopic(t.key)); renderRecent(); }
@@ -2115,8 +2253,43 @@ function renderMistakes(){
       return `<tr><td><span class="tag">${esc(m.type)}</span></td>
       <td>${esc(m.q)}</td><td>${esc(m.a||'—')}</td><td class="muted small">${esc(m.why||'—')}</td>
       <td><span class="pill ${s[1]}">${s[0]}</span>${m.reviewCount?`<div class="muted small" style="margin-top:2px">复盘 ${m.reviewCount} 次</div>`:''}</td>
-      <td><button class="btn danger sm" onclick="deleteMistake('${m.id}')">删</button></td></tr>`;
+      <td><button class="btn ghost sm" onclick="mistakeToWord('${m.id}')">${m.linkedWordId?'已存词':'＋词库'}</button>
+        <button class="btn danger sm" onclick="deleteMistake('${m.id}')">删</button></td></tr>`;
     }).join('')+'</tbody></table></div>';
+}
+/* 错题里揪生词：从题干/答案/原因里挑最长的英文词做候选，用户确认后入库 */
+const MW_STOP=new Set(('the a an and or but if of to in on for with from by as is are was were be been being that this these those it its which what who whom whose when where why how not no can could should would may might must will shall do does did have has had than then there their they you your we our he she his her them also more most much many some such other into over under about after before during while because although though even only just very too so both each either neither '+
+  'following according passage author text best title question answer choose option correct incorrect true false first second last main idea purpose tone attitude infer imply suggest paragraph line word phrase sentence').split(' '));
+let mwMistakeId=null;
+function mistakeToWord(id){
+  const m=DB.mistakes.find(x=>x.id===id); if(!m) return;
+  if(m.linkedWordId&&DB.words.some(w=>w.id===m.linkedWordId)){ toast('这道错题的生词已经入库了'); return; }
+  const tokens=((m.q||'')+' '+(m.a||'')+' '+(m.why||'')).match(/[A-Za-z][A-Za-z'-]{2,}/g)||[];
+  const cand=tokens.filter(t=>!MW_STOP.has(t.toLowerCase())).sort((a,b)=>b.length-a.length)[0]||'';
+  mwMistakeId=id;
+  document.getElementById('mwTerm').value=cand;
+  document.getElementById('mwMean').value='';
+  document.getElementById('mWordModal').classList.remove('hidden');
+  setTimeout(()=>document.getElementById('mwTerm').focus(),50);
+}
+function mrToWord(){ const m=mrQueue[mrIdx]; if(m) mistakeToWord(m.id); }
+function mWordClose(){ mwMistakeId=null; document.getElementById('mWordModal').classList.add('hidden'); }
+function mWordSave(){
+  if(!mwMistakeId) return;
+  const m=DB.mistakes.find(x=>x.id===mwMistakeId); if(!m) return mWordClose();
+  const term=document.getElementById('mwTerm').value.trim();
+  const mean=document.getElementById('mwMean').value.trim()||'（待补）';
+  if(!term){ toast('先填一个单词'); return; }
+  let w=DB.words.find(x=>x.term.toLowerCase()===term.toLowerCase());
+  if(!w){
+    w={id:uid(),term,phon:'',pos:'',mean,tag:'错题',mastery:0,...wordSrsInit()};
+    DB.words.push(w);
+  }
+  m.linkedWordId=w.id;
+  save(); renderWords(); renderMistakes(); renderDashboard(); mWordClose();
+  if(mrQueue.length) mrRefresh();
+  toast(w.mean!==mean?'词库已有「'+term+'」，已建立关联':'「'+term+'」已存进词库');
+  petSay('错题里的生词入库，下次它就归你了。','happy');
 }
 /* 错题重练：先回想，再翻答案，按 不会/模糊/掌握 三档更新复盘状态 */
 let mrQueue=[], mrIdx=0;
@@ -2138,6 +2311,12 @@ function mrRefresh(){
   a.classList.add('hidden');
   document.getElementById('mrRevealBtn').textContent='显示答案';
   document.getElementById('mrProgress').textContent='('+(mrIdx+1)+'/'+mrQueue.length+')';
+  const wb=document.getElementById('mrWordBtn');
+  if(wb){
+    const linked=m.linkedWordId&&DB.words.some(w=>w.id===m.linkedWordId);
+    wb.textContent=linked?'已存词':'＋存进词库';
+    wb.disabled=!!linked;
+  }
 }
 function mrReveal(){
   document.getElementById('mrA').classList.remove('hidden');
@@ -2219,15 +2398,16 @@ function donutChart(data){
         <text x="${cx}" y="${cy+14}" font-size="10" text-anchor="middle" fill="#8d99b5">总词汇</text></svg>`;
   return svg;
 }
-/* ===================== 学习周报 ===================== */
-function weekStats(){
-  const days=weekDates(7), start=days[0], end=days[6];
-  const prevDays=weekDates(14).slice(0,7), pStart=prevDays[0], pEnd=prevDays[6];
+/* ===================== 学习报告（周报 / 月报 / 历史 / AI 点评） ===================== */
+let reportDays=7, reportViewStart='';
+function rangeStats(days){
+  const all=weekDates(days*2), prev=all.slice(0,days), cur=all.slice(days);
+  const start=cur[0], end=cur[cur.length-1], pStart=prev[0], pEnd=prev[prev.length-1];
   const words=DB.words||[], papers=DB.papers||[], mistakes=DB.mistakes||[];
   const inRange=(d,a,b)=>!!d&&d>=a&&d<=b;
   const reviewed=words.filter(w=>inRange(w.lastReview,start,end)).length;
   const newWords=words.filter(w=>inRange(w.createdAt,start,end)).length;
-  const checkDays=days.filter(d=>DB.checkins[d]&&DB.checkins[d].checked).length;
+  const checkDays=cur.filter(d=>DB.checkins[d]&&DB.checkins[d].checked).length;
   const thisPapers=papers.filter(p=>inRange(p.date,start,end));
   const prevPapers=papers.filter(p=>inRange(p.date,pStart,pEnd));
   const avgRate=arr=>arr.length?Math.round(arr.reduce((s,p)=>s+(p.full?p.score/p.full*100:0),0)/arr.length):null;
@@ -2236,7 +2416,7 @@ function weekStats(){
   const masteredMist=mistakes.filter(m=>m.status==='mastered').length;
   const writings=(DB.writings||[]).filter(w=>inRange(w.date,start,end)).length;
   const sentences=(DB.sentences||[]).filter(s=>inRange(s.date,start,end)).length;
-  const dayMap=days.map(d=>({
+  const dayMap=cur.map(d=>({
     d,
     chk:!!(DB.checkins[d]&&DB.checkins[d].checked),
     rev:words.filter(w=>w.lastReview===d).length,
@@ -2248,10 +2428,11 @@ function weekStats(){
     checkDays,papers:thisPapers,paperSets,prevPapers,rateThis:avgRate(thisPapers),ratePrev:avgRate(prevPapers),
     newMist,revMist,masteredMist,writings,sentences,dayMap};
 }
-/* 本周最该补的题型：平均分离目标最远的那一科（都用原始分比较） */
-function weakestType(){
+/* 最该补的题型：平均分离目标最远的那一科（原始分比较） */
+function weakestType(papers){
+  const src=Array.isArray(papers)?papers:(DB.papers||[]);
   const by={};
-  (DB.papers||[]).forEach(p=>{ if(p.type!=='整套模考'&&p.full)(by[p.type]=by[p.type]||[]).push(p.score); });
+  src.forEach(p=>{ if(p.type!=='整套模考'&&p.full)(by[p.type]=by[p.type]||[]).push(p.score); });
   let best=null;
   Object.keys(by).forEach(k=>{
     const avg=Math.round(by[k].reduce((a,b)=>a+b,0)/by[k].length*10)/10;
@@ -2260,27 +2441,94 @@ function weakestType(){
   });
   return best;
 }
-function renderWeekly(){
-  const s=weekStats();
+function currentWeekStart(){ return weekDates(7)[0]; }
+function reportSnapshot(s){
+  return {start:s.start,end:s.end,days:s.days,reviewed:s.reviewed,newWords:s.newWords,
+    checkDays:s.checkDays,paperSets:s.paperSets,rateThis:s.rateThis,ratePrev:s.ratePrev,
+    newMist:s.newMist,revMist:s.revMist,masteredMist:s.masteredMist,writings:s.writings,
+    sentences:s.sentences,weak:weakestType(s.papers),dayMap:s.dayMap,generatedAt:Date.now()};
+}
+function upsertWeekSnapshot(s){
+  if(!Array.isArray(DB.weekReports)) DB.weekReports=[];
+  const snap=reportSnapshot(s);
+  const i=DB.weekReports.findIndex(r=>r.start===s.start);
+  const old=i>=0?DB.weekReports[i]:null;
+  const keys=['checkDays','reviewed','paperSets','rateThis','newMist','revMist','writings','sentences'];
+  const changed=!old||keys.some(k=>old[k]!==snap[k]);
+  if(i>=0){ snap.aiComment=old.aiComment||''; DB.weekReports[i]=snap; }
+  else DB.weekReports.push(snap);
+  DB.weekReports=DB.weekReports.sort((a,b)=>String(a.start).localeCompare(String(b.start))).slice(-60);
+  if(changed) save();
+}
+function reportModeSet(days){
+  reportDays=days; reportViewStart='';
+  document.getElementById('reportWeekBtn').classList.toggle('on',days===7);
+  document.getElementById('reportMonthBtn').classList.toggle('on',days===30);
+  renderReport();
+}
+function reportHistoryPick(v){
+  reportViewStart=v||'';
+  if(v){ reportDays=7; document.getElementById('reportWeekBtn').classList.add('on'); document.getElementById('reportMonthBtn').classList.remove('on'); }
+  renderReport();
+}
+function renderReport(){
+  const sel=document.getElementById('reportHistory');
+  if(sel){
+    const cur=currentWeekStart();
+    const hist=(DB.weekReports||[]).filter(r=>r.start!==cur).sort((a,b)=>String(b.start).localeCompare(String(a.start)));
+    sel.innerHTML='<option value="">当前报告</option>'+hist.map(r=>{
+      const label=r.start.slice(5)+' ~ '+r.end.slice(5);
+      const ai=r.aiComment?' ✎':'';
+      return `<option value="${r.start}">${label}${ai}</option>`;
+    }).join('');
+    sel.value=reportViewStart||'';
+  }
+  const title=document.getElementById('reportTitle');
+  if(title) title.textContent=reportViewStart?'往期周报':(reportDays===7?'本周学习周报':'近 30 天学习报告');
+  const aiBtn=document.getElementById('reportAiBtn');
+  if(aiBtn) aiBtn.disabled=!!reportViewStart;
+  if(reportViewStart){
+    const snap=(DB.weekReports||[]).find(r=>r.start===reportViewStart);
+    if(!snap){ toast('这期周报没有留存'); reportViewStart=''; renderReport(); return; }
+    renderReportBody(snap,true);
+    return;
+  }
+  const s=rangeStats(reportDays);
+  if(reportDays===7) upsertWeekSnapshot(s);
+  renderReportBody(s,false);
+}
+function renderReportBody(s,past){
+  const days=s.days||7;
   const range=document.getElementById('weekRange');
   if(range) range.textContent=s.start.slice(5)+' ~ '+s.end.slice(5);
-  const strip=s.dayMap.map(x=>{
-    const wd='日一二三四五六'[new Date(x.d+'T00:00:00').getDay()];
-    return `<div class="wk-day${x.chk?' on':''}"><span class="wd">周${wd}</span><span class="dd">${x.d.slice(8)}</span>
-      <div class="dots">${x.chk?'<i class="dt chk" title="点灯"></i>':''}${x.rev?'<i class="dt rev" title="复习 '+x.rev+' 词"></i>':''}${x.paper?'<i class="dt pp" title="练习"></i>':''}${x.mist?'<i class="dt mist" title="新增错题"></i>':''}</div></div>`;
-  }).join('');
-  const rateLine=s.rateThis==null?'本周还没有练习记录':('本周平均得分率 <b>'+s.rateThis+'%</b>'+
-    (s.ratePrev!=null?('（上周 '+s.ratePrev+'%，'+(s.rateThis-s.ratePrev>=0?'+':'')+(s.rateThis-s.ratePrev)+'%）'):''));
-  const weak=weakestType();
+  let strip;
+  if(days<=7){
+    strip='<div class="wk-strip">'+s.dayMap.map(x=>{
+      const wd='日一二三四五六'[new Date(x.d+'T00:00:00').getDay()];
+      return `<div class="wk-day${x.chk?' on':''}"><span class="wd">周${wd}</span><span class="dd">${x.d.slice(8)}</span>
+        <div class="dots">${x.chk?'<i class="dt chk" title="点灯"></i>':''}${x.rev?'<i class="dt rev" title="复习 '+x.rev+' 词"></i>':''}${x.paper?'<i class="dt pp" title="练习"></i>':''}${x.mist?'<i class="dt mist" title="新增错题"></i>':''}</div></div>`;
+    }).join('')+'</div>';
+  }else{
+    strip='<div class="wk-month">'+s.dayMap.map(x=>{
+      const cls=x.chk?'chk':(x.rev?'rev':(x.paper?'pp':(x.mist?'mist':'')));
+      const tip=x.d+' · 点灯'+(x.chk?'✓':'—')+' · 复习'+x.rev+' · 练习'+x.paper+' · 错题'+x.mist;
+      return `<i class="wm ${cls}" title="${tip}"></i>`;
+    }).join('')+'</div>';
+  }
+  const period=past?'当周':(days===7?'本周':'近 30 天');
+  const rateLine=s.rateThis==null?(period+'还没有练习记录'):(period+'平均得分率 <b>'+s.rateThis+'%</b>'+
+    (s.ratePrev!=null?('（上一周期 '+s.ratePrev+'%，'+(s.rateThis-s.ratePrev>=0?'+':'')+(s.rateThis-s.ratePrev)+'%）'):''));
+  const weak=s.weak!==undefined?s.weak:weakestType(s.papers);
   const weakLine=weak?`最该补：<b>${weak.type}</b>，平均 ${weak.avg} 分，`+
     (weak.gap>0?`距目标 ${weak.gap} 分`:`已超目标 ${-weak.gap} 分`)+'。':'';
-  const petLine=s.checkDays>=5?'灯亮得很稳，我陪你把这股劲头带到下周。':
+  const petLine=s.checkDays>=Math.max(5,Math.ceil(days*0.7))?'灯亮得很稳，我陪你把劲头带到下一段。':
     (s.due>0?`还有 ${s.due} 个词到期，今天先清一波？`:'慢慢来，明天先点一盏也算数。');
+  const aiText=s.aiComment||(!past&&window._weeklyAiText)||'';
   const body=document.getElementById('weeklyBody');
   if(body){
-    body.innerHTML=`<div class="wk-strip">${strip}</div>
+    body.innerHTML=strip+`
       <div class="wk-grid">
-        <div class="wk-tile"><b>${s.checkDays}/7</b><span>点灯天数</span></div>
+        <div class="wk-tile"><b>${s.checkDays}/${days}</b><span>点灯天数</span></div>
         <div class="wk-tile"><b>${s.reviewed}</b><span>复习词数</span></div>
         <div class="wk-tile"><b>${s.paperSets}</b><span>练习套数</span></div>
         <div class="wk-tile"><b>${s.newMist}</b><span>新增错题</span></div>
@@ -2288,32 +2536,65 @@ function renderWeekly(){
       <div class="wk-line">${rateLine}<br>
         新学 <b>${s.newWords}</b> 词 · 复盘错题 <b>${s.revMist}</b> 条（已掌握 <b>${s.masteredMist}</b> 条）· 写作 <b>${s.writings}</b> 篇 · 长难句 <b>${s.sentences}</b> 句<br>
         ${weakLine}</div>
-      <div class="wk-line" style="color:var(--yan)">🐾 小灯说：${petLine}</div>`;
+      <div class="wk-line" style="color:var(--yan)">🐾 小灯说：${petLine}</div>
+      <div class="wk-line" id="weeklyAi" style="color:var(--teng)">${aiText?('🐾 小灯点评：'+esc(aiText)):''}</div>`;
   }
   window._weeklyText=[
-    '花千树 · 本周学习周报（'+s.start+' ~ '+s.end+'）',
-    '点灯 '+s.checkDays+'/7 天｜复习 '+s.reviewed+' 词｜练习 '+s.paperSets+' 套｜新增错题 '+s.newMist+' 条',
+    '花千树 · '+(past?'往期学习周报':(days===7?'本周学习周报':'近 30 天学习报告'))+'（'+s.start+' ~ '+s.end+'）',
+    '点灯 '+s.checkDays+'/'+days+' 天｜复习 '+s.reviewed+' 词｜练习 '+s.paperSets+' 套｜新增错题 '+s.newMist+' 条',
     rateLine.replace(/<[^>]+>/g,''),
     '新学 '+s.newWords+' 词｜复盘错题 '+s.revMist+' 条｜已掌握 '+s.masteredMist+' 条｜写作 '+s.writings+' 篇｜长难句 '+s.sentences+' 句',
     weakLine.replace(/<[^>]+>/g,''),
-    '小灯说：'+petLine
+    '小灯说：'+petLine,
+    aiText?('小灯点评：'+aiText):''
   ].filter(Boolean).join('\n');
 }
+/* 兼容旧调用名 */
+function renderWeekly(){ renderReport(); }
 function copyWeekly(){
-  if(!window._weeklyText) renderWeekly();
+  if(!window._weeklyText) renderReport();
   const text=window._weeklyText||'';
   const fallback=()=>{
     const ta=document.createElement('textarea'); ta.value=text;
     ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select();
-    try{ document.execCommand('copy'); toast('周报已复制'); }catch(e){ toast('复制失败'); }
+    try{ document.execCommand('copy'); toast('报告已复制'); }catch(e){ toast('复制失败'); }
     ta.remove();
   };
   if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(()=>toast('周报已复制')).catch(fallback);
+    navigator.clipboard.writeText(text).then(()=>toast('报告已复制')).catch(fallback);
   }else fallback();
 }
+async function weeklyAiComment(){
+  if(reportViewStart){ toast('往期报告只展示留存，不重新点评'); return; }
+  const key=(DB.aiCfg.keys[DB.aiCfg.provider]||'').trim();
+  if(!DB.aiCfg.model||!key){ toast('先在「写作 → AI 润色」配置模型和 Key'); return; }
+  if(AI_PROXY_OK===null) await aiProbeProxy();
+  if(!AI_PROXY_OK){ toast('后端服务未启动，暂时无法点评'); return; }
+  const btn=document.getElementById('reportAiBtn'), oldBtn=btn.textContent;
+  btn.disabled=true; btn.textContent='小灯在读…';
+  const holder=document.getElementById('weeklyAi');
+  if(holder) holder.textContent='🐾 小灯正在读你的报告…';
+  try{
+    const r=await fetch((SYNC.apiBase||'')+'/api/v1/ai/chat',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({provider:DB.aiCfg.provider,model:DB.aiCfg.model,
+        api_key:key,endpoint:DB.aiCfg.endpoints[DB.aiCfg.provider]||'',
+        messages:[{role:'user',content:'这是我最近的学习报告：\n'+window._weeklyText+'\n请用不超过 50 字点评：先肯定一句，再给一个具体可执行的小建议，不要提“作为AI”。'}]})});
+    const j=await r.json();
+    const text=j.content||('（模型没接好：'+(typeof j.detail==='string'?j.detail:('HTTP '+r.status))+'）');
+    window._weeklyAiText=text;
+    if(holder) holder.textContent='🐾 小灯点评：'+text;
+    const snap=(DB.weekReports||[]).find(x=>x.start===currentWeekStart());
+    if(snap){ snap.aiComment=text; save(); }
+    petSpeakText(text);
+  }catch(e){
+    if(holder) holder.textContent='🐾 小灯没读出来，稍后再试。';
+  }finally{
+    btn.disabled=false; btn.textContent=oldBtn;
+  }
+}
 function renderStats(){
-  renderWeekly();
+  renderReport();
   const byType={};
   DB.papers.forEach(p=>{ if(p.type!=='整套模考') (byType[p.type]=byType[p.type]||[]).push(p.score); });
   const typeData=Object.keys(byType).map(k=>({label:k,
@@ -2633,6 +2914,7 @@ async function saveGrade(){
   });
   const mTypeMap={cloze:'完形',reading:'阅读',newtype:'阅读'};
   secs.forEach(s=>{ if(!s.subj){ for(let i=0;i<s.n;i++){ const a=curGrader.answers[s.key][i]; const k=curGrader.keys[s.key]?curGrader.keys[s.key][i]:''; if(a && a!==k){ DB.mistakes.unshift({id:uid(),type:mTypeMap[s.key]||'其他',q:(s.title.split('（')[0])+' 第'+(i+1)+'题',a:'正确答案 '+k,why:'你的选择 '+a,date:todayStr(),status:'new',reviewCount:0,lastReviewed:'',lapses:0}); } } } });
+  DB.petCfg.stats.exams=(DB.petCfg.stats.exams||0)+1;
   save(); petEarn('exam:'+curGrader.id,12); renderPapers(); renderMistakes(); TOPICS.forEach(t=>renderTopic(t.key)); renderRecent();
   toast('成绩已记入各题型专题，错题已入库 · 灯油 +12');
   const tg=targetFor('整套模考',et), ratio=tg>0?(curGrader.lastTotal||0)/tg:0;
@@ -2844,29 +3126,123 @@ function petDailyGift(){
     setTimeout(()=>petSay('今日开灯礼：灯油 +'+n+'，攒着给我换新衣裳。'),2600);
   }
 }
+/* 挂件配置 */
+const PET_ACC={
+  none:{name:'不戴',icon:'—',tier:'',cls:'',price:0,desc:'清清爽爽的小灯。'},
+  shusheng:{name:'书生巾',icon:'🎓',tier:'勇者',cls:'hero',price:40,desc:'青衿书生，灯下读书。'},
+  weijin:{name:'围巾',icon:'🧣',tier:'勇者',cls:'hero',price:50,desc:'天凉了，别让灯灵着凉。'},
+  meihua:{name:'梅花枝',icon:'🌸',tier:'史诗',cls:'epic',price:100,desc:'折一枝梅花，插在灯梁上。'},
+  lingdang:{name:'小铃铛',icon:'🔔',tier:'勇者',cls:'hero',price:30,desc:'走两步就叮当响。'}
+};
+/* 成就：条件用现有数据算，奖励灯油只发一次 */
+const PET_ACHIEVEMENTS=[
+  {id:'checkin1',name:'第一盏灯',desc:'累计点灯 1 天',goal:1,reward:20,val:()=>Object.keys(DB.checkins).filter(k=>DB.checkins[k].checked).length},
+  {id:'checkin7',name:'七日不灭',desc:'连续点灯 7 天',goal:7,reward:50,val:()=>calcStreak()},
+  {id:'checkin30',name:'一月灯火',desc:'连续点灯 30 天',goal:30,reward:150,val:()=>calcStreak()},
+  {id:'review100',name:'百词过目',desc:'累计复习 100 个词次',goal:100,reward:60,val:()=>petStat('reviews')},
+  {id:'words500',name:'词海拾贝',desc:'词库累计 500 词',goal:500,reward:80,val:()=>DB.words.length},
+  {id:'master100',name:'百词归心',desc:'掌握 100 个词',goal:100,reward:100,val:()=>DB.words.filter(w=>w.mastery>=3).length},
+  {id:'mistake10',name:'错题猎人',desc:'累计复盘 10 条错题',goal:10,reward:60,val:()=>DB.mistakes.reduce((s,m)=>s+(m.reviewCount||0),0)},
+  {id:'exam10',name:'十套成钢',desc:'记录 10 套模考/判分',goal:10,reward:100,val:()=>new Set(DB.papers.map(p=>p.date+'|'+(p.year||p.type))).size}
+];
+function petStat(k){ return (DB.petCfg.stats&&DB.petCfg.stats[k])||0; }
+function petAchUnlocked(a){ return a.val()>=a.goal; }
+function petCheckAchievements(){
+  const claimed=DB.petCfg.claimed||[];
+  const newly=[]; let sum=0;
+  PET_ACHIEVEMENTS.forEach(a=>{
+    if(petAchUnlocked(a)&&!claimed.includes('ach:'+a.id)){
+      claimed.push('ach:'+a.id);
+      DB.petCfg.coins=(DB.petCfg.coins||0)+a.reward;
+      sum+=a.reward;
+      newly.push(a.name);
+    }
+  });
+  if(newly.length){ save(); petCoinUI(); petCoinPop(sum); toast('成就解锁：'+newly.join('、')+' · 灯油 +'+sum); }
+  return newly;
+}
+function petApplyIdentity(){
+  const name=((DB.petCfg&&DB.petCfg.name)||'小灯').trim()||'小灯';
+  const el=document.getElementById('petNameLabel'); if(el) el.textContent=name;
+}
 function petApplySkin(){
   const av=document.getElementById('petAvatar'); if(!av) return;
   const id=DB.petCfg&&DB.petCfg.skin;
   av.dataset.skin=PET_SKINS[id]?id:'zhusha';
+  const acc=DB.petCfg&&DB.petCfg.accessory;
+  av.dataset.acc=PET_ACC[acc]?acc:'none';
+}
+let shopTab='skin';
+function petShopTabSet(tab){
+  shopTab=tab;
+  document.querySelectorAll('#petShopTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
+  petRenderShop();
 }
 function petShopOpen(){
-  petCoinUI(); petRenderShop();
+  petCoinUI();
+  document.querySelectorAll('#petShopTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===shopTab));
+  petRenderShop();
   document.getElementById('petShop').classList.remove('hidden');
 }
 function petShopClose(){ document.getElementById('petShop').classList.add('hidden'); }
 function petRenderShop(){
-  const grid=document.getElementById('petSkinGrid'); if(!grid) return;
-  const owned=DB.petCfg.owned||[], cur=DB.petCfg.skin;
-  grid.innerHTML=Object.keys(PET_SKINS).map(id=>{
-    const s=PET_SKINS[id], isOwned=owned.includes(id), isCur=cur===id;
-    const pr=isCur?'装备中':(isOwned?'点击装备':'🪔 '+s.price);
-    return `<div class="pet-skin${isCur?' on':''}" onclick="petSkinClick('${id}')">
-      <div class="sw" style="background:${s.swatch}"></div>
-      <div class="nm">${s.name}<span class="tier ${s.cls}">${s.tier}</span></div>
-      <div class="ds">${s.desc}</div>
-      <div class="pr ${isCur?'equipped':(isOwned?'owned':'')}">${pr}</div>
+  const body=document.getElementById('petShopBody'); if(!body) return;
+  if(shopTab==='skin'){
+    const owned=DB.petCfg.owned||[], cur=DB.petCfg.skin;
+    body.innerHTML='<div class="pet-skin-grid">'+Object.keys(PET_SKINS).map(id=>{
+      const s=PET_SKINS[id], isOwned=owned.includes(id), isCur=cur===id;
+      const pr=isCur?'装备中':(isOwned?'点击装备':'🪔 '+s.price);
+      return `<div class="pet-skin${isCur?' on':''}" onclick="petSkinClick('${id}')">
+        <div class="sw" style="background:${s.swatch}"></div>
+        <div class="nm">${s.name}<span class="tier ${s.cls}">${s.tier}</span></div>
+        <div class="ds">${s.desc}</div>
+        <div class="pr ${isCur?'equipped':(isOwned?'owned':'')}">${pr}</div>
+      </div>`;
+    }).join('')+'</div><p class="tip" style="margin-top:12px">皮肤按等级定价：勇者 → 史诗 → 传说。</p>';
+    return;
+  }
+  if(shopTab==='acc'){
+    const owned=DB.petCfg.ownedAcc||['none'], cur=DB.petCfg.accessory||'none';
+    body.innerHTML='<div class="pet-acc-grid">'+Object.keys(PET_ACC).map(id=>{
+      const a=PET_ACC[id], isOwned=owned.includes(id), isCur=cur===id;
+      const pr=isCur?'佩戴中':(isOwned?'点击佩戴':'🪔 '+a.price);
+      return `<div class="pet-skin${isCur?' on':''}" onclick="petAccClick('${id}')">
+        <div class="sw" style="display:flex;align-items:center;justify-content:center;font-size:30px;background:rgba(20,30,56,.7)">${a.icon}</div>
+        <div class="nm">${a.name}${a.tier?`<span class="tier ${a.cls}">${a.tier}</span>`:''}</div>
+        <div class="ds">${a.desc}</div>
+        <div class="pr ${isCur?'equipped':(isOwned?'owned':'')}">${pr}</div>
+      </div>`;
+    }).join('')+'</div><p class="tip" style="margin-top:12px">挂件只改样子，不影响学习和数值。</p>';
+    return;
+  }
+  if(shopTab==='me'){
+    const name=esc(DB.petCfg.name||'小灯'), persona=esc(DB.petCfg.persona||'');
+    body.innerHTML=`<div class="id-form">
+      <label>小灯的名字（最多 8 个字）</label>
+      <input id="petNameInput" maxlength="8" value="${name}" placeholder="小灯">
+      <label>性格设定（聊天时优先遵守，最多 200 字；留空就用官方人设）</label>
+      <textarea id="petPersonaInput" maxlength="200" placeholder="例如：说话简短一点，偶尔用一句诗，别太甜。">${persona}</textarea>
+      <div class="row" style="margin-top:12px">
+        <button class="btn" onclick="petSaveIdentity()">保存身份</button>
+        <button class="btn ghost" onclick="petShopTabSet('ach')">看成就 →</button>
+      </div>
+      <p class="tip">名字和设定会随账号同步；AI 聊天时作为「额外设定」传给模型，服务端的安全边界仍然生效。</p>
     </div>`;
-  }).join('');
+    return;
+  }
+  /* 成就 */
+  petCheckAchievements();
+  const claimed=DB.petCfg.claimed||[];
+  body.innerHTML='<div class="ach-grid">'+PET_ACHIEVEMENTS.map(a=>{
+    const ever=claimed.includes('ach:'+a.id), val=a.val(), ok=ever||val>=a.goal;
+    const pct=Math.min(100,Math.round(val/a.goal*100));
+    return `<div class="ach${ok?' on':''}">
+      <b>${ok?'🏆':'🔒'} ${a.name}</b>
+      <span>${a.desc}</span>
+      <div class="bar"><i style="width:${pct}%"></i></div>
+      <span style="margin-top:3px">${ever?'已解锁':(Math.min(val,a.goal)+' / '+a.goal)} · 奖励 🪔 ${a.reward}</span>
+    </div>`;
+  }).join('')+'</div>';
 }
 function petSkinClick(id){
   const s=PET_SKINS[id]; if(!s) return;
@@ -2882,6 +3258,27 @@ function petEquipSkin(id){
   const c=DB.petCfg; if(!(c.owned||[]).includes(id)) return;
   c.skin=id; c.updatedAt=Date.now(); save(); petApplySkin(); petRenderShop();
   toast('小灯换上了「'+PET_SKINS[id].name+'」');
+}
+function petAccClick(id){
+  const a=PET_ACC[id]; if(!a) return;
+  const c=DB.petCfg;
+  if((c.ownedAcc||['none']).includes(id)){ petEquipAcc(id); return; }
+  if(petCoinBalance()<a.price){ toast('灯油还差 '+(a.price-petCoinBalance())+' 滴'); return; }
+  if(!confirm('花 '+a.price+' 灯油解锁「'+a.name+'」？')) return;
+  c.coins-=a.price; c.ownedAcc=c.ownedAcc||['none']; c.ownedAcc.push(id); c.accessory=id; c.updatedAt=Date.now();
+  save(); petApplySkin(); petCoinUI(); petRenderShop();
+  toast('解锁「'+a.name+'」，小灯戴上了');
+}
+function petEquipAcc(id){
+  const c=DB.petCfg; if(!(c.ownedAcc||['none']).includes(id)) return;
+  c.accessory=id; c.updatedAt=Date.now(); save(); petApplySkin(); petRenderShop();
+  toast(id==='none'?'小灯把挂件收起来了':'小灯戴上了「'+PET_ACC[id].name+'」');
+}
+function petSaveIdentity(){
+  const name=(document.getElementById('petNameInput').value||'').trim().slice(0,8)||'小灯';
+  const persona=(document.getElementById('petPersonaInput').value||'').trim().slice(0,200);
+  DB.petCfg.name=name; DB.petCfg.persona=persona; DB.petCfg.updatedAt=Date.now();
+  save(); petApplyIdentity(); toast('身份已保存');
 }
 let petBubbleTimer=null, petLastSay=0, petChatMsgs=[];
 function petIsOn(){ return DB.petCfg&&DB.petCfg.on; }
@@ -2971,7 +3368,7 @@ function petToggle(on){
   save();
   document.getElementById('petBox').classList.toggle('hidden',!DB.petCfg.on);
   document.getElementById('petRestore').classList.toggle('hidden',DB.petCfg.on);
-  if(DB.petCfg.on){ petApplySkin(); petCoinUI(); petGreet(); petFlameLevel(); petDailyGift(); }
+  if(DB.petCfg.on){ petApplySkin(); petApplyIdentity(); petCoinUI(); petGreet(); petFlameLevel(); petDailyGift(); }
 }
 function petTogglePanel(){
   document.getElementById('petPanel').classList.toggle('hidden');
@@ -3006,7 +3403,8 @@ async function petChatSend(){
     const r=await fetch((SYNC.apiBase||'')+'/api/v1/ai/chat',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({provider:DB.aiCfg.provider,model:DB.aiCfg.model,api_key:key,
-        endpoint:DB.aiCfg.endpoints[DB.aiCfg.provider]||'',messages:petChatMsgs.slice(-10)})});
+        endpoint:DB.aiCfg.endpoints[DB.aiCfg.provider]||'',messages:petChatMsgs.slice(-10),
+        persona:(((DB.petCfg.name||'小灯')!=='小灯')?('你现在的名字叫「'+DB.petCfg.name+'」。'):'')+(DB.petCfg.persona||'')})});
     const j=await r.json();
     holder.remove();
     const a=j.content||('（模型没接好：'+(typeof j.detail==='string'?j.detail:('HTTP '+r.status))+'）');
@@ -3053,7 +3451,7 @@ function petInit(){
   }
   box.classList.toggle('hidden',!petIsOn());
   document.getElementById('petRestore').classList.toggle('hidden',petIsOn());
-  petApplySkin(); petCoinUI(); petGreet(); petFlameLevel(); petIdleChat(); petDailyGift();
+  petApplySkin(); petApplyIdentity(); petCoinUI(); petGreet(); petFlameLevel(); petIdleChat(); petDailyGift();
 }
 
 
@@ -3116,7 +3514,7 @@ function dbToWire(col){
     case 'profile': return {name:DB.profile.name||'',goal:DB.profile.goal||'',examDate:DB.profile.examDate||'',
       vocabGoal:DB.profile.vocabGoal||30,cohort:String(DB.profile.cohort||1),examType:String(DB.profile.examType||1),
       aiKey:DB.aiKey||'',aiEndpoint:DB.aiEndpoint||'',
-      aiCfg:DB.aiCfg,petCfg:DB.petCfg};
+      aiCfg:DB.aiCfg,petCfg:DB.petCfg,reports:DB.weekReports||[]};
     case 'words': return DB.words.map(w=>({id:w.id,term:w.term,phon:w.phon||'',pos:w.pos||'',mean:w.mean,tag:w.tag||'',mastery:w.mastery||0,
       createdAt:w.createdAt||'',nextReview:w.nextReview||'',interval:w.interval||0,ease:w.ease||2.5,reps:w.reps||0,lapses:w.lapses||0,lastReview:w.lastReview||''}));
     case 'papers': return DB.papers.map(p=>({id:p.id,date:p.date,year:p.year||'',type:p.type,score:p.score,
@@ -3124,7 +3522,7 @@ function dbToWire(col){
     case 'writings': return DB.writings.map(x=>({id:x.id,title:x.title||'',content:x.content,date:x.date}));
     case 'sentences': return DB.sentences.map(x=>({id:x.id,text:x.text,anal:x.anal||'',trans:x.trans||'',date:x.date}));
     case 'mistakes': return DB.mistakes.map(x=>({id:x.id,type:x.type,q:x.q,a:x.a||'',why:x.why||'',date:x.date,
-      status:x.status||'new',reviewCount:x.reviewCount||0,lastReviewed:x.lastReviewed||'',lapses:x.lapses||0}));
+      status:x.status||'new',reviewCount:x.reviewCount||0,lastReviewed:x.lastReviewed||'',lapses:x.lapses||0,linkedWordId:x.linkedWordId||''}));
     case 'checkins': return DB.checkins;
     case 'dailyTasks': return (DB.dailyTasks||[]).map(t=>({id:t.id,text:t.text,desc:t.desc||''}));
     case 'targets': return DB.targets;
@@ -3179,6 +3577,17 @@ async function syncPush(force){
 
 /* 远端 → 本地合并。数组按 id 并集；本端有未推送改动时本端胜；
    checkins 按日期合并（脏时任务逐键取或）；标量类脏则本端胜。 */
+/* 周报快照：按周起始日合并，新的覆盖旧的，最多留 60 周 */
+function mergeWeekReports(remote){
+  if(!Array.isArray(remote)) return;
+  const map=new Map((DB.weekReports||[]).map(r=>[r.start,r]));
+  remote.forEach(r=>{
+    if(!r||!r.start) return;
+    const old=map.get(r.start);
+    if(!old||(r.generatedAt||0)>=(old.generatedAt||0)) map.set(r.start,r);
+  });
+  DB.weekReports=Array.from(map.values()).sort((a,b)=>String(a.start).localeCompare(String(b.start))).slice(-60);
+}
 /* 小灯状态合并：灯油只增、已购取并集、装扮按 updatedAt 取新 */
 function mergePetCfg(remote){
   if(!remote||typeof remote!=='object'||!Object.keys(remote).length) return;
@@ -3222,6 +3631,9 @@ function mergeRemote(remote,tombs,forceRemote){
         x=Object.assign({},x,{status:old.status||'new',reviewCount:old.reviewCount||0,
           lastReviewed:old.lastReviewed||'',lapses:old.lapses||0});
       }
+      if(old&&col==='mistakes'&&!x.linkedWordId&&old.linkedWordId){
+        x=Object.assign({},x,{linkedWordId:old.linkedWordId});
+      }
       map.set(x.id,x);
     });
     DB[col]=Array.from(map.values());
@@ -3249,6 +3661,7 @@ function mergeRemote(remote,tombs,forceRemote){
     /* v4：多供应商 AI 配置与桌宠设置（仅在云端确有值时覆盖，避免老服务器清空本地） */
     if(remote.profile.aiCfg&&Object.keys(remote.profile.aiCfg).length) DB.aiCfg=remote.profile.aiCfg;
     if(remote.profile.petCfg&&Object.keys(remote.profile.petCfg).length) mergePetCfg(remote.profile.petCfg);
+    if(Array.isArray(remote.profile.reports)) mergeWeekReports(remote.profile.reports);
   }
   if(remote.dailyTasks&&!keepLocal('dailyTasks')) DB.dailyTasks=coerceRemote('dailyTasks',remote.dailyTasks);
   if(remote.targets&&!keepLocal('targets')) DB.targets=remote.targets;
