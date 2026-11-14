@@ -166,6 +166,25 @@
   .svgbox{width:100%;overflow:hidden}
   .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--yan);margin-top:8px}
   .legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:middle}
+  /* ===== 学习周报 ===== */
+  .wk-strip{display:flex;gap:8px;margin-top:12px}
+  .wk-day{flex:1;text-align:center;border:1px solid var(--line);border-radius:10px;padding:7px 2px;background:rgba(20,30,56,.5)}
+  .wk-day.on{border-color:rgba(227,170,78,.45);background:rgba(227,170,78,.08)}
+  .wk-day .wd{display:block;font-size:11px;color:var(--yan)}
+  .wk-day .dd{display:block;font-size:12px;font-weight:700;margin:1px 0 4px}
+  .wk-day .dots{min-height:8px;display:flex;justify-content:center;gap:3px}
+  .wk-day .dt{width:6px;height:6px;border-radius:50%}
+  .wk-day .dt.chk{background:var(--teng)}
+  .wk-day .dt.rev{background:#7fd6a8}
+  .wk-day .dt.pp{background:var(--zhu)}
+  .wk-day .dt.mist{background:#c3a6ff}
+  .wk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+  .wk-tile{background:rgba(20,30,56,.55);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .wk-tile b{display:block;font-size:20px;color:var(--gold);font-family:var(--serif)}
+  .wk-tile span{font-size:11.5px;color:var(--yan)}
+  .wk-line{margin-top:12px;font-size:13px;line-height:1.8}
+  .wk-line b{color:var(--gold)}
+  @media(max-width:640px){ .wk-grid{grid-template-columns:repeat(2,1fr)} .wk-day .wd{font-size:10px} }
 
   /* ===== 抽认卡 ===== */
   .flashcard{background:linear-gradient(135deg,#1b2949,#22345e);border:1px solid var(--line);
@@ -556,6 +575,7 @@
         <button class="btn ghost voice-act" onclick="startReview()">🎴 抽认卡复习</button>
         <button class="btn ghost voice-act" onclick="startDictation()">🎧 听写模式</button>
         <button class="btn ghost voice-act" id="readListBtn" onclick="readWordList(this)">🎵 连读本表</button>
+        <span class="tip" id="dueInfo" style="margin:0;flex:none;align-self:center;color:var(--gold);font-size:12px"></span>
       </div>
       <div class="row" style="margin-top:8px">
         <label style="display:flex;align-items:center;gap:6px;margin:0;cursor:pointer;flex:none;min-width:0">
@@ -658,18 +678,51 @@
     </div>
     <div class="card">
       <div class="flex-between">
-        <h2><span class="dot"></span>错题列表</h2>
-        <select id="mFilter" onchange="renderMistakes()" style="width:auto;flex:none">
-          <option value="all">全部题型</option><option>完形</option><option>阅读</option>
-          <option>新题型</option><option>翻译</option><option>写作</option><option>其他</option>
-        </select>
+        <h2><span class="dot"></span>错题列表 <span id="mDueInfo" class="muted small"></span></h2>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <select id="mFilter" onchange="renderMistakes()" style="width:auto;flex:none">
+            <option value="all">全部题型</option><option>完形</option><option>阅读</option>
+            <option>新题型</option><option>翻译</option><option>写作</option><option>其他</option>
+          </select>
+          <select id="mStatus" onchange="renderMistakes()" style="width:auto;flex:none">
+            <option value="all">全部状态</option>
+            <option value="due">待复盘</option>
+            <option value="mastered">已掌握</option>
+          </select>
+          <button class="btn ghost sm" style="flex:none" onclick="startMistakeReview()">🎯 错题重练</button>
+        </div>
       </div>
       <div id="mistakeList"></div>
+      <div class="card hidden" id="mistakeReviewBox" style="margin-top:14px;background:rgba(16,24,48,.5)">
+        <h2><span class="dot"></span>错题重练 <span id="mrProgress" class="muted small"></span></h2>
+        <div class="flashcard" style="min-height:220px">
+          <div class="term" id="mrQ" style="font-size:22px;line-height:1.7;white-space:pre-wrap">—</div>
+          <div class="phon" id="mrMeta"></div>
+          <div class="mean hidden" id="mrA" style="white-space:pre-wrap;text-align:left;font-size:14px;line-height:1.9"></div>
+        </div>
+        <div class="row" style="margin-top:14px">
+          <button class="btn ghost" id="mrRevealBtn" onclick="mrReveal()">显示答案</button>
+          <button class="btn danger" onclick="mrRate(0)">还是不会</button>
+          <button class="btn" style="background:var(--zhe)" onclick="mrRate(1)">有点模糊</button>
+          <button class="btn" style="background:var(--teng);color:#1c2313" onclick="mrRate(2)">掌握了</button>
+          <button class="btn ghost" onclick="endMistakeReview()">结束</button>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- ============ 统计 ============ -->
   <section class="view" id="view-stats">
+    <div class="card" id="weeklyCard">
+      <div class="flex-between" style="align-items:center">
+        <h2><span class="dot"></span>本周学习周报</h2>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="small muted" id="weekRange"></span>
+          <button class="btn ghost sm" onclick="copyWeekly()">复制周报</button>
+        </div>
+      </div>
+      <div id="weeklyBody"></div>
+    </div>
     <div class="grid g2">
       <div class="card">
         <h2><span class="dot"></span>各题型实际平均分 vs 目标分</h2>
@@ -926,7 +979,7 @@ function defaultDB(){
     petCfg:defaultPetCfg(),
     targets:{1:{完形填空:7,阅读理解:37,新题型:8,翻译:6,小作文:7,大作文:15},
              2:{完形填空:6,阅读理解:34,新题型:8,翻译:11,小作文:7,大作文:14}},
-    v:5
+    v:6
   };
 }
 /* 数据规范化与版本升级（载入 / 导入时共用） */
@@ -980,9 +1033,29 @@ function normalizeDB(){
   if(!DB.aiCfg.keys) DB.aiCfg.keys={};
   if(!DB.aiCfg.endpoints) DB.aiCfg.endpoints={};
   if(!DB.petCfg||typeof DB.petCfg!=='object') DB.petCfg=defaultPetCfg();
+  /* v6：词汇间隔重复 + 错题复盘状态 */
+  if(!DB.v||DB.v<6){
+    const t=todayStr(), isIso=v=>/^\d{4}-\d{2}-\d{2}$/.test(v||'');
+    (DB.words||[]).forEach(w=>{
+      if(!isIso(w.nextReview)) w.nextReview=(w.mastery>=2)?addDaysStr(t,7):t;
+      if(!isIso(w.createdAt)) w.createdAt='';
+      if(!isIso(w.lastReview)) w.lastReview='';
+      if(w.interval==null) w.interval=(w.mastery>=3)?7:((w.mastery===2)?3:0);
+      if(w.ease==null) w.ease=2.5;
+      if(w.reps==null) w.reps=0;
+      if(w.lapses==null) w.lapses=0;
+    });
+    (DB.mistakes||[]).forEach(m=>{
+      if(m.status==null) m.status='new';
+      if(m.reviewCount==null) m.reviewCount=0;
+      if(!isIso(m.lastReviewed)) m.lastReviewed='';
+      if(m.lapses==null) m.lapses=0;
+    });
+    DB.v=6;
+  }
   /* 旧练习记录补全考试类型，默认当前选中的类型 */
   if(DB.papers&&DB.papers.length) DB.papers.forEach(p=>{ if(p.et==null) p.et=DB.profile.examType; });
-  DB.v=5;
+  DB.v=6;
 }
 
 let DB = load() || defaultDB();
@@ -995,7 +1068,17 @@ function save(){
   if(typeof syncMarkDirty==='function' && !SYNC.applyingRemote) syncMarkDirty();
 }
 function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
-function todayStr(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function todayStr(){ const d=new Date(); return isoDate(d); }
+function isoDate(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function addDaysStr(base,days){
+  const [y,m,dd]=String(base||todayStr()).split('-').map(Number);
+  const d=new Date(y,m-1,dd); d.setDate(d.getDate()+days); return isoDate(d);
+}
+function weekDates(n){
+  const out=[], now=new Date();
+  for(let i=n-1;i>=0;i--){ const d=new Date(now); d.setDate(now.getDate()-i); out.push(isoDate(d)); }
+  return out;
+}
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1600); }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
@@ -1430,8 +1513,9 @@ function renderDashboard(){
   renderQuick(); renderHeat(); renderRecent();
 }
 function renderQuick(){
+  const due=dueWords().length;
   document.getElementById('quickNav').innerHTML=
-    `<button onclick="switchTab('vocab')">词汇<small>词库 · 抽认卡</small></button>`+
+    `<button onclick="switchTab('vocab')">词汇<small>${due?('今日待复习 '+due+' 词'):'词库 · 抽认卡'}</small></button>`+
     TOPICS.map(t=>`<button onclick="switchTab('${t.key}')">${t.name}<small>目标 ${t.types.length>1?targetFor('小作文')+'+'+targetFor('大作文'):targetFor(t.types[0])} 分</small></button>`).join('')+
     `<button onclick="switchTab('library')">真题库<small>PDF 作答 · 模考</small></button>`;
 }
@@ -1540,9 +1624,13 @@ function fillProfile(){
 })();
 
 /* ===================== 词汇 ===================== */
+/* 新词的间隔重复初始状态：当天到期，答对后按 1→3→8→20… 天拉开 */
+function wordSrsInit(){
+  return {createdAt:todayStr(), nextReview:todayStr(), interval:0, ease:2.5, reps:0, lapses:0, lastReview:''};
+}
 function importBuiltin(){
   if(DB.words.length>0 && !confirm('当前已有单词，导入将追加 '+(BUILTIN_WORDS.length)+' 个核心词，确定？')) return;
-  BUILTIN_WORDS.forEach(w=>DB.words.push({id:uid(),term:w[0],phon:w[1],pos:w[2],mean:w[3],tag:'核心',mastery:0}));
+  BUILTIN_WORDS.forEach(w=>DB.words.push({id:uid(),term:w[0],phon:w[1],pos:w[2],mean:w[3],tag:'核心',mastery:0,...wordSrsInit()}));
   save(); renderWords(); renderDashboard(); toast('已导入核心高频词库');
   petSay('核心词库已入库，长征正式开始。','happy');
 }
@@ -1558,7 +1646,7 @@ function importWordFile(e){
       let parts=line.split(/\t|[,;，；]| {2,}/);
       if(parts.length<2){ const sp=line.indexOf(' '); if(sp>0) parts=[line.slice(0,sp),line.slice(sp+1)]; }
       const term=parts[0].trim(), mean=parts.slice(1).join(' ').trim();
-      if(term&&mean){ DB.words.push({id:uid(),term,phon:'',pos:'',mean,tag:'导入',mastery:0}); added++; }
+      if(term&&mean){ DB.words.push({id:uid(),term,phon:'',pos:'',mean,tag:'导入',mastery:0,...wordSrsInit()}); added++; }
     });
     save(); renderWords(); renderDashboard();
     if(added>0){ toast('已导入 '+added+' 个单词'); petSay('一次多了 '+added+' 个新伙伴。'); }
@@ -1570,16 +1658,28 @@ function addWord(){
   const t=document.getElementById('wTerm').value.trim(), m=document.getElementById('wMean').value.trim();
   if(!t||!m){ toast('请填写单词和释义'); return; }
   DB.words.push({id:uid(),term:t,phon:document.getElementById('wPhon').value.trim(),
-    pos:document.getElementById('wPos').value.trim(),mean:m,tag:document.getElementById('wTag').value.trim(),mastery:0});
+    pos:document.getElementById('wPos').value.trim(),mean:m,tag:document.getElementById('wTag').value.trim(),mastery:0,...wordSrsInit()});
   ['wTerm','wPhon','wPos','wMean','wTag'].forEach(i=>document.getElementById(i).value='');
-  save(); renderWords(); toast('已添加单词');
+  save(); renderWords(); renderDashboard(); toast('已添加单词');
   petSay(pickPetLine('word'));
 }
-function setMastery(id,v){ const w=DB.words.find(x=>x.id===id); if(w){ w.mastery=v; save(); renderWords(); } }
+function setMastery(id,v){
+  const w=DB.words.find(x=>x.id===id);
+  if(w){
+    w.mastery=v;
+    if(v>=3){ w.interval=7; w.nextReview=addDaysStr(todayStr(),7); }
+    else if(v===2){ w.interval=3; w.nextReview=addDaysStr(todayStr(),3); }
+    else { w.interval=0; w.nextReview=todayStr(); }
+    save(); renderWords();
+  }
+}
 function deleteWord(id){ DB.words=DB.words.filter(x=>x.id!==id); syncTomb('words',id); save(); renderWords(); renderDashboard(); }
 function renderWords(){
   const f=document.getElementById('wFilter').value;
   const q=document.getElementById('wSearch').value.trim().toLowerCase();
+  const dueN=dueWords().length;
+  const dueEl=document.getElementById('dueInfo');
+  if(dueEl) dueEl.textContent='待复习 '+dueN+' 词';
   let list=DB.words.slice();
   if(f!=='all') list=list.filter(w=>String(w.mastery)===f);
   if(q) list=list.filter(w=>(w.term+' '+w.mean+' '+(w.tag||'')).toLowerCase().includes(q));
@@ -1591,22 +1691,54 @@ function renderWords(){
     <td><button class="vbtn" data-w="${esc(w.term)}" onclick="voiceWord(this.dataset.w)" title="朗读单词">🔊</button><b>${esc(w.term)}</b> <span class="muted small">${esc(w.phon||'')}</span></td>
     <td>${esc(w.pos||'')}</td><td>${esc(w.mean)}</td>
     <td>${w.tag?('<span class="tag">'+esc(w.tag)+'</span>'):''}</td>
-    <td><span class="pill p${w.mastery}">${labels[w.mastery]}</span></td>
+    <td><span class="pill p${w.mastery}" title="下次复习：${w.nextReview||'未安排'}">${labels[w.mastery]}</span>
+      <div class="muted small" style="margin-top:2px">📅 ${w.nextReview?w.nextReview.slice(5):'—'}</div></td>
     <td><select onchange="setMastery('${w.id}',parseInt(this.value))" style="width:auto;padding:4px 6px">
       ${[0,1,2,3].map(v=>`<option value="${v}" ${w.mastery===v?'selected':''}>${labels[v]}</option>`).join('')}
     </select> <button class="btn danger sm" onclick="deleteWord('${w.id}')">删</button></td></tr>`).join('')+
     '</tbody></table></div>';
 }
+/* 到期队列：按到期日 → 掌握度 → 遗忘次数排序；单轮最多 50 词，避免一次压垮 */
+function dueWords(limit){
+  const t=todayStr();
+  const list=DB.words.filter(w=>!w.nextReview||!/^\d{4}-\d{2}-\d{2}$/.test(w.nextReview)||w.nextReview<=t);
+  list.sort((a,b)=>(a.nextReview||'').localeCompare(b.nextReview||'')
+    ||(a.mastery-b.mastery)||((b.lapses||0)-(a.lapses||0)));
+  return limit?list.slice(0,limit):list;
+}
+/* 简化版 SM-2：0=不认识，1=模糊，2=认识 */
+function srsRate(w,level){
+  const t=todayStr();
+  w.lastReview=t;
+  w.ease=w.ease||2.5;
+  if(level===0){
+    w.lapses=(w.lapses||0)+1; w.reps=0; w.interval=1;
+    w.ease=Math.max(1.3,w.ease-0.2);
+  }else if(level===1){
+    w.reps=(w.reps||0)+1;
+    w.interval=((w.interval||0)<3)?2:Math.max(2,Math.round(w.interval*1.2));
+    w.ease=Math.max(1.3,w.ease-0.05);
+  }else{
+    w.reps=(w.reps||0)+1;
+    if(!w.interval||w.interval<1) w.interval=1;
+    else if(w.interval<3) w.interval=3;
+    else w.interval=Math.round(w.interval*w.ease);
+    w.ease=Math.min(3,w.ease+0.05);
+  }
+  w.interval=Math.min(180,Math.max(1,w.interval||1));
+  w.nextReview=addDaysStr(t,w.interval);
+  w.mastery=level===0?0:(level===1?1:Math.min(3,(w.mastery||0)+1));
+}
 function startReview(){
-  reviewQueue=DB.words.filter(w=>w.mastery<2);
-  if(reviewQueue.length===0){ toast('没有需要复习的单词 🏮'); return; }
+  reviewQueue=dueWords(50);
+  if(reviewQueue.length===0){ toast(DB.words.length?'今天没有到期的单词，明天再来 🏮':'词库还是空的，先添一盏灯'); return; }
   reviewMode='card'; reviewIdx=0;
   document.getElementById('reviewBox').classList.remove('hidden'); revRefresh();
 }
 /* 听写模式：卡片不出单词，听发音回想拼写与词义，翻面验证 */
 function startDictation(){
-  reviewQueue=DB.words.filter(w=>w.mastery<2);
-  if(reviewQueue.length===0){ toast('没有需要复习的单词 🏮'); return; }
+  reviewQueue=dueWords(50);
+  if(reviewQueue.length===0){ toast(DB.words.length?'今天没有到期的单词，明天再来 🏮':'词库还是空的，先添一盏灯'); return; }
   reviewMode='dict'; reviewIdx=0;
   document.getElementById('reviewBox').classList.remove('hidden'); revRefresh();
 }
@@ -1631,11 +1763,11 @@ function revReveal(){
 }
 function revResult(level){
   const w=reviewQueue[reviewIdx];
-  if(level===0) w.mastery=0; else if(level===1) w.mastery=1; else w.mastery=Math.min(3,w.mastery+1);
+  srsRate(w,level);
   save(); reviewIdx++;
   if(level===2) petSay(pickPetLine('reviewGood'));
   if(reviewIdx>=reviewQueue.length){ toast('复习完成！'); document.getElementById('reviewBox').classList.add('hidden'); renderWords(); renderDashboard(); petEarnReview(); petSay('这轮复习收官，词库又扎实一分。','happy'); }
-  else revRefresh();
+  else { toast(level===0?'没关系，明天再来一次':('记住了 · 下次 '+w.interval+' 天后复习')); revRefresh(); }
 }
 function endReview(){ reviewMode='card'; document.getElementById('reviewBox').classList.add('hidden'); renderWords(); renderDashboard(); }
 
@@ -1953,8 +2085,8 @@ function clearAiHistory(){
 function addMistake(){
   const q=document.getElementById('mQ').value.trim();
   if(!q){ toast('请填写题目/错误点'); return; }
-  DB.mistakes.unshift({id:uid(),type:document.getElementById('mType').value,q,a:document.getElementById('mA').value.trim(),
-    why:document.getElementById('mWhy').value.trim(),date:todayStr()});
+  DB.mistakes.unshift({id:uid(),type:document.getElementById('mType').value,q:q,a:document.getElementById('mA').value.trim(),
+    why:document.getElementById('mWhy').value.trim(),date:todayStr(),status:'new',reviewCount:0,lastReviewed:'',lapses:0});
   ['mQ','mA','mWhy'].forEach(i=>document.getElementById(i).value='');
   save(); renderMistakes(); TOPICS.forEach(t=>renderTopic(t.key)); toast('错题已记录');
   petSay(pickPetLine('mistake'));
@@ -1962,14 +2094,74 @@ function addMistake(){
 function deleteMistake(id){ DB.mistakes=DB.mistakes.filter(x=>x.id!==id); syncTomb('mistakes',id); save(); renderMistakes(); TOPICS.forEach(t=>renderTopic(t.key)); }
 function renderMistakes(){
   const f=document.getElementById('mFilter').value;
+  const sf=(document.getElementById('mStatus')||{}).value||'all';
   let list=DB.mistakes.slice();
   if(f!=='all') list=list.filter(m=>m.type===f);
-  if(list.length===0){ document.getElementById('mistakeList').innerHTML='<div class="empty">蓦然回首，这里还没有错题。</div>'; return; }
+  if(sf==='due') list=list.filter(m=>(m.status||'new')!=='mastered');
+  if(sf==='mastered') list=list.filter(m=>m.status==='mastered');
+  const due=DB.mistakes.filter(m=>(m.status||'new')!=='mastered').length;
+  const info=document.getElementById('mDueInfo');
+  if(info) info.textContent=due?('待复盘 '+due+' 条'):(DB.mistakes.length?'错题都复盘完了':'');
+  if(list.length===0){
+    document.getElementById('mistakeList').innerHTML='<div class="empty">'+
+      (sf==='mastered'?'还没有已掌握的错题，去重练里把它们啃下来。':(DB.mistakes.length?'这个筛选下没有错题。':'蓦然回首，这里还没有错题。'))+'</div>';
+    return;
+  }
+  const st={new:['未复盘','p0'],reviewing:['复盘中','p1'],mastered:['已掌握','p3']};
   document.getElementById('mistakeList').innerHTML=`<div class="table-scroll"><table><thead><tr>
-    <th>题型</th><th>题目/错误点</th><th>正确答案</th><th>原因</th><th>操作</th></tr></thead><tbody>`+
-    list.map(m=>`<tr><td><span class="tag">${esc(m.type)}</span></td>
-    <td>${esc(m.q)}</td><td>${esc(m.a||'—')}</td><td class="muted small">${esc(m.why||'—')}</td>
-    <td><button class="btn danger sm" onclick="deleteMistake('${m.id}')">删</button></td></tr>`).join('')+'</tbody></table></div>';
+    <th>题型</th><th>题目/错误点</th><th>正确答案</th><th>原因</th><th>状态</th><th>操作</th></tr></thead><tbody>`+
+    list.map(m=>{
+      const s=st[m.status||'new']||st.new;
+      return `<tr><td><span class="tag">${esc(m.type)}</span></td>
+      <td>${esc(m.q)}</td><td>${esc(m.a||'—')}</td><td class="muted small">${esc(m.why||'—')}</td>
+      <td><span class="pill ${s[1]}">${s[0]}</span>${m.reviewCount?`<div class="muted small" style="margin-top:2px">复盘 ${m.reviewCount} 次</div>`:''}</td>
+      <td><button class="btn danger sm" onclick="deleteMistake('${m.id}')">删</button></td></tr>`;
+    }).join('')+'</tbody></table></div>';
+}
+/* 错题重练：先回想，再翻答案，按 不会/模糊/掌握 三档更新复盘状态 */
+let mrQueue=[], mrIdx=0;
+function startMistakeReview(){
+  mrQueue=DB.mistakes.filter(m=>(m.status||'new')!=='mastered');
+  mrQueue.sort((a,b)=>((a.status==='new')?0:1)-((b.status==='new')?0:1)||String(a.date||'').localeCompare(String(b.date||'')));
+  if(mrQueue.length===0){ toast(DB.mistakes.length?'错题都复盘完了 🏮':'还没有错题，先去记一道'); return; }
+  mrQueue=mrQueue.slice(0,30); mrIdx=0;
+  document.getElementById('mistakeReviewBox').classList.remove('hidden');
+  mrRefresh();
+  document.getElementById('mistakeReviewBox').scrollIntoView({behavior:'smooth',block:'center'});
+}
+function mrRefresh(){
+  const m=mrQueue[mrIdx]; if(!m) return;
+  document.getElementById('mrQ').textContent=m.q||'（没有题目）';
+  document.getElementById('mrMeta').textContent='['+(m.type||'其他')+'] '+(m.date||'')+' · 第 '+(mrIdx+1)+'/'+mrQueue.length+' 道';
+  const a=document.getElementById('mrA');
+  a.textContent=(m.a?('正确答案 / 要点：'+m.a+'\n'):'')+(m.why?('原因：'+m.why):'');
+  a.classList.add('hidden');
+  document.getElementById('mrRevealBtn').textContent='显示答案';
+  document.getElementById('mrProgress').textContent='('+(mrIdx+1)+'/'+mrQueue.length+')';
+}
+function mrReveal(){
+  document.getElementById('mrA').classList.remove('hidden');
+  document.getElementById('mrRevealBtn').textContent='已显示答案';
+}
+function mrRate(level){
+  const m=mrQueue[mrIdx]; if(!m) return;
+  m.reviewCount=(m.reviewCount||0)+1; m.lastReviewed=todayStr();
+  if(level===0){ m.status='reviewing'; m.lapses=(m.lapses||0)+1; }
+  else if(level===1){ m.status='reviewing'; }
+  else { m.status='mastered'; }
+  save(); mrIdx++;
+  if(mrIdx>=mrQueue.length){
+    toast('这轮错题复盘完成');
+    document.getElementById('mistakeReviewBox').classList.add('hidden');
+    renderMistakes(); renderStats();
+    petSay('错题不是包袱，是还没点亮的灯。','happy');
+  }else{
+    renderMistakes(); mrRefresh();
+  }
+}
+function endMistakeReview(){
+  document.getElementById('mistakeReviewBox').classList.add('hidden');
+  renderMistakes();
 }
 
 /* ===================== 统计图表 ===================== */
@@ -2027,7 +2219,101 @@ function donutChart(data){
         <text x="${cx}" y="${cy+14}" font-size="10" text-anchor="middle" fill="#8d99b5">总词汇</text></svg>`;
   return svg;
 }
+/* ===================== 学习周报 ===================== */
+function weekStats(){
+  const days=weekDates(7), start=days[0], end=days[6];
+  const prevDays=weekDates(14).slice(0,7), pStart=prevDays[0], pEnd=prevDays[6];
+  const words=DB.words||[], papers=DB.papers||[], mistakes=DB.mistakes||[];
+  const inRange=(d,a,b)=>!!d&&d>=a&&d<=b;
+  const reviewed=words.filter(w=>inRange(w.lastReview,start,end)).length;
+  const newWords=words.filter(w=>inRange(w.createdAt,start,end)).length;
+  const checkDays=days.filter(d=>DB.checkins[d]&&DB.checkins[d].checked).length;
+  const thisPapers=papers.filter(p=>inRange(p.date,start,end));
+  const prevPapers=papers.filter(p=>inRange(p.date,pStart,pEnd));
+  const avgRate=arr=>arr.length?Math.round(arr.reduce((s,p)=>s+(p.full?p.score/p.full*100:0),0)/arr.length):null;
+  const newMist=mistakes.filter(m=>inRange(m.date,start,end)).length;
+  const revMist=mistakes.filter(m=>inRange(m.lastReviewed,start,end)).length;
+  const masteredMist=mistakes.filter(m=>m.status==='mastered').length;
+  const writings=(DB.writings||[]).filter(w=>inRange(w.date,start,end)).length;
+  const sentences=(DB.sentences||[]).filter(s=>inRange(s.date,start,end)).length;
+  const dayMap=days.map(d=>({
+    d,
+    chk:!!(DB.checkins[d]&&DB.checkins[d].checked),
+    rev:words.filter(w=>w.lastReview===d).length,
+    paper:papers.filter(p=>p.date===d).length,
+    mist:mistakes.filter(m=>m.date===d).length
+  }));
+  const paperSets=new Set(thisPapers.map(p=>p.date+'|'+(p.year||p.type))).size;
+  return {days,start,end,prevStart:pStart,prevEnd:pEnd,reviewed,newWords,due:dueWords().length,
+    checkDays,papers:thisPapers,paperSets,prevPapers,rateThis:avgRate(thisPapers),ratePrev:avgRate(prevPapers),
+    newMist,revMist,masteredMist,writings,sentences,dayMap};
+}
+/* 本周最该补的题型：平均分离目标最远的那一科（都用原始分比较） */
+function weakestType(){
+  const by={};
+  (DB.papers||[]).forEach(p=>{ if(p.type!=='整套模考'&&p.full)(by[p.type]=by[p.type]||[]).push(p.score); });
+  let best=null;
+  Object.keys(by).forEach(k=>{
+    const avg=Math.round(by[k].reduce((a,b)=>a+b,0)/by[k].length*10)/10;
+    const target=targetFor(k), gap=Math.round((target-avg)*10)/10;
+    if(!best||gap>best.gap) best={type:k,avg,target,gap};
+  });
+  return best;
+}
+function renderWeekly(){
+  const s=weekStats();
+  const range=document.getElementById('weekRange');
+  if(range) range.textContent=s.start.slice(5)+' ~ '+s.end.slice(5);
+  const strip=s.dayMap.map(x=>{
+    const wd='日一二三四五六'[new Date(x.d+'T00:00:00').getDay()];
+    return `<div class="wk-day${x.chk?' on':''}"><span class="wd">周${wd}</span><span class="dd">${x.d.slice(8)}</span>
+      <div class="dots">${x.chk?'<i class="dt chk" title="点灯"></i>':''}${x.rev?'<i class="dt rev" title="复习 '+x.rev+' 词"></i>':''}${x.paper?'<i class="dt pp" title="练习"></i>':''}${x.mist?'<i class="dt mist" title="新增错题"></i>':''}</div></div>`;
+  }).join('');
+  const rateLine=s.rateThis==null?'本周还没有练习记录':('本周平均得分率 <b>'+s.rateThis+'%</b>'+
+    (s.ratePrev!=null?('（上周 '+s.ratePrev+'%，'+(s.rateThis-s.ratePrev>=0?'+':'')+(s.rateThis-s.ratePrev)+'%）'):''));
+  const weak=weakestType();
+  const weakLine=weak?`最该补：<b>${weak.type}</b>，平均 ${weak.avg} 分，`+
+    (weak.gap>0?`距目标 ${weak.gap} 分`:`已超目标 ${-weak.gap} 分`)+'。':'';
+  const petLine=s.checkDays>=5?'灯亮得很稳，我陪你把这股劲头带到下周。':
+    (s.due>0?`还有 ${s.due} 个词到期，今天先清一波？`:'慢慢来，明天先点一盏也算数。');
+  const body=document.getElementById('weeklyBody');
+  if(body){
+    body.innerHTML=`<div class="wk-strip">${strip}</div>
+      <div class="wk-grid">
+        <div class="wk-tile"><b>${s.checkDays}/7</b><span>点灯天数</span></div>
+        <div class="wk-tile"><b>${s.reviewed}</b><span>复习词数</span></div>
+        <div class="wk-tile"><b>${s.paperSets}</b><span>练习套数</span></div>
+        <div class="wk-tile"><b>${s.newMist}</b><span>新增错题</span></div>
+      </div>
+      <div class="wk-line">${rateLine}<br>
+        新学 <b>${s.newWords}</b> 词 · 复盘错题 <b>${s.revMist}</b> 条（已掌握 <b>${s.masteredMist}</b> 条）· 写作 <b>${s.writings}</b> 篇 · 长难句 <b>${s.sentences}</b> 句<br>
+        ${weakLine}</div>
+      <div class="wk-line" style="color:var(--yan)">🐾 小灯说：${petLine}</div>`;
+  }
+  window._weeklyText=[
+    '花千树 · 本周学习周报（'+s.start+' ~ '+s.end+'）',
+    '点灯 '+s.checkDays+'/7 天｜复习 '+s.reviewed+' 词｜练习 '+s.paperSets+' 套｜新增错题 '+s.newMist+' 条',
+    rateLine.replace(/<[^>]+>/g,''),
+    '新学 '+s.newWords+' 词｜复盘错题 '+s.revMist+' 条｜已掌握 '+s.masteredMist+' 条｜写作 '+s.writings+' 篇｜长难句 '+s.sentences+' 句',
+    weakLine.replace(/<[^>]+>/g,''),
+    '小灯说：'+petLine
+  ].filter(Boolean).join('\n');
+}
+function copyWeekly(){
+  if(!window._weeklyText) renderWeekly();
+  const text=window._weeklyText||'';
+  const fallback=()=>{
+    const ta=document.createElement('textarea'); ta.value=text;
+    ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); toast('周报已复制'); }catch(e){ toast('复制失败'); }
+    ta.remove();
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>toast('周报已复制')).catch(fallback);
+  }else fallback();
+}
 function renderStats(){
+  renderWeekly();
   const byType={};
   DB.papers.forEach(p=>{ if(p.type!=='整套模考') (byType[p.type]=byType[p.type]||[]).push(p.score); });
   const typeData=Object.keys(byType).map(k=>({label:k,
@@ -2059,8 +2345,8 @@ function importData(e){
   const file=e.target.files[0]; if(!file) return;
   const reader=new FileReader();
   reader.onload=ev=>{ try{ const d=JSON.parse(ev.target.result); if(!d.words) throw 0;
-    if(confirm('导入将覆盖当前数据，确定？')){ DB=d; if(!DB.v){DB.targets={完形填空:7,阅读理解:37,新题型:8,翻译:6,小作文:7,大作文:15};DB.v=2;}
-      if(DB.profile.cohort==null) DB.profile.cohort=1; save(); fullRender(); toast('导入成功'); } }
+    if(confirm('导入将覆盖当前数据，确定？')){ DB=d; normalizeDB();
+      save(); fullRender(); petApplySkin(); petCoinUI(); toast('导入成功'); } }
     catch(err){ toast('文件格式不正确'); } };
   reader.readAsText(file); e.target.value='';
 }
@@ -2346,7 +2632,7 @@ async function saveGrade(){
     DB.papers.unshift({id:uid(),date:todayStr(),year:curGrader.name,type:t,score:sc,full:typeFull[t],et,note:'真题库作答'});
   });
   const mTypeMap={cloze:'完形',reading:'阅读',newtype:'阅读'};
-  secs.forEach(s=>{ if(!s.subj){ for(let i=0;i<s.n;i++){ const a=curGrader.answers[s.key][i]; const k=curGrader.keys[s.key]?curGrader.keys[s.key][i]:''; if(a && a!==k){ DB.mistakes.unshift({id:uid(),type:mTypeMap[s.key]||'其他',q:(s.title.split('（')[0])+' 第'+(i+1)+'题',a:'正确答案 '+k,why:'你的选择 '+a,date:todayStr()}); } } } });
+  secs.forEach(s=>{ if(!s.subj){ for(let i=0;i<s.n;i++){ const a=curGrader.answers[s.key][i]; const k=curGrader.keys[s.key]?curGrader.keys[s.key][i]:''; if(a && a!==k){ DB.mistakes.unshift({id:uid(),type:mTypeMap[s.key]||'其他',q:(s.title.split('（')[0])+' 第'+(i+1)+'题',a:'正确答案 '+k,why:'你的选择 '+a,date:todayStr(),status:'new',reviewCount:0,lastReviewed:'',lapses:0}); } } } });
   save(); petEarn('exam:'+curGrader.id,12); renderPapers(); renderMistakes(); TOPICS.forEach(t=>renderTopic(t.key)); renderRecent();
   toast('成绩已记入各题型专题，错题已入库 · 灯油 +12');
   const tg=targetFor('整套模考',et), ratio=tg>0?(curGrader.lastTotal||0)/tg:0;
@@ -2831,12 +3117,14 @@ function dbToWire(col){
       vocabGoal:DB.profile.vocabGoal||30,cohort:String(DB.profile.cohort||1),examType:String(DB.profile.examType||1),
       aiKey:DB.aiKey||'',aiEndpoint:DB.aiEndpoint||'',
       aiCfg:DB.aiCfg,petCfg:DB.petCfg};
-    case 'words': return DB.words.map(w=>({id:w.id,term:w.term,phon:w.phon||'',pos:w.pos||'',mean:w.mean,tag:w.tag||'',mastery:w.mastery||0}));
+    case 'words': return DB.words.map(w=>({id:w.id,term:w.term,phon:w.phon||'',pos:w.pos||'',mean:w.mean,tag:w.tag||'',mastery:w.mastery||0,
+      createdAt:w.createdAt||'',nextReview:w.nextReview||'',interval:w.interval||0,ease:w.ease||2.5,reps:w.reps||0,lapses:w.lapses||0,lastReview:w.lastReview||''}));
     case 'papers': return DB.papers.map(p=>({id:p.id,date:p.date,year:p.year||'',type:p.type,score:p.score,
       full:p.full,et:p.et==null?DB.profile.examType:p.et,note:p.note||''}));
     case 'writings': return DB.writings.map(x=>({id:x.id,title:x.title||'',content:x.content,date:x.date}));
     case 'sentences': return DB.sentences.map(x=>({id:x.id,text:x.text,anal:x.anal||'',trans:x.trans||'',date:x.date}));
-    case 'mistakes': return DB.mistakes.map(x=>({id:x.id,type:x.type,q:x.q,a:x.a||'',why:x.why||'',date:x.date}));
+    case 'mistakes': return DB.mistakes.map(x=>({id:x.id,type:x.type,q:x.q,a:x.a||'',why:x.why||'',date:x.date,
+      status:x.status||'new',reviewCount:x.reviewCount||0,lastReviewed:x.lastReviewed||'',lapses:x.lapses||0}));
     case 'checkins': return DB.checkins;
     case 'dailyTasks': return (DB.dailyTasks||[]).map(t=>({id:t.id,text:t.text,desc:t.desc||''}));
     case 'targets': return DB.targets;
@@ -2922,7 +3210,20 @@ function mergeRemote(remote,tombs,forceRemote){
     if(keepLocal(col)) return;
     if(forceRemote){ DB[col]=r.filter(x=>!(tombs[col]||[]).includes(x.id)); return; }
     const map=new Map(DB[col].map(x=>[x.id,x]));
-    r.forEach(x=>{ if(!syncTombHas(col,x.id)) map.set(x.id,x); });
+    r.forEach(x=>{
+      if(syncTombHas(col,x.id)) return;
+      const old=map.get(x.id);
+      /* 老版本云端没有 SRS/复盘字段（返回空值），别把本地已经攒下的复习计划覆盖掉 */
+      if(old&&col==='words'&&!x.nextReview&&!x.lastReview&&!x.reps){
+        x=Object.assign({},x,{createdAt:old.createdAt||'',nextReview:old.nextReview||'',interval:old.interval||0,
+          ease:old.ease||2.5,reps:old.reps||0,lapses:old.lapses||0,lastReview:old.lastReview||''});
+      }
+      if(old&&col==='mistakes'&&(!x.status||x.status==='new')&&!x.reviewCount&&!x.lastReviewed){
+        x=Object.assign({},x,{status:old.status||'new',reviewCount:old.reviewCount||0,
+          lastReviewed:old.lastReviewed||'',lapses:old.lapses||0});
+      }
+      map.set(x.id,x);
+    });
     DB[col]=Array.from(map.values());
   });
   if(remote.checkins&&!keepLocal('checkins')){
