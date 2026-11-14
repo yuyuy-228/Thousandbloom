@@ -720,10 +720,26 @@
       <button class="btn sm" style="flex:0" onclick="petChatSend()">发送</button>
     </div>
     <p class="tip" style="margin-top:7px">闲聊走「写作 → AI 润色」里配置的模型与 Key。</p>
+    <div style="display:flex;align-items:center;gap:6px;margin-top:8px;font-size:12px">
+      <span style="color:var(--yan);flex:none">音色</span>
+      <select id="petVoiceSel" style="flex:1;min-width:0;padding:4px 6px;font-size:12px" onchange="petVoiceChanged()">
+        <option value="">自动（跟随系统）</option>
+      </select>
+      <button class="btn ghost sm" style="flex:none;padding:4px 8px" onclick="petVoicePreview()">试听</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;margin-top:6px;font-size:12px">
+      <span style="color:var(--yan);flex:none">语气</span>
+      <select id="petToneSel" style="flex:1;min-width:0;padding:4px 6px;font-size:12px" onchange="petVoiceChanged()">
+        <option value="soft">温软 · 轻一点</option>
+        <option value="clear">清亮 · 元气</option>
+        <option value="calm">沉稳 · 书生</option>
+        <option value="playful">俏皮 · 小童</option>
+      </select>
+    </div>
     <label style="display:flex;align-items:center;gap:6px;margin-top:8px;cursor:pointer;font-size:12px">
       <input type="checkbox" id="petVoiceChk" style="width:auto" onchange="petVoiceToggle(this.checked)"> 小灯出声（语音朗读）
     </label>
-    <p class="tip" style="margin-top:4px;font-size:11px">语音来自浏览器内置音色，免费离线；首次播放可能有半秒延迟。</p>
+    <p class="tip" style="margin-top:4px;font-size:11px">音色来自浏览器/系统已安装的语音包；没有合适的就点「试听」对比，或去系统设置里装新的中文语音。</p>
   </div>
   <div id="petTools">
     <button title="小灯出声 / 静音" id="petVoiceBtn" onclick="petVoiceToggle()">🔊</button>
@@ -2209,14 +2225,56 @@ async function saveGrade(){
    词汇发音用英文音色（优先 Google/微软自然音色），桌宠小灯用中文音色。
    语音偏好按设备存 localStorage（各设备音色池不同，故不参与云同步）。 */
 const VOICE_PREF_KEY='ky_voice_prefs';
-let VPREFS={vocabRate:1,autoReview:true,petVoice:true};
+let VPREFS={vocabRate:1,autoReview:true,petVoice:true,petVoiceName:'',petTone:'soft'};
 try{ Object.assign(VPREFS,JSON.parse(localStorage.getItem(VOICE_PREF_KEY)||'{}')); }catch(e){}
 function voiceSavePrefs(){ localStorage.setItem(VOICE_PREF_KEY,JSON.stringify(VPREFS)); }
+/* 小灯的四套语气：同一音色也能调出不同性格（语速 + 音高） */
+const PET_TONES={
+  soft:{rate:.98,pitch:1.12},
+  clear:{rate:1.05,pitch:1.22},
+  calm:{rate:.95,pitch:.92},
+  playful:{rate:1.12,pitch:1.32}
+};
+/* 把系统里装了的中文音色列进「小灯音色」下拉框；选中的音色按名字记住 */
+function voiceFillPetVoices(){
+  const sel=document.getElementById('petVoiceSel'); if(!sel) return;
+  const zh=_voices.filter(v=>v.lang&&v.lang.toLowerCase().slice(0,2)==='zh');
+  const score=n=>/google/i.test(n)?0:(/natural|neural/i.test(n)?1:2);
+  zh.sort((a,b)=>score(a.name)-score(b.name));
+  sel.innerHTML='';
+  const add=(val,label)=>{ const o=document.createElement('option'); o.value=val; o.textContent=label; sel.appendChild(o); };
+  add('','自动（跟随系统）');
+  zh.forEach(v=>{
+    const short=v.name.replace(/^Microsoft\s+/,'').replace(/\s*-\s*Chinese.*$/,'').trim()||v.name;
+    add(v.name,short+' · '+v.lang);
+  });
+  const has=zh.some(v=>v.name===VPREFS.petVoiceName);
+  if(has){ sel.value=VPREFS.petVoiceName; }
+  else if(_voices.length){
+    /* 音色列表已经加载完还没有这个音色：多半被卸载了，回落到自动并清掉偏好。
+       注意不能在上面 _voices 还是空的时候清，Chrome 首次 getVoices() 常常返回空数组。 */
+    sel.value='';
+    if(VPREFS.petVoiceName){ VPREFS.petVoiceName=''; voiceSavePrefs(); }
+  }else{
+    sel.value='';   /* 音色还在异步加载，先显示自动，加载完 onvoiceschanged 会回填 */
+  }
+}
+function petVoiceChanged(){
+  const sel=document.getElementById('petVoiceSel'), tone=document.getElementById('petToneSel');
+  VPREFS.petVoiceName=sel?sel.value:'';
+  VPREFS.petTone=(tone&&PET_TONES[tone.value])?tone.value:'soft';
+  voiceSavePrefs();
+  petSpeakText('我是小灯，这样说话你听着还习惯吗？',true);
+}
+function petVoicePreview(){
+  if(!('speechSynthesis' in window)){ toast('当前浏览器不支持语音合成'); return; }
+  petSpeakText('我是小灯，东风夜放花千树，今晚也陪你把这页书读完。',true);
+}
 
 let _voices=[],_voiceWarned=false,_enVoiceWarned=false;
 function voiceInit(){
   if(!('speechSynthesis' in window)) return;
-  const load=()=>{ _voices=speechSynthesis.getVoices()||[]; };
+  const load=()=>{ _voices=speechSynthesis.getVoices()||[]; voiceFillPetVoices(); };
   load();
   /* Chrome 的音色列表是异步加载的 */
   speechSynthesis.onvoiceschanged=load;
@@ -2224,6 +2282,8 @@ function voiceInit(){
   if(auto) auto.checked=!!VPREFS.autoReview;
   if(rate) rate.value=String(VPREFS.vocabRate);
   if(pv) pv.checked=!!VPREFS.petVoice;
+  const tone=document.getElementById('petToneSel');
+  if(tone) tone.value=PET_TONES[VPREFS.petTone]?VPREFS.petTone:'soft';
   const vb=document.getElementById('petVoiceBtn');
   if(vb){ vb.textContent=VPREFS.petVoice?'🔊':'🔇'; vb.title=VPREFS.petVoice?'小灯出声中（点击静音）':'小灯已静音（点击开声）'; }
 }
@@ -2235,7 +2295,7 @@ function voicePick(lang){
   if(!vs.length) return null;
   return vs.find(v=>/google/i.test(v.name))||vs.find(v=>/natural|neural/i.test(v.name))||vs[0];
 }
-/* opt: {lang, rate, pitch, queue}；queue=true 时不打断当前朗读（连读拼接用）。
+/* opt: {lang, rate, pitch, queue, voiceName, tone}；queue=true 时不打断当前朗读（连读拼接用）。
    返回 utterance（供 onend 链式调用），环境不支持时返回 null。 */
 function voiceSpeak(text,opt){
   if(!('speechSynthesis' in window)||!text) return null;
@@ -2243,7 +2303,9 @@ function voiceSpeak(text,opt){
     if(!(opt&&opt.queue)) speechSynthesis.cancel();  /* 连点立即读新的，不排队堆积 */
     const u=new SpeechSynthesisUtterance(String(text));
     u.lang=(opt&&opt.lang)||'en-US';
-    const v=voicePick(u.lang);
+    let v=null;
+    if(opt&&opt.voiceName) v=_voices.find(x=>x.name===opt.voiceName||x.voiceURI===opt.voiceName)||null;
+    if(!v) v=voicePick(u.lang);
     if(v) u.voice=v;
     else if(u.lang.toLowerCase().slice(0,2)==='en'&&!_enVoiceWarned){
       /* 系统没装英文语音包时仍会出声（走默认音色），但口音会很怪，给一次可操作提示 */
@@ -2251,7 +2313,9 @@ function voiceSpeak(text,opt){
       toast('未检测到英文语音包，暂用系统默认音色；可在 Windows「设置 → 时间和语言 → 语音」添加英语语音');
     }
     if(u.lang.toLowerCase().startsWith('zh')){
-      u.rate=1; u.pitch=1.12;   /* 小灯：语速平稳、音调微高更俏皮 */
+      const t=(opt&&opt.tone)?PET_TONES[opt.tone]:null;
+      u.rate=(opt&&opt.rate)||(t?t.rate:1);
+      u.pitch=(opt&&opt.pitch)||(t?t.pitch:1);
     }else{
       u.rate=(opt&&opt.rate)||VPREFS.vocabRate;
     }
@@ -2319,13 +2383,14 @@ function pickPetLine(key){ const a=PET_LINES[key]; return Array.isArray(a)?a[Mat
 /* 小灯开口：用中文音色把气泡里的话读出来。
    三道闸门——小灯开着、用户没关「小灯出声」、页面可见；后台标签页不出声不打扰。 */
 let _petTalkSeq=0;
-function petSpeakText(text){
-  if(!petIsOn()||!text||!VPREFS.petVoice||document.hidden) return;
+function petSpeakText(text,force){
+  if(!petIsOn()||!text) return;
+  if(!force&&(!VPREFS.petVoice||document.hidden)) return;
   /* 括号里的旁白（如“距考研 88 天”）口语上略过，句子更顺 */
   const s=String(text).replace(/（[^）]*）/g,'').trim();
   if(!s) return;
   const av=document.getElementById('petAvatar');
-  const u=voiceSpeak(s,{lang:'zh-CN'});
+  const u=voiceSpeak(s,{lang:'zh-CN',voiceName:VPREFS.petVoiceName,tone:VPREFS.petTone});
   if(!u||!av) return;
   const seq=++_petTalkSeq;
   const stopTalk=()=>{ if(seq===_petTalkSeq) av.classList.remove('talking'); };
