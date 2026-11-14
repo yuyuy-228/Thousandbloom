@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b1222">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>花千树 · 考研英语学习台</title>
 <style>
   :root{
@@ -321,6 +324,31 @@
   #petAvatar[data-skin="liujin"] .pet-cap{fill:#e8c270}
   #petAvatar[data-skin="liujin"] .pet-string{stroke:#e8c270}
   #petAvatar[data-skin="liujin"] .pet-bead{fill:#ffe9a8}
+  #petAvatar[data-skin="chunmei"]{--pet-halo:255,175,200}
+  #petAvatar[data-skin="chunmei"] .pet-body{fill:url(#petBodyChunmei);stroke:rgba(255,220,230,.55)}
+  #petAvatar[data-skin="chunmei"] .pet-glow{fill:url(#petGlowChunmei)}
+  #petAvatar[data-skin="chunmei"] .pet-handle{stroke:#e3a3b8}
+  #petAvatar[data-skin="chunmei"] .pet-cap{fill:#e3a3b8}
+  #petAvatar[data-skin="chunmei"] .pet-string{stroke:#e3a3b8}
+  #petAvatar[data-skin="chunmei"] .pet-bead{fill:#ffd6e4}
+  #petAvatar[data-skin="qiuyue"]{--pet-halo:160,200,255}
+  #petAvatar[data-skin="qiuyue"] .pet-body{fill:url(#petBodyQiuyue);stroke:rgba(220,235,255,.55)}
+  #petAvatar[data-skin="qiuyue"] .pet-glow{fill:url(#petGlowQiuyue)}
+  #petAvatar[data-skin="qiuyue"] .pet-handle{stroke:#a8c2e6}
+  #petAvatar[data-skin="qiuyue"] .pet-cap{fill:#a8c2e6}
+  #petAvatar[data-skin="qiuyue"] .pet-string{stroke:#a8c2e6}
+  #petAvatar[data-skin="qiuyue"] .pet-bead{fill:#dcebff}
+  #petAvatar[data-acc="zhuangyuan"] .pet-acc-zhuangyuan{display:block}
+  /* 连续 100 天的专属灯火特效 */
+  #petAvatar.century:after{content:'';position:absolute;inset:-34px;border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle,rgba(255,215,120,.34),rgba(255,190,80,0) 66%);
+    animation:centuryPulse 2.4s ease-in-out infinite}
+  @keyframes centuryPulse{0%,100%{opacity:.75;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+  #petAvatar.century .pet-flame{filter:drop-shadow(0 0 9px #ffd36b)}
+  #petAvatarImg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;
+    filter:drop-shadow(0 6px 20px rgba(240,160,75,.45))}
+  .avatar-row{display:flex;gap:12px;align-items:center;margin-top:12px}
+  .avatar-preview{width:64px;height:64px;border-radius:12px;object-fit:cover;background:rgba(20,30,56,.6);border:1px solid var(--line);flex:none}
   /* 挂件：同一副骨架，只显示当前 data-acc 对应的分组 */
   .pet-acc{display:none}
   #petAvatar[data-acc="shusheng"] .pet-acc-shusheng,
@@ -332,6 +360,16 @@
     color:var(--gold);text-shadow:0 0 10px rgba(227,170,78,.6);pointer-events:none;white-space:nowrap;
     animation:coinPop 1.4s ease forwards}
   @keyframes coinPop{0%{opacity:0;transform:translateY(6px) scale(.9)}20%{opacity:1}100%{opacity:0;transform:translateY(-24px) scale(1.05)}}
+  /* 新手引导 */
+  #onboard{position:fixed;inset:0;z-index:240;display:flex;align-items:center;justify-content:center;
+    padding:20px;background:rgba(4,8,18,.78);backdrop-filter:blur(6px)}
+  #onboard.hidden{display:none}
+  .onb-card{width:min(420px,100%);background:linear-gradient(180deg,#101a31,#0d1526);border:1px solid var(--line);
+    border-radius:18px;padding:24px 24px 20px;text-align:center;box-shadow:0 30px 70px -20px #000}
+  .onb-step{font-size:11px;color:var(--yan);letter-spacing:2px}
+  .onb-icon{font-size:52px;margin:10px 0 4px;filter:drop-shadow(0 0 18px rgba(240,160,75,.45))}
+  .onb-card h3{margin:4px 0 8px;font-family:var(--serif);color:var(--gold);font-size:20px}
+  .onb-card p{font-size:13px;line-height:1.85;color:var(--yan);margin:0}
   /* 错题生词弹窗 */
   #mWordModal{position:fixed;inset:0;z-index:230;display:flex;align-items:center;justify-content:center;
     padding:20px;background:rgba(4,8,18,.72);backdrop-filter:blur(5px)}
@@ -363,6 +401,7 @@
   .pet-skin .pr{font-size:12px;color:var(--gold);font-weight:700;margin-top:6px}
   .pet-skin .pr.owned{color:#7fd6a8}
   .pet-skin .pr.equipped{color:var(--teng)}
+  .pet-skin .pr.locked{color:var(--yan)}
   .shop-tabs{display:flex;gap:6px;margin-top:12px;border-bottom:1px solid var(--line);padding-bottom:8px;flex-wrap:wrap}
   .shop-tabs button{border:1px solid var(--line);background:transparent;color:var(--yan);border-radius:8px;
     padding:5px 12px;font-size:12.5px;cursor:pointer;font-family:var(--sans)}
@@ -422,6 +461,12 @@
     padding:2px 8px;font-size:12.5px;cursor:pointer;margin-right:7px;vertical-align:1px;transition:.15s}
   .vbtn:hover{border-color:var(--teng);color:var(--gold);box-shadow:0 0 10px rgba(227,170,78,.3)}
   .dict-hidden{color:var(--yan);letter-spacing:5px;font-size:26px!important}
+  .word-pager{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:12px;font-size:12.5px;color:var(--yan);flex-wrap:wrap}
+  .word-pager button{border:1px solid var(--line);background:rgba(16,24,48,.6);color:var(--yan);border-radius:7px;padding:4px 10px;cursor:pointer}
+  .word-pager button:hover:not(:disabled){border-color:var(--teng);color:var(--gold)}
+  .word-pager button:disabled{opacity:.35;cursor:default}
+  .snap-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .snap-row:last-child{border-bottom:0}
 </style>
 </head>
 <body>
@@ -615,12 +660,12 @@
         <div style="flex:0"><button class="btn" onclick="addWord()">添加</button></div>
       </div>
       <div class="row" style="margin-top:8px">
-        <select id="wFilter" onchange="renderWords()" style="flex:1">
+        <select id="wFilter" onchange="wordFilterChanged()" style="flex:1">
           <option value="all">全部单词</option>
           <option value="0">未学</option><option value="1">生疏</option>
           <option value="2">熟悉</option><option value="3">已掌握</option>
         </select>
-        <input id="wSearch" placeholder="搜索单词 / 释义…" oninput="renderWords()" style="flex:2">
+        <input id="wSearch" placeholder="搜索单词 / 释义…" oninput="scheduleWordSearch()" style="flex:2">
       </div>
       <div class="row" style="margin-top:8px">
         <button class="btn ghost voice-act" onclick="startReview()">🎴 抽认卡复习</button>
@@ -816,7 +861,14 @@
         <button class="btn ghost" onclick="document.getElementById('importFile').click()">⬆ 导入数据</button>
         <input id="importFile" type="file" accept="application/json" class="hidden" onchange="importData(event)">
         <button class="btn danger" onclick="clearAll()">清空全部数据</button>
+        <button class="btn ghost" onclick="onboardStart(true)">新手引导</button>
       </div>
+    </div>
+    <div class="card">
+      <h2><span class="dot"></span>本地快照</h2>
+      <p class="tip">每天第一次写入数据时自动存一份，保留最近 7 天；只含学习数据，不含真题 PDF 本体。误清数据或导入错文件时可以恢复到某一天。</p>
+      <div id="snapList"><div class="empty">正在读取…</div></div>
+      <button class="btn ghost sm" style="margin-top:10px" onclick="renderSnapshots()">刷新列表</button>
     </div>
   </section>
 
@@ -884,6 +936,18 @@
     <div class="row" style="margin-top:14px">
       <button class="btn" onclick="mWordSave()">存入词库</button>
       <button class="btn ghost" onclick="mWordClose()">取消</button>
+    </div>
+  </div>
+</div>
+<div id="onboard" class="hidden">
+  <div class="onb-card">
+    <div class="onb-step" id="onbStep">1 / 3</div>
+    <div class="onb-icon" id="onbIcon">🏮</div>
+    <h3 id="onbTitle">每天点亮一盏灯</h3>
+    <p id="onbText"></p>
+    <div class="row" style="margin-top:16px">
+      <button class="btn ghost" onclick="onboardSkip()">跳过</button>
+      <button class="btn" id="onbNext" onclick="onboardNext()">下一步</button>
     </div>
   </div>
 </div>
@@ -972,6 +1036,26 @@
           <stop offset=".6" stop-color="#f0c25a" stop-opacity=".24"/>
           <stop offset="1" stop-color="#c08a20" stop-opacity="0"/>
         </radialGradient>
+        <radialGradient id="petBodyChunmei" cx="40%" cy="32%" r="74%">
+          <stop offset="0" stop-color="#ffe0e8"/>
+          <stop offset=".45" stop-color="#e08aa5"/>
+          <stop offset="1" stop-color="#9a4560"/>
+        </radialGradient>
+        <radialGradient id="petGlowChunmei" cx="50%" cy="52%" r="55%">
+          <stop offset="0" stop-color="#ffd6e4" stop-opacity=".62"/>
+          <stop offset=".6" stop-color="#e89ab4" stop-opacity=".22"/>
+          <stop offset="1" stop-color="#b85a78" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="petBodyQiuyue" cx="40%" cy="32%" r="74%">
+          <stop offset="0" stop-color="#e6f0ff"/>
+          <stop offset=".45" stop-color="#8fb0dd"/>
+          <stop offset="1" stop-color="#45618f"/>
+        </radialGradient>
+        <radialGradient id="petGlowQiuyue" cx="50%" cy="52%" r="55%">
+          <stop offset="0" stop-color="#dcebff" stop-opacity=".62"/>
+          <stop offset=".6" stop-color="#9dbbe6" stop-opacity=".22"/>
+          <stop offset="1" stop-color="#5a7bab" stop-opacity="0"/>
+        </radialGradient>
       </defs>
       <!-- 提梁与顶盖 -->
       <path class="pet-handle" d="M32 24 Q50 4 68 24" stroke="#c68a4a" fill="none" stroke-width="4" stroke-linecap="round"/>
@@ -1017,7 +1101,14 @@
         <path d="M66 100 Q62 106 62 110 Q62 114 66 114 Q70 114 70 110 Q70 106 66 100 Z" fill="#e3aa4e"/>
         <circle cx="66" cy="116" r="1.6" fill="#8a5a3a"/>
       </g>
+      <g class="pet-acc pet-acc-zhuangyuan">
+        <path d="M36 14 Q50 4 64 14 L60 8 Q50 0 40 8 Z" fill="#b83a3a"/>
+        <rect x="34" y="12" width="32" height="5" rx="2" fill="#e3aa4e"/>
+        <path d="M34 14 L25 20" stroke="#e3aa4e" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M66 14 L75 20" stroke="#e3aa4e" stroke-width="2.5" stroke-linecap="round"/>
+      </g>
     </svg>
+    <img id="petAvatarImg" class="hidden" alt="小灯头像">
   </div>
 </div>
 <div id="petShop" class="hidden" onclick="if(event.target===this)petShopClose()">
@@ -1063,6 +1154,7 @@ function defaultPetCfg(){
     skin:'zhusha',owned:['zhusha'],
     accessory:'none',ownedAcc:['none'],
     stats:{checkins:0,tasksDone:0,reviews:0,exams:0},
+    avatarAt:0,
     updatedAt:0
   };
 }
@@ -1125,6 +1217,7 @@ function normalizeDB(){
     DB.petCfg.ownedAcc=Array.isArray(old.ownedAcc)&&old.ownedAcc.length?old.ownedAcc:['none'];
     DB.petCfg.claimed=Array.isArray(old.claimed)?old.claimed:[];
     if(!DB.petCfg.skin) DB.petCfg.skin='zhusha';
+    if(DB.petCfg.avatarAt==null) DB.petCfg.avatarAt=0;
     DB.v=5;
   }
   if(!DB.aiCfg||typeof DB.aiCfg!=='object') DB.aiCfg={provider:'deepseek',model:'deepseek-chat',keys:{},endpoints:{}};
@@ -1165,6 +1258,7 @@ function save(){
   t.textContent='● 已保存 '+new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
   /* 云同步钩子：所有本地改动都经过 save()，在这里统一标记脏集合并调度推送 */
   if(typeof syncMarkDirty==='function' && !SYNC.applyingRemote) syncMarkDirty();
+  if(typeof snapshotMaybe==='function') snapshotMaybe();
 }
 function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
 function todayStr(){ const d=new Date(); return isoDate(d); }
@@ -1352,6 +1446,7 @@ function switchTab(tab){
   const v=document.getElementById('view-'+tab);
   if(v) v.classList.add('active');
   if(tab==='stats') renderStats();
+  if(tab==='data') renderSnapshots();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 document.addEventListener('click',e=>{
@@ -1799,6 +1894,18 @@ function setMastery(id,v){
   }
 }
 function deleteWord(id){ DB.words=DB.words.filter(x=>x.id!==id); syncTomb('words',id); save(); renderWords(); renderDashboard(); }
+let wordPage=0;
+const WORD_PAGE_SIZE=100;
+let _wordSearchTimer=null;
+function wordFilterChanged(){ wordPage=0; renderWords(); }
+function scheduleWordSearch(){
+  clearTimeout(_wordSearchTimer);
+  _wordSearchTimer=setTimeout(()=>{ wordPage=0; renderWords(); },250);
+}
+function goWordPage(delta){
+  wordPage=Math.max(0,wordPage+delta);
+  renderWords();
+}
 function renderWords(){
   const f=document.getElementById('wFilter').value;
   const q=document.getElementById('wSearch').value.trim().toLowerCase();
@@ -1808,11 +1915,14 @@ function renderWords(){
   let list=DB.words.slice();
   if(f!=='all') list=list.filter(w=>String(w.mastery)===f);
   if(q) list=list.filter(w=>(w.term+' '+w.mean+' '+(w.tag||'')).toLowerCase().includes(q));
-  if(list.length===0){ document.getElementById('wordList').innerHTML='<div class="empty">灯火未起，先添一盏——导入词库或添加第一个单词。</div>'; return; }
+  const total=list.length;
+  if(total===0){ document.getElementById('wordList').innerHTML='<div class="empty">灯火未起，先添一盏——导入词库或添加第一个单词。</div>'; return; }
+  const pages=Math.max(1,Math.ceil(total/WORD_PAGE_SIZE));
+  if(wordPage>=pages) wordPage=pages-1;
+  if(wordPage<0) wordPage=0;
+  const pageList=list.slice(wordPage*WORD_PAGE_SIZE,(wordPage+1)*WORD_PAGE_SIZE);
   const labels=['未学','生疏','熟悉','已掌握'];
-  document.getElementById('wordList').innerHTML=`<div class="table-scroll"><table><thead><tr>
-    <th>单词</th><th>词性</th><th>释义</th><th>标签</th><th>状态</th><th>操作</th></tr></thead><tbody>`+
-    list.map(w=>`<tr>
+  const rows=pageList.map(w=>`<tr>
     <td><button class="vbtn" data-w="${esc(w.term)}" onclick="voiceWord(this.dataset.w)" title="朗读单词">🔊</button><b>${esc(w.term)}</b> <span class="muted small">${esc(w.phon||'')}</span></td>
     <td>${esc(w.pos||'')}</td><td>${esc(w.mean)}</td>
     <td>${w.tag?('<span class="tag">'+esc(w.tag)+'</span>'):''}</td>
@@ -1820,8 +1930,15 @@ function renderWords(){
       <div class="muted small" style="margin-top:2px">📅 ${w.nextReview?w.nextReview.slice(5):'—'}</div></td>
     <td><select onchange="setMastery('${w.id}',parseInt(this.value))" style="width:auto;padding:4px 6px">
       ${[0,1,2,3].map(v=>`<option value="${v}" ${w.mastery===v?'selected':''}>${labels[v]}</option>`).join('')}
-    </select> <button class="btn danger sm" onclick="deleteWord('${w.id}')">删</button></td></tr>`).join('')+
-    '</tbody></table></div>';
+    </select> <button class="btn danger sm" onclick="deleteWord('${w.id}')">删</button></td></tr>`).join('');
+  const pager=total>WORD_PAGE_SIZE?`<div class="word-pager">
+      <span>共 ${total} 词 · 第 ${wordPage+1}/${pages} 页</span>
+      <button ${wordPage<=0?'disabled':''} onclick="goWordPage(-1)">上一页</button>
+      <button ${wordPage>=pages-1?'disabled':''} onclick="goWordPage(1)">下一页</button>
+    </div>`:'';
+  document.getElementById('wordList').innerHTML=`<div class="table-scroll"><table><thead><tr>
+    <th>单词</th><th>词性</th><th>释义</th><th>标签</th><th>状态</th><th>操作</th></tr></thead><tbody>`+rows+
+    '</tbody></table></div>'+pager;
 }
 /* 到期队列：按到期日 → 掌握度 → 遗忘次数排序；单轮最多 50 词，避免一次压垮 */
 function dueWords(limit){
@@ -2060,6 +2177,46 @@ function renderAiProviderUI(){
   sel.innerHTML=AI_PROVIDERS.map(p=>`<option value="${p.id}" ${p.id===DB.aiCfg.provider?'selected':''}>${esc(p.name)}</option>`).join('');
   aiProviderChanged();
 }
+async function aiStreamPolish(payload,onDelta){
+  const r=await fetch((typeof SYNC!=='undefined'&&SYNC.apiBase||'')+'/api/v1/ai/polish_stream',{
+    method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  if(!r.ok){
+    let msg='HTTP '+r.status;
+    try{ const j=await r.json(); if(typeof j.detail==='string') msg=j.detail; }catch(e){}
+    throw new Error(msg);
+  }
+  if(!r.body) throw new Error('浏览器不支持流式读取');
+  const reader=r.body.getReader(), dec=new TextDecoder();
+  let buf='', out='';
+  for(;;){
+    const {done,value}=await reader.read();
+    if(done) break;
+    buf+=dec.decode(value,{stream:true}).replace(/\r/g,'');
+    let idx;
+    while((idx=buf.indexOf('\n\n'))>=0){
+      const chunk=buf.slice(0,idx); buf=buf.slice(idx+2);
+      const line=chunk.split('\n').find(x=>x.startsWith('data:'));
+      if(!line) continue;
+      const data=line.slice(5).trim();
+      if(data==='[DONE]') return out;
+      let j; try{ j=JSON.parse(data); }catch(e){ continue; }
+      if(j.error) throw new Error(j.error);
+      if(j.delta){ out+=j.delta; onDelta(out); }
+    }
+  }
+  return out;
+}
+function showAiStream(text){
+  const box=document.getElementById('aiResult'); if(!box) return;
+  box.classList.remove('hidden');
+  let pre=document.getElementById('aiStreamText');
+  if(!pre){
+    box.innerHTML='<div class="card" style="background:rgba(16,24,48,.45);border-color:var(--line)"><b class="small">小灯正在批改…</b><div id="aiStreamText" style="white-space:pre-wrap;margin-top:8px;line-height:1.8;font-size:13px"></div></div>';
+    pre=document.getElementById('aiStreamText');
+  }
+  pre.textContent=text;
+  pre.scrollIntoView({block:'nearest'});
+}
 async function aiPolish(){
   saveAiCfg();
   const p=aiCurProvider();
@@ -2077,19 +2234,30 @@ async function aiPolish(){
   const btn=document.getElementById('aiBtn'); btn.disabled=true; btn.textContent='润色中…';
   document.getElementById('aiStatus').textContent='正在调用 '+model+'，请稍候…';
   let out=null, via='直连';
-  /* 通道一：本机服务器转发（全供应商可用） */
+  /* 通道一：本机服务器转发（全供应商可用；优先流式） */
   if(AI_PROXY_OK!==false){
+    const payload={provider:p.id,model,api_key:key,endpoint,essay_type:type,full_score:full,content:input};
+    let partial='';
     try{
-      const r=await fetch((typeof SYNC!=='undefined'&&SYNC.apiBase||'')+'/api/v1/ai/polish',{
-        method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({provider:p.id,model,api_key:key,endpoint,essay_type:type,full_score:full,content:input})});
-      const j=await r.json();
-      if(!r.ok) throw new Error(typeof j.detail==='string'?j.detail:('HTTP '+r.status));
-      out=j.content; via='服务器转发';
+      document.getElementById('aiStatus').textContent='正在连接 '+model+'（流式）…';
+      out=await aiStreamPolish(payload,txt=>{ partial=txt; showAiStream(txt); });
+      if(!out) throw new Error('流式返回为空');
+      via='服务器流式';
       if(AI_PROXY_OK===null){ AI_PROXY_OK=true; renderAiModeTip(); }
     }catch(err){
-      if(AI_PROXY_OK===true){ showAiFail(err,via); return; }  /* 代理本该可用却失败：上游问题，如实报错 */
-      AI_PROXY_OK=false; renderAiModeTip();  /* 探测失败，降级直连 */
+      if(partial){ showAiFail(err,'服务器流式（已收到部分内容）'); return; }
+      /* 流式不可用（旧后端/供应商不支持）：退回一次性转发 */
+      try{
+        const r=await fetch((typeof SYNC!=='undefined'&&SYNC.apiBase||'')+'/api/v1/ai/polish',{
+          method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+        const j=await r.json();
+        if(!r.ok) throw new Error(typeof j.detail==='string'?j.detail:('HTTP '+r.status));
+        out=j.content; via='服务器转发';
+        if(AI_PROXY_OK===null){ AI_PROXY_OK=true; renderAiModeTip(); }
+      }catch(err2){
+        if(AI_PROXY_OK===true){ showAiFail(err2,via); return; }  /* 代理本该可用却失败：上游问题，如实报错 */
+        AI_PROXY_OK=false; renderAiModeTip();  /* 探测失败，降级直连 */
+      }
     }
   }
   /* 通道二：浏览器直连（仅 CORS 友好的供应商） */
@@ -2626,13 +2794,47 @@ function importData(e){
   const file=e.target.files[0]; if(!file) return;
   const reader=new FileReader();
   reader.onload=ev=>{ try{ const d=JSON.parse(ev.target.result); if(!d.words) throw 0;
-    if(confirm('导入将覆盖当前数据，确定？')){ DB=d; normalizeDB();
-      save(); fullRender(); petApplySkin(); petCoinUI(); toast('导入成功'); } }
+    if(confirm('导入将覆盖当前数据，确定？')){ snapshotNow(true); DB=d; normalizeDB();
+      save(); fullRender(); petApplySkin(); petApplyIdentity(); petApplyAvatar(); petCoinUI(); toast('导入成功'); } }
     catch(err){ toast('文件格式不正确'); } };
   reader.readAsText(file); e.target.value='';
 }
+/* 新手引导：只在本机第一次打开时出现，可在数据管理里重看 */
+const ONBOARD_KEY='ky_onboard_done';
+const ONBOARD_STEPS=[
+  {icon:'🏮',title:'每天点亮一盏灯',text:'在首页勾完今日功课，点「点灯 · 今日打卡」。连续点灯会让小灯的火苗越来越亮，灯火图也会多一盏灯。'},
+  {icon:'🎴',title:'按遗忘曲线复习',text:'词汇页会按到期日安排复习；首页「今日复习」可以一键开始，还能切换听写模式、提前复习。'},
+  {icon:'🪔',title:'去灯屋给小灯换装',text:'点右下角小灯的 🏮，用灯油解锁皮肤、挂件，查看成就，也能给小灯改名、设定性格。'}
+];
+let onboardStep=0;
+function onboardRender(){
+  const s=ONBOARD_STEPS[onboardStep];
+  document.getElementById('onbStep').textContent=(onboardStep+1)+' / '+ONBOARD_STEPS.length;
+  document.getElementById('onbIcon').textContent=s.icon;
+  document.getElementById('onbTitle').textContent=s.title;
+  document.getElementById('onbText').textContent=s.text;
+  document.getElementById('onbNext').textContent=onboardStep===ONBOARD_STEPS.length-1?'开始使用':'下一步';
+}
+function onboardStart(force){
+  try{ if(!force&&localStorage.getItem(ONBOARD_KEY)==='1') return; }catch(e){}
+  onboardStep=0; onboardRender();
+  document.getElementById('onboard').classList.remove('hidden');
+}
+function onboardNext(){
+  if(onboardStep>=ONBOARD_STEPS.length-1){ onboardFinish(); return; }
+  onboardStep++; onboardRender();
+}
+function onboardSkip(){ onboardFinish(); }
+function onboardFinish(){
+  try{ localStorage.setItem(ONBOARD_KEY,'1'); }catch(e){}
+  document.getElementById('onboard').classList.add('hidden');
+  toast('随时可以在「数据管理 → 新手引导」重看');
+}
+function onboardCheck(){
+  try{ if(localStorage.getItem(ONBOARD_KEY)!=='1') setTimeout(()=>onboardStart(false),800); }catch(e){}
+}
 function clearAll(){
-  if(confirm('确定清空全部数据？此操作不可恢复，建议先导出备份。')){ DB=defaultDB(); save(); fullRender(); toast('已清空'); }
+  if(confirm('确定清空全部数据？此操作不可恢复，建议先导出备份。')){ snapshotNow(true); DB=defaultDB(); save(); fullRender(); petApplySkin(); petApplyIdentity(); petCoinUI(); toast('已清空'); }
 }
 
 /* ===================== 启动 ===================== */
@@ -2669,14 +2871,68 @@ function resetTargetsUI(){
 /* ===================== 真题库 · IndexedDB ===================== */
 let _idb=null;
 function idbOpen(){ return new Promise((res,rej)=>{ if(_idb) return res(_idb);
-  const rq=indexedDB.open('ky_library',1);
-  rq.onupgradeneeded=e=>{ const db=e.target.result; if(!db.objectStoreNames.contains('pdfs')) db.createObjectStore('pdfs',{keyPath:'id'}); };
+  const rq=indexedDB.open('ky_library',3);
+  rq.onupgradeneeded=e=>{
+    const db=e.target.result;
+    if(!db.objectStoreNames.contains('pdfs')) db.createObjectStore('pdfs',{keyPath:'id'});
+    if(!db.objectStoreNames.contains('snapshots')) db.createObjectStore('snapshots',{keyPath:'id'});
+    if(!db.objectStoreNames.contains('petAvatar')) db.createObjectStore('petAvatar',{keyPath:'id'});
+  };
   rq.onsuccess=e=>{ _idb=e.target.result; res(_idb); }; rq.onerror=e=>rej(e); }); }
+/* 通用 IDB 读写（snapshots 等非 PDF 数据） */
+async function idbPutIn(store,rec){ const db=await idbOpen(); return new Promise((res,rej)=>{ const tx=db.transaction(store,'readwrite'); tx.objectStore(store).put(rec); tx.oncomplete=()=>res(); tx.onerror=()=>rej(tx.error); }); }
+async function idbGetIn(store,key){ const db=await idbOpen(); return new Promise((res,rej)=>{ const tx=db.transaction(store,'readonly'); const r=tx.objectStore(store).get(key); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
+async function idbGetAllIn(store){ const db=await idbOpen(); return new Promise((res,rej)=>{ const tx=db.transaction(store,'readonly'); const r=tx.objectStore(store).getAll(); r.onsuccess=()=>res(r.result||[]); r.onerror=()=>rej(r.error); }); }
+async function idbDeleteIn(store,key){ const db=await idbOpen(); return new Promise((res,rej)=>{ const tx=db.transaction(store,'readwrite'); tx.objectStore(store).delete(key); tx.oncomplete=()=>res(); tx.onerror=()=>rej(tx.error); }); }
 async function idbPut(rec){ const db=await idbOpen(); return new Promise((res,rej)=>{ const tx=db.transaction('pdfs','readwrite'); tx.objectStore('pdfs').put(rec); tx.oncomplete=()=>res(); tx.onerror=()=>rej(tx.error); }); }
 async function idbGetAll(){ const db=await idbOpen(); return new Promise((res,rej)=>{ const tx=db.transaction('pdfs','readonly'); const r=tx.objectStore('pdfs').getAll(); r.onsuccess=()=>res(r.result||[]); r.onerror=()=>rej(r.error); }); }
 async function idbGet(id){ const db=await idbOpen(); return new Promise((res,rej)=>{ const tx=db.transaction('pdfs','readonly'); const r=tx.objectStore('pdfs').get(id); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
 async function idbDelete(id){ const db=await idbOpen(); return new Promise((res,rej)=>{ const tx=db.transaction('pdfs','readwrite'); tx.objectStore('pdfs').delete(id); tx.oncomplete=()=>res(); tx.onerror=()=>rej(tx.error); }); }
 
+/* 每日本地快照：每天第一次写入时存一份到 IndexedDB，保留 7 天 */
+const SNAP_DAY_KEY='ky_snap_day';
+let _snapDay='', _snapBusy=false;
+try{ _snapDay=localStorage.getItem(SNAP_DAY_KEY)||''; }catch(e){}
+async function snapshotNow(force){
+  if(!force&&_snapDay===todayStr()) return false;
+  if(_snapBusy) return false;
+  _snapBusy=true;
+  try{
+    const copy=JSON.parse(JSON.stringify(DB));
+    await idbPutIn('snapshots',{id:todayStr(),at:Date.now(),data:copy});
+    _snapDay=todayStr();
+    try{ localStorage.setItem(SNAP_DAY_KEY,_snapDay); }catch(e){}
+    const all=await idbGetAllIn('snapshots');
+    const sorted=all.sort((a,b)=>String(a.id).localeCompare(String(b.id)));
+    for(const x of sorted.slice(0,Math.max(0,sorted.length-7))) await idbDeleteIn('snapshots',x.id);
+    return true;
+  }catch(e){ return false; }
+  finally{ _snapBusy=false; }
+}
+function snapshotMaybe(){ if(_snapDay!==todayStr()) snapshotNow(false); }
+async function renderSnapshots(){
+  const box=document.getElementById('snapList'); if(!box) return;
+  box.innerHTML='<div class="empty">读取中…</div>';
+  try{
+    const all=await idbGetAllIn('snapshots');
+    all.sort((a,b)=>String(b.id).localeCompare(String(a.id)));
+    if(!all.length){ box.innerHTML='<div class="empty">还没有快照。今天开始使用后会自动生成。</div>'; return; }
+    box.innerHTML=all.map(x=>{
+      const at=new Date(x.at);
+      const time=at.toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+      const size=Math.round(JSON.stringify(x.data||{}).length/1024);
+      return `<div class="snap-row"><span>📅 ${x.id} · ${time} · 约 ${size} KB</span>
+        <button class="btn ghost sm" onclick="restoreSnapshot('${x.id}')">恢复这一份</button></div>`;
+    }).join('');
+  }catch(e){ box.innerHTML='<div class="empty">快照读取失败，浏览器可能禁用了本地存储。</div>'; }
+}
+async function restoreSnapshot(id){
+  if(!confirm('恢复 '+id+' 的快照？当前数据会被覆盖，建议先导出备份。')) return;
+  const rec=await idbGetIn('snapshots',id);
+  if(!rec||!rec.data){ toast('这份快照不存在'); return; }
+  DB=rec.data; normalizeDB(); save(); fullRender(); petApplySkin(); petApplyIdentity(); petApplyAvatar(); petCoinUI();
+  toast('已恢复到 '+id+' 的快照');
+}
 let curGrader=null;
 const ANS_LETTERS=['A','B','C','D','E'];
 async function libUpload(e){
@@ -3038,6 +3294,10 @@ function readWordList(btn){
   if(q) list=list.filter(w=>(w.term+' '+w.mean+' '+(w.tag||'')).toLowerCase().includes(q));
   if(!list.length){ toast('当前筛选下没有单词'); return; }
   if(!('speechSynthesis' in window)){ toast('当前浏览器不支持语音合成'); return; }
+  if(list.length>50){
+    const mins=Math.ceil(list.length*2.4/60);
+    if(!confirm('当前筛选共 '+list.length+' 词，连读大约需要 '+mins+' 分钟。\n确定现在开始吗？')) return;
+  }
   _readingList=true; btn.textContent='⏹ 停止连读';
   let i=0;
   const next=()=>{
@@ -3086,8 +3346,13 @@ const PET_SKINS={
   yuebai:{name:'月白',tier:'史诗',cls:'epic',price:220,desc:'月下灯火，安静得能听见翻书声。',
     swatch:'radial-gradient(circle at 35% 30%,#f8fbff,#cdd9ec 45%,#8fa2c0)'},
   liujin:{name:'鎏金',tier:'传说',cls:'legend',price:520,desc:'百日点灯的限定鎏金，照见一整条长街。',
-    swatch:'radial-gradient(circle at 35% 30%,#ffeaa0,#d9a73c 45%,#8f6216)'}
+    swatch:'radial-gradient(circle at 35% 30%,#ffeaa0,#d9a73c 45%,#8f6216)'},
+  chunmei:{name:'春梅',tier:'史诗',cls:'epic',price:180,season:[2,3,4],seasonName:'春·2-4月',desc:'折一枝春梅插在灯梁上，花期有限。',
+    swatch:'radial-gradient(circle at 35% 30%,#ffe0e8,#e08aa5 45%,#9a4560)'},
+  qiuyue:{name:'秋月',tier:'传说',cls:'legend',price:300,season:[9,10,11],seasonName:'秋·9-11月',desc:'秋夜的月色落在灯上，一年只亮一季。',
+    swatch:'radial-gradient(circle at 35% 30%,#e6f0ff,#8fb0dd 45%,#45618f)'}
 };
+function petSeasonOk(s){ return !s.season || s.season.includes(new Date().getMonth()+1); }
 function petCoinBalance(){ return (DB.petCfg&&DB.petCfg.coins)||0; }
 function petCoinUI(){
   const n=petCoinBalance();
@@ -3132,13 +3397,15 @@ const PET_ACC={
   shusheng:{name:'书生巾',icon:'🎓',tier:'勇者',cls:'hero',price:40,desc:'青衿书生，灯下读书。'},
   weijin:{name:'围巾',icon:'🧣',tier:'勇者',cls:'hero',price:50,desc:'天凉了，别让灯灵着凉。'},
   meihua:{name:'梅花枝',icon:'🌸',tier:'史诗',cls:'epic',price:100,desc:'折一枝梅花，插在灯梁上。'},
-  lingdang:{name:'小铃铛',icon:'🔔',tier:'勇者',cls:'hero',price:30,desc:'走两步就叮当响。'}
+  lingdang:{name:'小铃铛',icon:'🔔',tier:'勇者',cls:'hero',price:30,desc:'走两步就叮当响。'},
+  zhuangyuan:{name:'状元帽',icon:'🎓',tier:'限定',cls:'legend',price:0,unlock:'streak100',desc:'连续点灯 100 天才能戴上的限定挂件。'}
 };
 /* 成就：条件用现有数据算，奖励灯油只发一次 */
 const PET_ACHIEVEMENTS=[
   {id:'checkin1',name:'第一盏灯',desc:'累计点灯 1 天',goal:1,reward:20,val:()=>Object.keys(DB.checkins).filter(k=>DB.checkins[k].checked).length},
   {id:'checkin7',name:'七日不灭',desc:'连续点灯 7 天',goal:7,reward:50,val:()=>calcStreak()},
   {id:'checkin30',name:'一月灯火',desc:'连续点灯 30 天',goal:30,reward:150,val:()=>calcStreak()},
+  {id:'checkin100',name:'百日长明',desc:'连续点灯 100 天',goal:100,reward:300,val:()=>calcStreak()},
   {id:'review100',name:'百词过目',desc:'累计复习 100 个词次',goal:100,reward:60,val:()=>petStat('reviews')},
   {id:'words500',name:'词海拾贝',desc:'词库累计 500 词',goal:500,reward:80,val:()=>DB.words.length},
   {id:'master100',name:'百词归心',desc:'掌握 100 个词',goal:100,reward:100,val:()=>DB.words.filter(w=>w.mastery>=3).length},
@@ -3172,6 +3439,75 @@ function petApplySkin(){
   const acc=DB.petCfg&&DB.petCfg.accessory;
   av.dataset.acc=PET_ACC[acc]?acc:'none';
 }
+async function petApplyAvatar(){
+  const img=document.getElementById('petAvatarImg'), svg=document.querySelector('#petAvatar svg');
+  if(!img||!svg) return;
+  let rec=null;
+  try{ rec=await idbGetIn('petAvatar','me'); }catch(e){}
+  if(rec&&rec.blob){
+    if(img.dataset.url) URL.revokeObjectURL(img.dataset.url);
+    const url=URL.createObjectURL(rec.blob);
+    img.src=url; img.dataset.url=url; img.classList.remove('hidden');
+    svg.classList.add('hidden'); document.getElementById('petAvatar').classList.add('custom');
+  }else{
+    if(img.dataset.url){ URL.revokeObjectURL(img.dataset.url); delete img.dataset.url; }
+    img.removeAttribute('src'); img.classList.add('hidden');
+    svg.classList.remove('hidden'); document.getElementById('petAvatar').classList.remove('custom');
+  }
+  const prev=document.getElementById('avatarPreview');
+  if(prev) prev.src=img.classList.contains('hidden')?'':img.src;
+}
+async function petAvatarPick(e){
+  const f=e.target.files[0]; e.target.value='';
+  if(!f) return;
+  if(!/^image\/(png|jpeg)$/.test(f.type)){ toast('只支持 PNG / JPG'); return; }
+  if(f.size>300*1024){ toast('头像不能超过 300KB'); return; }
+  try{
+    await idbPutIn('petAvatar',{id:'me',blob:f,at:Date.now()});
+    DB.petCfg.avatarAt=Date.now(); save();
+    await petApplyAvatar(); petRenderShop(); toast('头像已更新');
+    if(SYNC.token) petAvatarUpload(f);
+  }catch(err){ toast('头像保存失败，浏览器可能禁用了本地存储'); }
+}
+async function petAvatarUpload(blob){
+  if(!SYNC.token) return;
+  try{
+    const fd=new FormData();
+    fd.append('file',blob,'pet-avatar.'+(blob.type==='image/jpeg'?'jpg':'png'));
+    const r=await fetch((SYNC.apiBase||'')+'/api/v1/pet/avatar',{
+      method:'PUT',headers:{'Authorization':'Bearer '+SYNC.token},body:fd});
+    const j=await r.json();
+    if(!r.ok) throw new Error(typeof j.detail==='string'?j.detail:('HTTP '+r.status));
+    if(j.updated_at){ DB.petCfg.avatarAt=j.updated_at; save(); }
+  }catch(e){ toast('头像已存本机，云端同步稍后重试'); }
+}
+async function petAvatarSync(remoteAt){
+  if(!SYNC.token) return;
+  remoteAt=Number(remoteAt||0);
+  let rec=null;
+  try{ rec=await idbGetIn('petAvatar','me'); }catch(e){}
+  const localAt=Number(DB.petCfg.avatarAt||0);
+  if(remoteAt>localAt){
+    try{
+      const r=await fetch((SYNC.apiBase||'')+'/api/v1/pet/avatar',{headers:{'Authorization':'Bearer '+SYNC.token}});
+      if(r.ok){
+        const blob=await r.blob();
+        await idbPutIn('petAvatar',{id:'me',blob,at:remoteAt});
+        DB.petCfg.avatarAt=remoteAt; save(); await petApplyAvatar();
+      }
+    }catch(e){}
+  }else if(rec&&localAt>remoteAt){
+    await petAvatarUpload(rec.blob);
+  }
+}
+async function petAvatarRemove(){
+  if(!confirm('移除自定义头像，恢复默认的小灯形象？')) return;
+  try{ await idbDeleteIn('petAvatar','me'); }catch(e){}
+  DB.petCfg.avatarAt=0; save(); await petApplyAvatar(); petRenderShop(); toast('已恢复默认形象');
+  if(SYNC.token){
+    try{ await fetch((SYNC.apiBase||'')+'/api/v1/pet/avatar',{method:'DELETE',headers:{'Authorization':'Bearer '+SYNC.token}}); }catch(e){}
+  }
+}
 let shopTab='skin';
 function petShopTabSet(tab){
   shopTab=tab;
@@ -3190,22 +3526,22 @@ function petRenderShop(){
   if(shopTab==='skin'){
     const owned=DB.petCfg.owned||[], cur=DB.petCfg.skin;
     body.innerHTML='<div class="pet-skin-grid">'+Object.keys(PET_SKINS).map(id=>{
-      const s=PET_SKINS[id], isOwned=owned.includes(id), isCur=cur===id;
-      const pr=isCur?'装备中':(isOwned?'点击装备':'🪔 '+s.price);
+      const s=PET_SKINS[id], isOwned=owned.includes(id), isCur=cur===id, ok=petSeasonOk(s);
+      const pr=isCur?'装备中':(isOwned?'点击装备':(ok?'🪔 '+s.price:'🔒 '+s.seasonName));
       return `<div class="pet-skin${isCur?' on':''}" onclick="petSkinClick('${id}')">
         <div class="sw" style="background:${s.swatch}"></div>
         <div class="nm">${s.name}<span class="tier ${s.cls}">${s.tier}</span></div>
-        <div class="ds">${s.desc}</div>
-        <div class="pr ${isCur?'equipped':(isOwned?'owned':'')}">${pr}</div>
+        <div class="ds">${s.desc}${s.seasonName?'<br><span style="color:var(--gold)">'+s.seasonName+' 限定</span>':''}</div>
+        <div class="pr ${isCur?'equipped':(isOwned?'owned':(ok?'':'locked'))}">${pr}</div>
       </div>`;
-    }).join('')+'</div><p class="tip" style="margin-top:12px">皮肤按等级定价：勇者 → 史诗 → 传说。</p>';
+    }).join('')+'</div><p class="tip" style="margin-top:12px">皮肤按等级定价：勇者 → 史诗 → 传说；季节皮肤只在对应月份开放购买，买过的可以一直穿。</p>';
     return;
   }
   if(shopTab==='acc'){
     const owned=DB.petCfg.ownedAcc||['none'], cur=DB.petCfg.accessory||'none';
     body.innerHTML='<div class="pet-acc-grid">'+Object.keys(PET_ACC).map(id=>{
-      const a=PET_ACC[id], isOwned=owned.includes(id), isCur=cur===id;
-      const pr=isCur?'佩戴中':(isOwned?'点击佩戴':'🪔 '+a.price);
+      const a=PET_ACC[id], isOwned=owned.includes(id), isCur=cur===id, ok=petAccUnlocked(a);
+      const pr=isCur?'佩戴中':(isOwned?'点击佩戴':(ok?(a.price?'🪔 '+a.price:'点击领取'):'🔒 连续 100 天'));
       return `<div class="pet-skin${isCur?' on':''}" onclick="petAccClick('${id}')">
         <div class="sw" style="display:flex;align-items:center;justify-content:center;font-size:30px;background:rgba(20,30,56,.7)">${a.icon}</div>
         <div class="nm">${a.name}${a.tier?`<span class="tier ${a.cls}">${a.tier}</span>`:''}</div>
@@ -3218,6 +3554,15 @@ function petRenderShop(){
   if(shopTab==='me'){
     const name=esc(DB.petCfg.name||'小灯'), persona=esc(DB.petCfg.persona||'');
     body.innerHTML=`<div class="id-form">
+      <div class="avatar-row">
+        <img id="avatarPreview" class="avatar-preview" alt="">
+        <div>
+          <button class="btn ghost sm" onclick="document.getElementById('avatarFile').click()">上传 PNG / JPG</button>
+          <input id="avatarFile" type="file" accept="image/png,image/jpeg" class="hidden" onchange="petAvatarPick(event)">
+          <button class="btn ghost sm" onclick="petAvatarRemove()">移除头像</button>
+          <p class="tip" style="margin-top:4px">≤300KB，建议正方形；图片存在本机，登录后自动同步。</p>
+        </div>
+      </div>
       <label>小灯的名字（最多 8 个字）</label>
       <input id="petNameInput" maxlength="8" value="${name}" placeholder="小灯">
       <label>性格设定（聊天时优先遵守，最多 200 字；留空就用官方人设）</label>
@@ -3228,6 +3573,7 @@ function petRenderShop(){
       </div>
       <p class="tip">名字和设定会随账号同步；AI 聊天时作为「额外设定」传给模型，服务端的安全边界仍然生效。</p>
     </div>`;
+    setTimeout(()=>petApplyAvatar(),0);
     return;
   }
   /* 成就 */
@@ -3248,6 +3594,7 @@ function petSkinClick(id){
   const s=PET_SKINS[id]; if(!s) return;
   const c=DB.petCfg;
   if((c.owned||[]).includes(id)){ petEquipSkin(id); return; }
+  if(!petSeasonOk(s)){ toast('这款是季节限定，'+s.seasonName+' 才开放购买'); return; }
   if(petCoinBalance()<s.price){ toast('灯油还差 '+(s.price-petCoinBalance())+' 滴，去点灯/清功课吧'); return; }
   if(!confirm('花 '+s.price+' 灯油解锁「'+s.name+'」？')) return;
   c.coins-=s.price; c.owned=c.owned||[]; c.owned.push(id); c.skin=id; c.updatedAt=Date.now();
@@ -3259,10 +3606,20 @@ function petEquipSkin(id){
   c.skin=id; c.updatedAt=Date.now(); save(); petApplySkin(); petRenderShop();
   toast('小灯换上了「'+PET_SKINS[id].name+'」');
 }
+function petAccUnlocked(a){ return !a.unlock || (a.unlock==='streak100'&&calcStreak()>=100); }
 function petAccClick(id){
   const a=PET_ACC[id]; if(!a) return;
   const c=DB.petCfg;
   if((c.ownedAcc||['none']).includes(id)){ petEquipAcc(id); return; }
+  if(!petAccUnlocked(a)){
+    toast(a.unlock==='streak100'?('连续点灯 100 天解锁，当前 '+calcStreak()+' 天'):'这个挂件还没解锁');
+    return;
+  }
+  if(a.price===0){
+    c.ownedAcc=c.ownedAcc||['none']; c.ownedAcc.push(id); c.accessory=id; c.updatedAt=Date.now();
+    save(); petApplySkin(); petRenderShop(); toast('限定挂件「'+a.name+'」已解锁');
+    return;
+  }
   if(petCoinBalance()<a.price){ toast('灯油还差 '+(a.price-petCoinBalance())+' 滴'); return; }
   if(!confirm('花 '+a.price+' 灯油解锁「'+a.name+'」？')) return;
   c.coins-=a.price; c.ownedAcc=c.ownedAcc||['none']; c.ownedAcc.push(id); c.accessory=id; c.updatedAt=Date.now();
@@ -3360,6 +3717,7 @@ function petFlameLevel(){
   const lv=Math.min(3,Math.floor(s/7));   /* 每 7 天升一档 */
   const op=(0.82+lv*0.06).toFixed(2);     /* 底火也保持透亮，只在亮度上做细微区分 */
   document.getElementById('petBox').classList.toggle('dim',lv===0&&s===0);
+  const av=document.getElementById('petAvatar'); if(av) av.classList.toggle('century',s>=100);
   const g=document.getElementById('petFlameG');
   if(g) g.setAttribute('opacity',op);
 }
@@ -3368,7 +3726,7 @@ function petToggle(on){
   save();
   document.getElementById('petBox').classList.toggle('hidden',!DB.petCfg.on);
   document.getElementById('petRestore').classList.toggle('hidden',DB.petCfg.on);
-  if(DB.petCfg.on){ petApplySkin(); petApplyIdentity(); petCoinUI(); petGreet(); petFlameLevel(); petDailyGift(); }
+  if(DB.petCfg.on){ petApplySkin(); petApplyIdentity(); petApplyAvatar(); petCoinUI(); petGreet(); petFlameLevel(); petDailyGift(); }
 }
 function petTogglePanel(){
   document.getElementById('petPanel').classList.toggle('hidden');
@@ -3451,7 +3809,7 @@ function petInit(){
   }
   box.classList.toggle('hidden',!petIsOn());
   document.getElementById('petRestore').classList.toggle('hidden',petIsOn());
-  petApplySkin(); petApplyIdentity(); petCoinUI(); petGreet(); petFlameLevel(); petIdleChat(); petDailyGift();
+  petApplySkin(); petApplyIdentity(); petApplyAvatar(); petCoinUI(); petGreet(); petFlameLevel(); petIdleChat(); petDailyGift();
 }
 
 
@@ -3687,11 +4045,12 @@ async function syncPull(forceRemote){
       try{
         mergeRemote(remote,tombs,forceRemote);
         normalizeDB(); save(); fullRender();
-        petApplySkin(); petCoinUI(); petFlameLevel();   /* 云端拉下来的装扮/灯油立刻反映到小灯上 */
+        petApplySkin(); petApplyIdentity(); petApplyAvatar(); petCoinUI(); petFlameLevel();   /* 云端拉下来的装扮/灯油立刻反映到小灯上 */
       }finally{ SYNC.applyingRemote=false; }
       /* 并集合并可能产生本地独有记录，回推一次让云端对齐 */
       await syncPush(true);
     }
+    petAvatarSync((remote.profile&&remote.profile.avatarAt)||0).catch(()=>{});
     SYNC.lastSync=new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
     syncSaveMeta();
     setCloudBadge('on','已同步 '+SYNC.lastSync);
@@ -3866,6 +4225,10 @@ save();
 voiceInit();
 petInit();
 aiProbeProxy();
+onboardCheck();
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
 </script>
 </body>
 </html>
