@@ -1429,7 +1429,7 @@
     <div class="card">
       <div class="flex-between" style="align-items:center">
         <h2><span class="dot"></span>更新日志</h2>
-        <span class="tag" style="color:var(--gold)">应用 v1.9.1 · 数据 v7</span>
+        <span class="tag" style="color:var(--gold)">应用 v1.9.2 · 数据 v7</span>
       </div>
       <p class="tip">从一盏灯到一间灯屋。这里记录每一次长出新的枝叶；版本号按大阶段递增，数据版本用于本地迁移。</p>
       <div id="changelogList" class="cl-list"></div>
@@ -4745,6 +4745,11 @@ function onboardCheck(){
 }
 /* ===================== 更新日志 ===================== */
 const CHANGELOG=[
+  {v:'v1.9.2',date:'2026-11-22',tags:['账号'],title:'退出登录统一回到登录页',
+   items:[
+    '退出登录后固定回到登录/注册门，不再因为之前选过「本地模式」而留在应用里。',
+    '登录门默认停在「登录」页签；密码与确认密码输入框会清空，刷新后仍然需要重新登录。'
+   ]},
   {v:'v1.9.1',date:'2026-11-22',tags:['品牌','版权'],title:'关于与版权页：作品登记证书与扇面作品',
    items:[
     '新增公开的「关于与版权」页：品牌来处、两条学习线、扇面作品《东风夜放花千树》与作品登记证书。',
@@ -6196,8 +6201,16 @@ function syncLogout(){
   toast('已退出（本机数据保留）');
   const cur=document.querySelector('#nav button.active');
   if(cur&&cur.dataset.tab==='help') renderHelp();
-  /* 本地模式的人退出后仍留在应用里；其他情况回到登录门 */
-  try{ if(localStorage.getItem(GATE_MODE_KEY)!=='local') gateShow(); }catch(e){ gateShow(); }
+  /* 退出后统一回登录页：清掉本地模式标记，避免刷新后绕过登录门；
+     默认登录 tab，并清空密码框，避免下一个人看到上一次的密码 */
+  try{ localStorage.removeItem(GATE_MODE_KEY); }catch(e){}
+  gateIsRegister=false;
+  const passEl=document.getElementById('gatePass');
+  const pass2El=document.getElementById('gatePass2');
+  if(passEl) passEl.value='';
+  if(pass2El) pass2El.value='';
+  gateErr('');
+  gateShow();
 }
 function syncForcePull(){
   if(!SYNC.token){ toast('请先登录'); return; }
