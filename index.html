@@ -413,6 +413,8 @@
     display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
   .gate-local{color:var(--teng);font-size:12.5px;cursor:pointer}
   .gate-local:hover{color:var(--gold)}
+  .gate-about{font-size:11px;color:var(--dim)}
+  .gate-about:hover{color:var(--teng)}
   .gate-foot .tip{margin:0;font-size:11px}
   /* ===== 管理员页 ===== */
   .adm-tile b{display:block;font-size:24px;color:var(--gold);font-family:var(--serif)}
@@ -1412,6 +1414,14 @@
       </div>
       <div id="myFbList"><div class="empty">登录后可查看提交记录与管理员回复。</div></div>
     </div>
+
+    <div class="card">
+      <div class="flex-between">
+        <h2><span class="dot"></span>关于花千树</h2>
+        <a class="btn ghost sm" href="/about.html" target="_blank">作品与版权</a>
+      </div>
+      <p class="tip">品牌名取自辛弃疾《青玉案·元夕》；扇面美术作品《东风夜放花千树》已完成版权登记。证书与作品展示在关于页。</p>
+    </div>
   </section>
 
   <!-- ============ 更新日志 ============ -->
@@ -1419,7 +1429,7 @@
     <div class="card">
       <div class="flex-between" style="align-items:center">
         <h2><span class="dot"></span>更新日志</h2>
-        <span class="tag" style="color:var(--gold)">应用 v1.9 · 数据 v7</span>
+        <span class="tag" style="color:var(--gold)">应用 v1.9.1 · 数据 v7</span>
       </div>
       <p class="tip">从一盏灯到一间灯屋。这里记录每一次长出新的枝叶；版本号按大阶段递增，数据版本用于本地迁移。</p>
       <div id="changelogList" class="cl-list"></div>
@@ -1481,6 +1491,7 @@
       <div class="gate-foot">
         <span class="gate-local" onclick="gateLocal()">＞ 先逛逛 · 本地模式</span>
         <span class="tip">数据只存本机浏览器，随时可在「云同步」里登录</span>
+        <a class="gate-about" href="/about.html" target="_blank">关于与版权</a>
       </div>
     </div>
   </div>
@@ -4734,6 +4745,12 @@ function onboardCheck(){
 }
 /* ===================== 更新日志 ===================== */
 const CHANGELOG=[
+  {v:'v1.9.1',date:'2026-11-22',tags:['品牌','版权'],title:'关于与版权页：作品登记证书与扇面作品',
+   items:[
+    '新增公开的「关于与版权」页：品牌来处、两条学习线、扇面作品《东风夜放花千树》与作品登记证书。',
+    '证书信息按登记内容展示：作品名称、类别、著作权人、登记号、创作/发表/登记日期与登记机关；二维码保留用于验真。',
+    '页面明确说明证书登记的是美术作品，不构成对软件功能或官方资质的认证；登录门、帮助页、404 页均加入入口。'
+   ]},
   {v:'v1.9',date:'2026-11-22',tags:['四六级','AI','题库'],title:'四六级 AI 辅导：第三模式、智能题库与私教问答',
    items:[
     '新增第三顶级模式「四六级」：英语一 / 英语二 / 四六级并列，切换后使用独立的辅导导航、题库与统计，不污染考研数据。',

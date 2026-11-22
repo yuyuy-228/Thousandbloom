@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>关于与版权 · 花千树</title>
+<meta name="description" content="花千树学习台的品牌来处，以及扇面美术作品《东风夜放花千树》的作品登记证书。">
+<meta name="theme-color" content="#0b1222">
+<style>
+  :root{
+    --line:#2c3d6b; --zhu:#d4622a; --zhu-lt:#e8793f; --teng:#c9a86a; --jin:#e6c887;
+    --moon:#ece7d9; --yan:#9aa3b5; --dim:#6b7488; --paper:#f4efe3;
+    --serif:"Noto Serif SC","Songti SC","STSong","SimSun",serif;
+    --sans:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--sans);color:var(--moon);min-height:100vh;overflow-x:hidden;
+    background:
+      radial-gradient(circle at 82% 8%, rgba(214,210,196,.07), transparent 36%),
+      radial-gradient(circle at 8% 78%, rgba(217,91,50,.07), transparent 38%),
+      linear-gradient(180deg,#17223e 0%,#141d36 48%,#0e1526 100%)}
+  a{color:var(--teng);text-decoration:none}
+  a:hover{color:var(--jin)}
+
+  nav{display:flex;align-items:center;gap:24px;padding:18px 48px;flex-wrap:wrap;
+    border-bottom:1px solid rgba(44,61,107,.5);position:relative;z-index:5}
+  nav .logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:19px;
+    font-weight:700;color:var(--teng);letter-spacing:2.5px}
+  nav .logo svg{width:25px;height:25px}
+  nav .links{margin-left:auto;display:flex;gap:20px;font-size:13px;align-items:center}
+  nav .back{border:1px solid rgba(201,168,106,.5);border-radius:7px;padding:6px 15px;color:var(--teng)}
+  nav .back:hover{background:rgba(201,168,106,.1)}
+
+  main{max-width:1120px;margin:0 auto;padding:58px 32px 40px}
+  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:center;margin-bottom:54px}
+  .kicker{font-size:10.5px;letter-spacing:3px;color:var(--teng);margin-bottom:10px}
+  .hero h1{font-family:var(--serif);font-size:clamp(30px,4.4vw,50px);line-height:1.25;
+    letter-spacing:5px;margin:0 0 12px;color:var(--jin);text-shadow:0 0 30px rgba(230,200,135,.18)}
+  .hero .verse{font-family:var(--serif);font-size:14px;color:var(--yan);letter-spacing:2.5px;margin:0 0 20px}
+  .hero p{font-size:13.5px;line-height:2;color:var(--yan);margin:0 0 10px}
+  .hero .tagline{color:var(--moon);font-size:14px;line-height:1.9}
+  .art-card{background:var(--paper);border-radius:14px;padding:18px 18px 12px;
+    box-shadow:0 26px 60px -24px rgba(0,0,0,.85);border:1px solid rgba(201,168,106,.28)}
+  .art-card img{display:block;width:100%;height:auto;mix-blend-mode:multiply}
+  .art-card .cap{font-family:var(--serif);font-size:11px;color:#7a6a4e;text-align:center;
+    letter-spacing:1.5px;margin-top:6px}
+
+  section{margin-bottom:46px}
+  .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .sec-head .bar{width:5px;height:26px;background:var(--zhu);border-radius:3px;flex:none}
+  .sec-head h2{font-family:var(--serif);font-size:22px;color:var(--moon);margin:0;letter-spacing:2px}
+  .sec-head .hint{font-size:11.5px;color:var(--dim);margin-left:auto}
+
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .mini{background:rgba(20,30,56,.52);border:1px solid var(--line);border-radius:12px;padding:16px 17px}
+  .mini h3{font-family:var(--serif);font-size:15px;color:var(--teng);margin:0 0 7px;letter-spacing:1px}
+  .mini p{font-size:12px;line-height:1.85;color:var(--yan);margin:0}
+
+  .cert-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:start}
+  .cert-shot{background:var(--paper);border-radius:14px;padding:14px;cursor:zoom-in;
+    border:1px solid rgba(201,168,106,.3);box-shadow:0 24px 60px -26px rgba(0,0,0,.9)}
+  .cert-shot img{display:block;width:100%;height:auto;border-radius:6px}
+  .cert-shot .cap{font-size:10.5px;color:#7a6a4e;text-align:center;margin-top:9px;letter-spacing:.5px}
+  .cert-info{background:rgba(20,30,56,.55);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+  .cert-info dl{margin:0;display:grid;grid-template-columns:88px 1fr;gap:10px 14px;font-size:12.5px}
+  .cert-info dt{color:var(--dim)}
+  .cert-info dd{margin:0;color:var(--moon);line-height:1.7;word-break:break-all}
+  .cert-info .no{font-family:ui-monospace,Consolas,monospace;color:var(--jin);font-size:12px}
+  .cert-info .note{font-size:11px;line-height:1.8;color:var(--dim);margin:14px 0 0;
+    padding-top:12px;border-top:1px dashed rgba(107,116,136,.35)}
+  .cert-info .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+  .btn{display:inline-block;border-radius:7px;padding:8px 16px;font-size:12.5px;border:1px solid var(--line);
+    color:var(--moon);background:rgba(20,30,56,.5);cursor:pointer;font-family:var(--sans)}
+  .btn.primary{background:linear-gradient(180deg,#e2703a,#cf5724);border-color:transparent;color:#fff}
+  .btn:hover{border-color:var(--teng);color:var(--teng)}
+  .btn.primary:hover{color:#fff}
+
+  .work{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center}
+  .work .frame{background:var(--paper);border-radius:14px;padding:20px;
+    border:1px solid rgba(201,168,106,.28);box-shadow:0 24px 60px -26px rgba(0,0,0,.9);cursor:zoom-in}
+  .work .frame img{display:block;width:100%;height:auto;mix-blend-mode:multiply}
+  .work .text p{font-size:13px;line-height:2;color:var(--yan);margin:0 0 10px}
+  .work .quote{font-family:var(--serif);font-size:16px;color:var(--jin);letter-spacing:3px;line-height:1.9;
+    border-left:3px solid var(--zhu);padding-left:14px;margin:16px 0}
+
+  .copyright{background:rgba(20,30,56,.5);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+  .copyright p{font-size:12.5px;line-height:2;color:var(--yan);margin:0 0 9px}
+  .copyright strong{color:var(--moon)}
+  .copyright .small{font-size:11px;color:var(--dim);line-height:1.9}
+
+  footer{border-top:1px solid rgba(44,61,107,.45);margin-top:50px;padding:24px 48px;
+    display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:11.5px;color:var(--dim)}
+  footer .right{margin-left:auto;display:flex;gap:16px}
+
+  #lightbox{position:fixed;inset:0;z-index:100;background:rgba(4,8,18,.9);display:none;
+    align-items:center;justify-content:center;padding:24px;cursor:zoom-out}
+  #lightbox.on{display:flex}
+  #lightbox img{max-width:96vw;max-height:92vh;border-radius:8px;box-shadow:0 30px 80px -20px #000}
+  #lightbox .close{position:absolute;top:18px;right:24px;color:#fff;font-size:26px;cursor:pointer;opacity:.7}
+
+  @media(max-width:900px){
+    .hero,.cert-grid,.work{grid-template-columns:1fr}
+    .cards{grid-template-columns:1fr}
+    main{padding:36px 22px 30px}
+    nav{padding:16px 22px}
+    .hero h1{letter-spacing:3px}
+    footer{padding:20px 22px}
+  }
+  @media(max-width:520px){
+    .cert-info dl{grid-template-columns:68px 1fr;gap:8px 10px}
+    .cert-info dd{margin-bottom:0}
+    .sec-head .hint{display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/">
+    <svg viewBox="0 0 40 40" aria-hidden="true">
+      <g fill="#c9a86a">
+        <ellipse cx="20" cy="7" rx="4.4" ry="7"/><ellipse cx="20" cy="33" rx="4.4" ry="7"/>
+        <ellipse cx="7" cy="20" rx="7" ry="4.4"/><ellipse cx="33" cy="20" rx="7" ry="4.4"/>
+        <ellipse cx="10.8" cy="10.8" rx="6.6" ry="3.8" transform="rotate(45 10.8 10.8)"/>
+        <ellipse cx="29.2" cy="10.8" rx="6.6" ry="3.8" transform="rotate(-45 29.2 10.8)"/>
+        <ellipse cx="10.8" cy="29.2" rx="6.6" ry="3.8" transform="rotate(-45 10.8 29.2)"/>
+        <ellipse cx="29.2" cy="29.2" rx="6.6" ry="3.8" transform="rotate(45 29.2 29.2)"/>
+      </g>
+      <circle cx="20" cy="20" r="3.6" fill="#e2703a"/>
+    </svg>
+    花千树
+  </a>
+  <div class="links">
+    <a href="/#help">帮助与反馈</a>
+    <a class="back" href="/">返回学习台</a>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div>
+      <div class="kicker">关于花千树 · 作品与版权</div>
+      <h1>东风夜放花千树</h1>
+      <p class="verse">更吹落、星如雨 —— 辛弃疾《青玉案 · 元夕》</p>
+      <p class="tagline">「花千树」是一间陪你备考的灯屋：一盏灯、一张书桌、一条把题目讲透的路。</p>
+      <p>名字取自辛弃疾写元夕灯火的那句词。我们把它做成两个学习场景：考研英语一 / 英语二的学习台，以及面向大学生的四六级 AI 辅导。</p>
+      <p>页面上的这把扇子，是这个品牌最早的作品；下面的登记证书，是它作为美术作品的身份证明。</p>
+    </div>
+    <div class="art-card">
+      <img src="assets/copyright/fan.webp" alt="扇面作品《东风夜放花千树》" width="1400" height="726">
+      <div class="cap">扇面作品《东风夜放花千树》 · 作品电子样本</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="bar"></span><h2>一间灯屋，两条学习线</h2></div>
+    <div class="cards">
+      <div class="mini">
+        <h3>考研英语 · 学习台</h3>
+        <p>倒计时、词汇间隔重复、真题 PDF 作答、错题复盘、写作 AI 润色与周报，把长线备考收进一张灯火图。</p>
+      </div>
+      <div class="mini">
+        <h3>四六级 · AI 辅导</h3>
+        <p>面向大学生四六级：AI 生成练习、在线判分、逐题讲解、随时追问；题库保存在自己的账号里。</p>
+      </div>
+      <div class="mini">
+        <h3>灯灵 · 小灯</h3>
+        <p>不是打卡机器，而是一盏陪读的灯：点灯、攒灯油、换皮肤，在长备考里留一点情绪价值。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="bar"></span><h2>作品登记证书</h2>
+      <span class="hint">点击图片可查看大图</span></div>
+    <div class="cert-grid">
+      <div class="cert-shot" onclick="openLight('assets/copyright/certificate.webp','作品登记证书')">
+        <img src="assets/copyright/certificate.webp" alt="作品登记证书：扇-东风夜放花千树" loading="lazy">
+        <div class="cap">作品登记证书 · 河南省版权局 · 点击查看大图</div>
+      </div>
+      <div class="cert-info">
+        <dl>
+          <dt>作品名称</dt><dd>扇-东风夜放花千树</dd>
+          <dt>作品类别</dt><dd>美术</dd>
+          <dt>著作权人</dt><dd>余昊洋</dd>
+          <dt>登记号</dt><dd class="no">豫作登字-2026-F-00118177</dd>
+          <dt>创作完成</dt><dd>2026-08-14</dd>
+          <dt>首次发表</dt><dd>2026-10-27</dd>
+          <dt>登记日期</dt><dd>2026-09-21</dd>
+          <dt>登记机关</dt><dd>河南省版权局</dd>
+        </dl>
+        <p class="note">证书登记的是扇面美术作品《扇-东风夜放花千树》，不构成对「花千树」学习平台软件功能、考试成绩或任何官方资质的认证；软件与界面著作权另行主张。证书原件含登记机构签章与验真二维码。</p>
+        <div class="actions">
+          <button class="btn primary" onclick="openLight('assets/copyright/certificate.webp','作品登记证书')">查看证书大图</button>
+          <a class="btn" href="/">回到学习台</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="bar"></span><h2>作品电子样本</h2>
+      <span class="hint">《扇-东风夜放花千树》· 第 1 件 / 共 1 件</span></div>
+    <div class="work">
+      <div class="frame" onclick="openLight('assets/copyright/fan.webp','扇面作品：东风夜放花千树')">
+        <img src="assets/copyright/fan.webp" alt="扇面作品《东风夜放花千树》全图" loading="lazy">
+      </div>
+      <div class="text">
+        <p>扇面左侧以墨笔写老梅，枝干从扇骨间斜出，花用淡金与米白点染；右侧留白处题「东风夜放花千树」。</p>
+        <p>它和这个学习平台共享同一种气质：夜色、灯火、梅枝，以及「把一件事慢慢做透」的耐心。</p>
+        <div class="quote">东风夜放花千树<br>更吹落、星如雨</div>
+        <p class="small" style="font-size:11px;color:var(--dim)">词句出自南宋辛弃疾《青玉案·元夕》，属公有领域；本页引用仅作文化出处说明。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="bar"></span><h2>版权说明</h2></div>
+    <div class="copyright">
+      <p><strong>扇面美术作品《东风夜放花千树》</strong>：著作权人余昊洋，作品登记号 豫作登字-2026-F-00118177，登记机关河南省版权局。未经书面许可，不得复制、改编、商用或用于训练生成式模型。</p>
+      <p><strong>花千树学习平台</strong>：界面、文案、代码与交互设计归开发者所有；第三方开源组件遵循其各自许可证。</p>
+      <p class="small">本页展示证书与作品，仅用于说明品牌视觉的权属来源，不表示任何政府机构对本学习平台的认证、推荐或背书。若发现侵权使用，可通过站内「帮助 → 反馈」联系。</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>© 2026 余昊洋 · 花千树</span>
+  <span>作品登记号：豫作登字-2026-F-00118177</span>
+  <div class="right">
+    <a href="/#help">帮助与反馈</a>
+    <a href="/">返回学习台</a>
+  </div>
+</footer>
+
+<div id="lightbox" onclick="closeLight(event)">
+  <span class="close" onclick="closeLight(event)">×</span>
+  <img id="lightImg" src="" alt="">
+</div>
+
+<script>
+  function openLight(src,alt){
+    const box=document.getElementById('lightbox');
+    const img=document.getElementById('lightImg');
+    img.src=src; img.alt=alt||'';
+    box.classList.add('on');
+    document.body.style.overflow='hidden';
+  }
+  function closeLight(e){
+    if(e&&e.target&&e.target.id==='lightImg') return;
+    document.getElementById('lightbox').classList.remove('on');
+    document.body.style.overflow='';
+  }
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeLight(); });
+</script>
+</body>
+</html>
