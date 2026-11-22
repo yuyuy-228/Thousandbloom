@@ -451,6 +451,15 @@
   .fb-status.pending{background:rgba(217,91,50,.16);color:#eb9d7f}
   .fb-status.processing{background:rgba(227,170,78,.16);color:var(--teng)}
   .fb-status.resolved{background:rgba(88,180,130,.15);color:#7fd6a8}
+  .adm-filter{display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex:0 1 auto}
+  .adm-filter select{flex:0 0 150px;min-width:0}
+  .adm-filter input{flex:1 1 180px;min-width:160px}
+  .adm-filter .btn{flex:0 0 auto;white-space:nowrap}
+  .adm-filter .btn.sm{height:41px;padding:0 16px}
+  @media(max-width:560px){
+    .adm-filter{flex:1 1 100%;width:100%}
+    .adm-filter select,.adm-filter input,.adm-filter .btn{flex:1 1 100%;width:100%}
+  }
   .adm-tabs{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:2px}
   .adm-tabs button{border:1px solid var(--line);background:rgba(20,30,56,.5);color:var(--yan);
     border-radius:9px;padding:7px 18px;font-size:12.5px;cursor:pointer;white-space:nowrap;font-family:var(--sans)}
@@ -1103,15 +1112,13 @@
       <div class="card">
         <div class="flex-between">
           <h2><span class="dot"></span>用户反馈</h2>
-          <div class="fb-row" style="flex:0">
-            <div style="flex:0 0 130px;min-width:0">
-              <select id="admFbStatus" onchange="renderAdmFeedback()">
-                <option value="">全部状态</option>
-                <option value="pending">待处理</option>
-                <option value="processing">处理中</option>
-                <option value="resolved">已解决</option>
-              </select>
-            </div>
+          <div class="adm-filter">
+            <select id="admFbStatus" onchange="renderAdmFeedback()">
+              <option value="">全部状态</option>
+              <option value="pending">待处理</option>
+              <option value="processing">处理中</option>
+              <option value="resolved">已解决</option>
+            </select>
             <button class="btn ghost sm" onclick="renderAdmFeedback()">↻ 刷新</button>
           </div>
         </div>
@@ -1123,21 +1130,19 @@
       <div class="card">
         <div class="flex-between">
           <h2><span class="dot"></span>审计日志</h2>
-          <div class="fb-row" style="flex:0">
-            <div style="flex:0 0 130px;min-width:0">
-              <select id="admLogAction" onchange="renderAdmLogs()">
-                <option value="">全部事件</option>
-                <option value="login">登录</option>
-                <option value="register">注册</option>
-                <option value="admin_user_update">管理员改用户</option>
-                <option value="admin_user_delete">管理员删用户</option>
-                <option value="admin_password_reset">重置密码</option>
-                <option value="feedback_submit">提交反馈</option>
-                <option value="feedback_reply">回复反馈</option>
-                <option value="client_error">前端错误</option>
-              </select>
-            </div>
-            <div style="flex:1 1 140px;min-width:0"><input id="admLogUser" placeholder="按用户名过滤" oninput="paintAdmLogs()"></div>
+          <div class="adm-filter">
+            <select id="admLogAction" onchange="renderAdmLogs()">
+              <option value="">全部事件</option>
+              <option value="login">登录</option>
+              <option value="register">注册</option>
+              <option value="admin_user_update">管理员改用户</option>
+              <option value="admin_user_delete">管理员删用户</option>
+              <option value="admin_password_reset">重置密码</option>
+              <option value="feedback_submit">提交反馈</option>
+              <option value="feedback_reply">回复反馈</option>
+              <option value="client_error">前端错误</option>
+            </select>
+            <input id="admLogUser" placeholder="按用户名过滤" oninput="paintAdmLogs()">
             <button class="btn ghost sm" onclick="renderAdmLogs(true)">↻ 刷新</button>
           </div>
         </div>
