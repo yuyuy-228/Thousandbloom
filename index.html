@@ -475,6 +475,74 @@
   .faq-adm .q{font-size:13px;color:var(--moon);font-weight:600}
   .faq-adm .a{font-size:12px;color:var(--yan);margin-top:5px;white-space:pre-wrap;line-height:1.75}
   .faq-adm .ops{display:flex;gap:7px;margin-top:8px;flex-wrap:wrap}
+  /* ===== 四六级 AI 辅导 ===== */
+  body.tutor-mode .exam-only{display:none!important}
+  .tutor-only{display:none!important}
+  body.tutor-mode .tutor-only{display:inline-block!important}
+  .tutor-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;
+    background:linear-gradient(135deg,rgba(227,170,78,.11),rgba(20,30,56,.62));
+    border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin-bottom:16px}
+  .tutor-kicker{font-size:10.5px;letter-spacing:2.5px;color:var(--teng)}
+  .tutor-title{font-family:var(--serif);font-size:clamp(21px,3vw,29px);color:var(--gold);
+    margin:6px 0 6px;letter-spacing:1.5px;line-height:1.35}
+  .tutor-head .tip{margin:0;max-width:620px}
+  .tutor-tabs{display:flex;gap:7px;overflow-x:auto;margin-bottom:16px;padding-bottom:2px}
+  .tutor-tabs button{border:1px solid var(--line);background:rgba(20,30,56,.5);color:var(--yan);
+    border-radius:9px;padding:7px 18px;font-size:12.5px;cursor:pointer;white-space:nowrap;font-family:var(--sans)}
+  .tutor-tabs button.on{color:var(--teng);border-color:var(--teng);background:rgba(227,170,78,.1)}
+  .tutor-pane.hidden{display:none}
+  .tutor-gen label{display:block;font-size:12px;color:var(--yan);margin:10px 0 4px}
+  .tutor-lv .btn,.tutor-lv .seg button{white-space:nowrap}
+  .tutor-set{border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-bottom:9px;
+    background:rgba(20,30,56,.4);cursor:pointer;transition:.15s}
+  .tutor-set:hover{border-color:var(--teng);transform:translateY(-1px)}
+  .tutor-set .t{font-size:13px;color:var(--moon);font-weight:600}
+  .tutor-set .m{display:flex;gap:8px;flex-wrap:wrap;font-size:11px;color:var(--dim);margin-top:5px}
+  .tutor-q{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0;
+    background:rgba(20,30,56,.42)}
+  .tutor-q .stem{font-size:13.5px;color:var(--moon);line-height:1.85}
+  .tutor-q .qtype{font-size:10px;color:var(--teng);border:1px solid rgba(227,170,78,.3);
+    border-radius:5px;padding:1px 6px;margin-right:6px}
+  .tutor-passage{border-left:3px solid var(--line);padding:8px 13px;margin:10px 0;
+    font-size:12.5px;line-height:1.9;color:var(--yan);white-space:pre-wrap;background:rgba(12,20,38,.35)}
+  .tutor-opt{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;
+    padding:9px 11px;margin:7px 0;cursor:pointer;font-size:12.5px;line-height:1.7;color:var(--moon);transition:.15s}
+  .tutor-opt:hover{border-color:rgba(227,170,78,.55)}
+  .tutor-opt input{width:17px;height:17px;padding:0;margin:2px 0 0;flex:none;accent-color:var(--zhu)}
+  .tutor-opt.correct{border-color:#58b482;background:rgba(88,180,130,.13)}
+  .tutor-opt.wrong{border-color:#d95b32;background:rgba(217,91,50,.13)}
+  .tutor-opt .ol{color:var(--teng);font-weight:700;flex:none}
+  .tutor-explain{margin-top:9px;padding:9px 12px;border-left:3px solid var(--teng);border-radius:0 8px 8px 0;
+    background:rgba(227,170,78,.07);font-size:12.5px;line-height:1.85;color:#d8cfba;white-space:pre-wrap}
+  .tutor-qops{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .tutor-score{font-size:13px;color:var(--teng);font-weight:700}
+  .tutor-chat-box{height:420px;overflow:auto;border:1px solid var(--line);border-radius:12px;
+    padding:14px;background:rgba(12,20,38,.45)}
+  .tutor-msg{margin-bottom:12px;display:flex;flex-direction:column;gap:4px}
+  .tutor-msg.user{align-items:flex-end}
+  .tutor-msg .who{font-size:10.5px;color:var(--dim)}
+  .tutor-msg .bubble{max-width:86%;padding:9px 13px;border-radius:12px;font-size:13px;line-height:1.85;
+    white-space:pre-wrap;word-break:break-word}
+  .tutor-msg.user .bubble{background:rgba(217,91,50,.2);color:#f0d7c8;border-bottom-right-radius:3px}
+  .tutor-msg.ai .bubble{background:rgba(20,32,58,.9);border:1px solid var(--line);color:var(--moon);
+    border-bottom-left-radius:3px}
+  .tutor-chat-input{display:flex;gap:10px;margin-top:12px;align-items:flex-end}
+  .tutor-chat-input textarea{flex:1;min-height:44px;max-height:130px;resize:vertical}
+  .tutor-suggests{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .tutor-suggests button{border:1px solid var(--line);background:rgba(20,30,56,.5);color:var(--yan);
+    border-radius:14px;padding:4px 11px;font-size:11.5px;cursor:pointer;font-family:var(--sans)}
+  .tutor-suggests button:hover{border-color:var(--teng);color:var(--teng)}
+  .tutor-empty{border:1px dashed var(--line);border-radius:10px;padding:18px;text-align:center;
+    font-size:12.5px;color:var(--dim)}
+  #tutorAiModal{position:fixed;inset:0;z-index:236;display:flex;align-items:center;justify-content:center;
+    padding:20px;background:rgba(4,8,18,.72);backdrop-filter:blur(5px);overflow:auto}
+  #tutorAiModal.hidden{display:none}
+  @media(max-width:760px){
+    .tutor-head{padding:18px}
+    .tutor-chat-box{height:320px}
+    .tutor-chat-input{flex-direction:column;align-items:stretch}
+    .tutor-chat-input .btn{width:100%}
+  }
   .faq-form-actions{display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap}
   .faq-form-actions .faq-pub{display:flex;align-items:center;gap:6px;margin:0;font-size:12px;color:var(--yan);white-space:nowrap}
   .faq-form-actions .btn{margin-left:auto}
@@ -611,13 +679,14 @@
 
 <header>
   <div>
-    <h1>花千树 · 考研英语学习台</h1>
+    <h1 id="appTitle">花千树 · 考研英语学习台</h1>
     <div class="verse">东风夜放花千树，更吹落、星如雨</div>
   </div>
   <div class="hdr-actions">
-    <div class="seg" id="examTypeSeg" title="选择你参加英语一还是英语二">
+    <div class="seg" id="examTypeSeg" title="选择学习模式">
       <button data-et="1">英语一</button>
       <button data-et="2">英语二</button>
+      <button data-mode="tutor">四六级</button>
     </div>
     <div class="saved" id="savedTag">● 已保存</div>
     <div class="cloud" id="cloudTag" onclick="switchTab('sync')" title="云同步状态，点击进入云同步页">☁ 未连接</div>
@@ -626,14 +695,15 @@
 </header>
 
 <nav id="nav">
-  <button data-tab="home" class="active">首页</button>
-  <button data-tab="vocab">词汇</button>
-  <span id="topicNav" style="display:contents"></span>
-  <button data-tab="library">真题库</button>
-  <button data-tab="mistakes">错题本</button>
-  <button data-tab="stats">统计</button>
-  <button data-tab="data">数据管理</button>
+  <button data-tab="home" class="active exam-only">首页</button>
+  <button data-tab="vocab" class="exam-only">词汇</button>
+  <span id="topicNav" class="exam-only" style="display:contents"></span>
+  <button data-tab="library" class="exam-only">真题库</button>
+  <button data-tab="mistakes" class="exam-only">错题本</button>
+  <button data-tab="stats" class="exam-only">统计</button>
+  <button data-tab="data" class="exam-only">数据管理</button>
   <button data-tab="sync">云同步</button>
+  <button data-tab="tutor" id="tutorTabBtn" class="tutor-only">四六级辅导</button>
   <button data-tab="admin" id="adminTabBtn" style="display:none">管理员<span class="nav-badge hidden" id="admBadge"></span></button>
   <button data-tab="help" id="helpTabBtn">帮助<span class="nav-badge hidden" id="helpBadge"></span></button>
   <button data-tab="changelog">更新日志</button>
@@ -1175,6 +1245,131 @@
     </div>
   </section>
 
+  <!-- ============ 四六级 AI 辅导 ============ -->
+  <section class="view" id="view-tutor">
+    <div class="tutor-head">
+      <div>
+        <div class="tutor-kicker">AI 英语辅导 · 大学生四六级</div>
+        <h2 class="tutor-title">把题目讲透，而不是只给答案</h2>
+        <p class="tip">选级别和题型，AI 生成一套练习；做完自动判分、逐题讲解，随时追问。题库保存在你的账号里，换设备可同步。</p>
+      </div>
+      <div class="seg tutor-lv" id="tutorLevelSeg">
+        <button data-lv="cet4" class="on">四级</button>
+        <button data-lv="cet6">六级</button>
+      </div>
+    </div>
+
+    <div class="tutor-tabs" id="tutorTabs">
+      <button data-ttab="home" class="on" onclick="tutorTab('home')">辅导首页</button>
+      <button data-ttab="bank" onclick="tutorTab('bank')">智能题库</button>
+      <button data-ttab="chat" onclick="tutorTab('chat')">AI 问答</button>
+      <button data-ttab="mistakes" onclick="tutorTab('mistakes')">辅导错题</button>
+      <button data-ttab="report" onclick="tutorTab('report')">学习报告</button>
+    </div>
+
+    <div class="tutor-pane" id="tutorPane-home">
+      <div class="grid g4" id="tutorHomeStats"></div>
+      <div class="grid g2" style="margin-top:18px">
+        <div class="card">
+          <div class="flex-between"><h2><span class="dot"></span>继续练习</h2>
+            <button class="btn ghost sm" onclick="tutorTab('bank')">去题库</button></div>
+          <div id="tutorRecentSets"></div>
+        </div>
+        <div class="card">
+          <h2><span class="dot"></span>AI 通道</h2>
+          <div id="tutorAiState"></div>
+          <div class="fb-actions" style="margin-top:10px">
+            <button class="btn ghost sm" onclick="tutorAiOpen()">配置模型 / Key</button>
+          </div>
+          <p class="tip">与「写作 → AI 润色」共用同一套配置；出题和讲解会消耗你自己的模型额度。</p>
+        </div>
+      </div>
+      <div class="card" style="margin-top:18px">
+        <h2><span class="dot"></span>快捷开始</h2>
+        <div class="fb-actions">
+          <button class="btn sm" onclick="tutorQuickGen('词汇语法')">词汇语法 5 题</button>
+          <button class="btn ghost sm" onclick="tutorQuickGen('阅读理解')">阅读理解 5 题</button>
+          <button class="btn ghost sm" onclick="tutorQuickGen('选词填空')">选词填空 5 题</button>
+          <button class="btn ghost sm" onclick="tutorTab('chat')">问 AI 老师</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tutor-pane hidden" id="tutorPane-bank">
+      <div id="tutorBankHome">
+        <div class="card tutor-gen">
+          <div class="flex-between"><h2><span class="dot"></span>生成一套练习</h2>
+            <span class="tag" id="tutorGenLevelTag">四级</span></div>
+          <div class="fb-row">
+            <div><label>题型</label>
+              <select id="tutorGenType">
+                <option>词汇语法</option><option>选词填空</option><option>阅读理解</option><option>混合</option>
+              </select>
+            </div>
+            <div><label>题量</label>
+              <select id="tutorGenCount"><option>5</option><option>8</option><option>10</option></select>
+            </div>
+            <div><label>难度</label>
+              <select id="tutorGenDiff"><option>基础</option><option selected>标准</option><option>进阶</option></select>
+            </div>
+          </div>
+          <label>主题 / 范围（可选）</label>
+          <input id="tutorGenTopic" placeholder="如：校园生活、科技、环保；留空则按常考话题出题">
+          <div class="flex-between" style="margin-top:12px">
+            <span class="tip" id="tutorGenStatus">AI 出题会消耗你配置的模型额度</span>
+            <button class="btn" id="tutorGenBtn" onclick="tutorGenerate()">生成练习</button>
+          </div>
+        </div>
+        <div class="card">
+          <h2><span class="dot"></span>我的题库</h2>
+          <div id="tutorSetList"><div class="empty">读取中…</div></div>
+        </div>
+      </div>
+      <div id="tutorBankSet" class="hidden">
+        <div class="flex-between" style="margin-bottom:12px">
+          <button class="btn ghost sm" onclick="tutorBackToBank()">← 返回题库</button>
+          <span class="tag" id="tutorSetLevel"></span>
+        </div>
+        <div id="tutorSetDetail"></div>
+      </div>
+    </div>
+
+    <div class="tutor-pane hidden" id="tutorPane-chat">
+      <div class="card">
+        <div class="flex-between"><h2><span class="dot"></span>AI 问答</h2>
+          <button class="btn ghost sm" onclick="tutorChatClear()">清空对话</button></div>
+        <div id="tutorChatBox" class="tutor-chat-box"></div>
+        <div class="tutor-suggests">
+          <button onclick="tutorAsk('请用一句话解释一般现在时第三人称单数的变化规则。')">语法规则</button>
+          <button onclick="tutorAsk('四级阅读主旨题应该怎么找答案？给三个步骤。')">阅读方法</button>
+          <button onclick="tutorAsk('帮我区分 affect 和 effect，并各给一个例句。')">词汇辨析</button>
+          <button onclick="tutorAsk('翻译这句话并分析结构：The more we practice, the more confident we become.')">长难句</button>
+        </div>
+        <div class="tutor-chat-input">
+          <textarea id="tutorChatInput" rows="2" placeholder="问语法、长难句、阅读依据、翻译……（Enter 发送，Shift+Enter 换行）"
+            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();tutorChatSend()}"></textarea>
+          <button class="btn" id="tutorChatBtn" onclick="tutorChatSend()">发送</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tutor-pane hidden" id="tutorPane-mistakes">
+      <div class="card">
+        <h2><span class="dot"></span>辅导错题</h2>
+        <p class="tip">做题时答错的题会自动收进来；可以重看解析、再讲一遍，或标记已掌握。</p>
+        <div id="tutorMistakeList"></div>
+      </div>
+    </div>
+
+    <div class="tutor-pane hidden" id="tutorPane-report">
+      <div class="grid g4" id="tutorReportStats"></div>
+      <div class="card" style="margin-top:18px">
+        <h2><span class="dot"></span>最近练习</h2>
+        <div id="tutorReportList"></div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ 帮助与反馈 ============ -->
   <section class="view" id="view-help">
     <div class="card">
@@ -1224,7 +1419,7 @@
     <div class="card">
       <div class="flex-between" style="align-items:center">
         <h2><span class="dot"></span>更新日志</h2>
-        <span class="tag" style="color:var(--gold)">应用 v1.8 · 数据 v6</span>
+        <span class="tag" style="color:var(--gold)">应用 v1.9 · 数据 v7</span>
       </div>
       <p class="tip">从一盏灯到一间灯屋。这里记录每一次长出新的枝叶；版本号按大阶段递增，数据版本用于本地迁移。</p>
       <div id="changelogList" class="cl-list"></div>
@@ -1287,6 +1482,25 @@
         <span class="gate-local" onclick="gateLocal()">＞ 先逛逛 · 本地模式</span>
         <span class="tip">数据只存本机浏览器，随时可在「云同步」里登录</span>
       </div>
+    </div>
+  </div>
+</div>
+
+<div id="tutorAiModal" class="hidden" onclick="if(event.target===this)tutorAiClose()">
+  <div class="mw-card" style="width:min(520px,100%)">
+    <h3>AI 通道设置</h3>
+    <p class="tip" style="margin:6px 0 2px">和「写作 → AI 润色」共用配置；Key 只保存在你的账号与浏览器里。</p>
+    <label>供应商</label>
+    <select id="tutorAiProvider" onchange="tutorAiProviderChanged()"></select>
+    <label>模型</label>
+    <input id="tutorAiModel" placeholder="如 deepseek-chat">
+    <label>API Key</label>
+    <input id="tutorAiKey" type="password" placeholder="sk-...">
+    <label>接口地址（可选）</label>
+    <input id="tutorAiEndpoint" placeholder="留空用供应商默认地址">
+    <div class="flex-between" style="margin-top:14px">
+      <button class="btn ghost" onclick="tutorAiClose()">取消</button>
+      <button class="btn" onclick="tutorAiSave()">保存</button>
     </div>
   </div>
 </div>
@@ -1543,6 +1757,16 @@ function defaultPetCfg(){
     updatedAt:0
   };
 }
+function defaultTutor(){
+  return {
+    owner:'',
+    level:'cet4',
+    sets:[],
+    mistakes:[],
+    chats:[{id:'main',title:'AI 问答',messages:[],updatedAt:''}],
+    updatedAt:''
+  };
+}
 function defaultDB(){
   return {
     profile:{name:'',goal:'',examDate:'',vocabGoal:30,cohort:1},
@@ -1551,9 +1775,10 @@ function defaultDB(){
     aiKey:'', aiEndpoint:'', aiHistory:[], weekReports:[],
     aiCfg:{provider:'deepseek',model:'deepseek-chat',keys:{},endpoints:{}},
     petCfg:defaultPetCfg(),
+    tutor:defaultTutor(),
     targets:{1:{完形填空:7,阅读理解:37,新题型:8,翻译:6,小作文:7,大作文:15},
              2:{完形填空:6,阅读理解:34,新题型:8,翻译:11,小作文:7,大作文:14}},
-    v:6
+    v:7
   };
 }
 /* 数据规范化与版本升级（载入 / 导入时共用） */
@@ -1630,13 +1855,38 @@ function normalizeDB(){
     });
     DB.v=6;
   }
+  /* v7：四六级 AI 辅导（个人题库 / 错题 / 问答） */
+  if(!DB.tutor||typeof DB.tutor!=='object') DB.tutor=defaultTutor();
+  if(DB.tutor.level!=='cet6') DB.tutor.level='cet4';
+  if(!Array.isArray(DB.tutor.sets)) DB.tutor.sets=[];
+  if(!Array.isArray(DB.tutor.mistakes)) DB.tutor.mistakes=[];
+  if(!Array.isArray(DB.tutor.chats)||!DB.tutor.chats.length) DB.tutor.chats=defaultTutor().chats;
+  DB.tutor.chats[0].messages=Array.isArray(DB.tutor.chats[0].messages)?DB.tutor.chats[0].messages:[];
+  if(!DB.tutor.owner) DB.tutor.owner='';
+  if(!DB.tutor.updatedAt) DB.tutor.updatedAt='';
+  DB.tutor.sets.forEach(s=>{
+    if(!s.id||!/^[A-Za-z0-9_-]{1,40}$/.test(String(s.id))) s.id=uid();
+    if(!Array.isArray(s.questions)) s.questions=[];
+    if(!s.answers||typeof s.answers!=='object') s.answers={};
+    if(s.deleted==null) s.deleted=false;
+    if(!s.updatedAt) s.updatedAt=s.createdAt||'';
+  });
+  DB.tutor.mistakes.forEach(m=>{
+    if(!m.id||!/^[A-Za-z0-9_-]{1,40}$/.test(String(m.id))) m.id=uid();
+    if(m.setId&&!/^[A-Za-z0-9_-]{1,40}$/.test(String(m.setId))) m.setId='';
+    if(m.deleted==null) m.deleted=false;
+    if(!m.updatedAt) m.updatedAt=m.createdAt||'';
+  });
+  DB.v=7;
+
   /* 旧练习记录补全考试类型，默认当前选中的类型 */
   if(DB.papers&&DB.papers.length) DB.papers.forEach(p=>{ if(p.et==null) p.et=DB.profile.examType; });
-  DB.v=6;
 }
 
 let DB = load() || defaultDB();
 normalizeDB();
+let APP_MODE='exam';
+try{ if(localStorage.getItem('ky_app_mode')==='tutor') APP_MODE='tutor'; }catch(e){}
 function save(){
   localStorage.setItem(STORE_KEY, JSON.stringify(DB));
   const t=document.getElementById('savedTag');
@@ -1877,6 +2127,7 @@ async function gateSubmit(){
     if(!r.ok){ const j=await r.json().catch(()=>({})); gateErr(gateApiError(j,r.status)); return; }
     const j=await r.json();
     SYNC.token=j.access_token; SYNC.username=u; SYNC.role=j.role||'user';
+    AI_PROXY_OK=null;
     SYNC.relogin={u,p:p1}; syncSaveMeta();
     gateHide(); renderSyncUI(); updateUserChip(); applyAdminVisibility();
     updateAdminBadge(); updateHelpBadge();
@@ -1885,6 +2136,7 @@ async function gateSubmit(){
     setCloudBadge('busy','连接中…');
     toast('欢迎回来，'+u);
     syncPull().then(()=>syncEnsureTimer()).catch(()=>{});
+    tutorPull().catch(()=>{});
   }catch(e){
     gateErr('无法连接服务器：请确认后端已启动（手机端可在「云同步」里填服务器地址），或先用本地模式。');
   }finally{
@@ -1930,6 +2182,7 @@ async function gateVerify(){
     if(r.ok){
       const j=await r.json();
       if(j.role&&j.role!==SYNC.role){ SYNC.role=j.role; syncSaveMeta(); applyAdminVisibility(); updateAdminBadge(); updateHelpBadge(); }
+      tutorPull().catch(()=>{});
     }
   }catch(e){ /* 服务器没开：维持原状，离线徽标由同步逻辑处理 */ }
 }
@@ -2403,6 +2656,624 @@ async function admFaqDelete(id){
   }catch(e){ toast('删除失败：'+(e.message||e)); }
 }
 
+/* ===================== 四六级 AI 辅导 ===================== */
+let TUTOR_TAB='home';
+let TUTOR_SET=null;
+let TUTOR_CHAT_PENDING=false;
+let TUTOR_APPLYING=false;
+let TUTOR_PUSH_TIMER=null;
+
+function tutorLevel(){ return DB.tutor.level==='cet6'?'cet6':'cet4'; }
+function tutorLevelName(l){ return (l||tutorLevel())==='cet6'?'六级':'四级'; }
+function tutorAiProviderName(){
+  const p=AI_PROVIDERS.find(x=>x.id===DB.aiCfg.provider);
+  return p?p.name:(DB.aiCfg.provider||'未选择供应商');
+}
+function tutorSets(){
+  return (DB.tutor.sets||[]).filter(s=>s&&!s.deleted);
+}
+function tutorMistakes(){
+  return (DB.tutor.mistakes||[]).filter(m=>m&&!m.deleted);
+}
+function tutorChatThread(){
+  if(!Array.isArray(DB.tutor.chats)||!DB.tutor.chats.length){
+    DB.tutor.chats=[{id:'main',title:'AI 问答',messages:[],updatedAt:''}];
+  }
+  const ch=DB.tutor.chats[0];
+  if(!Array.isArray(ch.messages)) ch.messages=[];
+  return ch;
+}
+function tutorTrim(){
+  DB.tutor.sets=(DB.tutor.sets||[]).slice(0,40);
+  DB.tutor.mistakes=(DB.tutor.mistakes||[]).slice(0,200);
+  const ch=tutorChatThread();
+  ch.messages=ch.messages.slice(-100);
+  DB.tutor.chats=DB.tutor.chats.slice(0,3);
+}
+function tutorTouch(){
+  DB.tutor.updatedAt=new Date().toISOString();
+  tutorTrim();
+  save();
+  tutorPushSoon();
+}
+
+/* ---- 云端同步（个人题库 JSON，按 updatedAt 合并） ---- */
+function tutorRecTime(x){ return Date.parse((x&&x.updatedAt)||'')||0; }
+function tutorMergeList(a,b){
+  const map={};
+  (a||[]).concat(b||[]).forEach(x=>{
+    if(!x||!x.id) return;
+    const old=map[x.id];
+    if(!old||tutorRecTime(x)>=tutorRecTime(old)) map[x.id]=x;
+  });
+  return Object.keys(map).map(k=>map[k]);
+}
+function tutorMergeState(local,remote){
+  const out=Object.assign({},local||{});
+  out.level=(local&&local.level)||(remote&&remote.level)||'cet4';
+  out.sets=tutorMergeList(local&&local.sets,remote&&remote.sets);
+  out.mistakes=tutorMergeList(local&&local.mistakes,remote&&remote.mistakes);
+  const lc=(local&&local.chats&&local.chats[0])||{messages:[]};
+  const rc=(remote&&remote.chats&&remote.chats[0])||{messages:[]};
+  out.chats=[tutorRecTime(rc)>tutorRecTime(lc)?rc:lc];
+  out.updatedAt=tutorRecTime(local)>=tutorRecTime(remote)?(local&&local.updatedAt):(remote&&remote.updatedAt);
+  return out;
+}
+function tutorPushSoon(){
+  if(!SYNC.token||TUTOR_APPLYING) return;
+  clearTimeout(TUTOR_PUSH_TIMER);
+  TUTOR_PUSH_TIMER=setTimeout(()=>tutorPush().catch(()=>{}),2000);
+}
+async function tutorPush(){
+  if(!SYNC.token||TUTOR_APPLYING) return;
+  DB.tutor.owner=SYNC.username;
+  try{
+    await syncApi('/api/v1/tutor/state',{method:'PUT',body:JSON.stringify({state:DB.tutor})});
+  }catch(e){
+    if(String(e.message||'').indexOf('过大')>=0) toast(e.message);
+  }
+}
+async function tutorPull(){
+  if(!SYNC.token) return;
+  /* 同一浏览器换账号：不要把上一个人的辅导数据带进新账号 */
+  if(DB.tutor.owner&&DB.tutor.owner!==SYNC.username) DB.tutor=defaultTutor();
+  DB.tutor.owner=SYNC.username;
+  try{
+    const r=await syncApi('/api/v1/tutor/state');
+    if(r&&r.state){
+      TUTOR_APPLYING=true;
+      DB.tutor=tutorMergeState(DB.tutor,r.state);
+      DB.tutor.owner=SYNC.username;
+      tutorTrim(); save();
+      TUTOR_APPLYING=false;
+      tutorPush().catch(()=>{});
+    }else if((DB.tutor.sets||[]).length||(DB.tutor.mistakes||[]).length){
+      tutorPush().catch(()=>{});
+    }
+  }catch(e){ TUTOR_APPLYING=false; }
+  if(APP_MODE==='tutor') renderTutor();
+}
+
+/* ---- 切换与渲染 ---- */
+function tutorTab(t){
+  TUTOR_TAB=['home','bank','chat','mistakes','report'].includes(t)?t:'home';
+  document.querySelectorAll('#tutorTabs button').forEach(b=>
+    b.classList.toggle('on',b.dataset.ttab===TUTOR_TAB));
+  document.querySelectorAll('.tutor-pane').forEach(p=>
+    p.classList.toggle('hidden',p.id!=='tutorPane-'+TUTOR_TAB));
+  if(TUTOR_TAB==='home') renderTutorHome();
+  if(TUTOR_TAB==='bank') renderTutorBank();
+  if(TUTOR_TAB==='chat') renderTutorChat();
+  if(TUTOR_TAB==='mistakes') renderTutorMistakes();
+  if(TUTOR_TAB==='report') renderTutorReport();
+}
+function renderTutor(){
+  document.querySelectorAll('#tutorLevelSeg button').forEach(b=>
+    b.classList.toggle('on',b.dataset.lv===tutorLevel()));
+  const tag=document.getElementById('tutorGenLevelTag');
+  if(tag) tag.textContent=tutorLevelName();
+  const sel=document.getElementById('tutorGenType');
+  if(sel&&!sel.value) sel.value='词汇语法';
+  tutorTab(TUTOR_TAB);
+}
+function tutorTile(v,l){
+  return `<div class="adm-tile"><b>${v}</b><span>${l}</span></div>`;
+}
+function renderTutorAiState(){
+  const box=document.getElementById('tutorAiState'); if(!box) return;
+  const key=(DB.aiCfg.keys[DB.aiCfg.provider]||'').trim();
+  box.innerHTML=`<div class="fb-meta">
+    <b style="color:var(--moon)">${esc(tutorAiProviderName())}</b>
+    <span>${esc(DB.aiCfg.model||'未选模型')}</span>
+    <span style="color:${key?'#7fd6a8':'#e88'}">${key?'Key 已配置':'未配置 Key'}</span>
+  </div>`;
+}
+function renderTutorHome(){
+  const stats=document.getElementById('tutorHomeStats');
+  if(stats){
+    const sets=tutorSets(), done=sets.filter(s=>s.submittedAt);
+    const totalQ=done.reduce((n,s)=>n+(s.questions||[]).length,0);
+    const correct=done.reduce((n,s)=>n+(s.correctCount||0),0);
+    const acc=totalQ?Math.round(correct/totalQ*100):0;
+    stats.innerHTML=tutorTile(sets.length,'题库套数')+tutorTile(done.length,'已完成')
+      +tutorTile(totalQ?acc+'%':'—','累计正确率')+tutorTile(tutorMistakes().length,'待复盘错题');
+  }
+  const recent=document.getElementById('tutorRecentSets');
+  if(recent){
+    const sets=tutorSets().slice().sort((a,b)=>tutorRecTime(b)-tutorRecTime(a)).slice(0,3);
+    recent.innerHTML=sets.length?sets.map(s=>tutorSetCard(s)).join('')
+      :'<div class="tutor-empty">还没有练习。去「智能题库」生成第一套四六级练习。</div>';
+  }
+  renderTutorAiState();
+}
+function tutorSetCard(s){
+  const total=(s.questions||[]).length;
+  const score=s.score!=null?s.score+'%':'未提交';
+  return `<div class="tutor-set" onclick="tutorOpenSet('${s.id}')">
+    <div class="t">${esc(s.title)}</div>
+    <div class="m"><span>${tutorLevelName(s.level)}</span><span>${total} 题</span>
+      <span>${score}</span><span>${esc(admFmtDate(s.createdAt))}</span>
+      ${s.model?'<span>'+esc(s.model)+'</span>':''}</div>
+  </div>`;
+}
+function renderTutorBank(){
+  const list=document.getElementById('tutorSetList');
+  const home=document.getElementById('tutorBankHome');
+  const detail=document.getElementById('tutorBankSet');
+  if(!list||!home||!detail) return;
+  const sets=tutorSets().slice().sort((a,b)=>tutorRecTime(b)-tutorRecTime(a));
+  list.innerHTML=sets.length?sets.map(s=>tutorSetCard(s)).join('')
+    :'<div class="tutor-empty">题库还是空的，先生成一套练习吧。</div>';
+  if(TUTOR_SET&&!TUTOR_SET.deleted){
+    home.classList.add('hidden'); detail.classList.remove('hidden');
+    renderTutorSet();
+  }else{
+    detail.classList.add('hidden'); home.classList.remove('hidden');
+  }
+}
+function tutorOpenSet(id){
+  const s=(DB.tutor.sets||[]).find(x=>x.id===id&&!x.deleted);
+  if(!s){ toast('这套题已经不在了'); return; }
+  TUTOR_SET=s;
+  tutorTab('bank');
+  renderTutorBank();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function tutorBackToBank(){
+  TUTOR_SET=null;
+  renderTutorBank();
+}
+function tutorAnswerLabel(q,letter){
+  const i='ABCD'.indexOf(letter||'');
+  return i>=0&&q.options&&q.options[i]?letter+'. '+q.options[i]:letter||'未作答';
+}
+function renderTutorSet(){
+  const box=document.getElementById('tutorSetDetail'); if(!box||!TUTOR_SET) return;
+  const s=TUTOR_SET;
+  const lv=document.getElementById('tutorSetLevel');
+  if(lv) lv.textContent=tutorLevelName(s.level)+' · '+(s.questions||[]).length+' 题';
+  const submitted=!!s.submittedAt;
+  let html=`<div class="card">
+    <div class="flex-between">
+      <h2><span class="dot"></span>${esc(s.title)}</h2>
+      <span class="tutor-score">${s.score!=null?s.score+'%':'未提交'}</span>
+    </div>
+    <p class="tip">${tutorLevelName(s.level)} · ${esc(admFmtDate(s.createdAt))}${s.model?' · '+esc(s.model):''} · 点选项作答，提交后逐题看解析</p>`;
+  const shown={};
+  (s.questions||[]).forEach((q,i)=>{
+    if(q.passage_id&&!shown[q.passage_id]){
+      const p=(s.passages||[]).find(x=>x.id===q.passage_id);
+      if(p){ html+=`<div class="tutor-passage">${esc(p.text)}</div>`; shown[q.passage_id]=1; }
+    }
+    const ua=(s.answers||{})[q.id]||'';
+    html+=`<div class="tutor-q">
+      <div class="stem"><span class="qtype">${esc(q.type||'练习')}</span>${i+1}. ${esc(q.stem)}</div>
+      <div style="margin-top:8px">`+
+      (q.options||[]).map((opt,j)=>{
+        const letter='ABCD'[j];
+        let cls='';
+        if(submitted){
+          if(letter===q.answer) cls='correct';
+          else if(ua===letter) cls='wrong';
+        }
+        return `<label class="tutor-opt ${cls}">
+          <input type="radio" name="tq_${q.id}" value="${letter}" ${ua===letter?'checked':''}
+            ${submitted?'disabled':''} onchange="tutorPick('${q.id}','${letter}')">
+          <span class="ol">${letter}.</span><span>${esc(opt)}</span></label>`;
+      }).join('')+
+      `</div>`;
+    if(submitted){
+      html+=`<div class="tutor-explain"><b>正确答案：${q.answer}</b>
+${esc(q.explanation||'')}</div>`;
+    }
+    if(q.aiPending){
+      html+=`<div class="tutor-explain">AI 老师正在讲解…</div>`;
+    }else if(q.aiError){
+      html+=`<div class="tutor-explain" style="border-color:#d95b32">讲解失败：${esc(q.aiError)}</div>`;
+    }else if(q.aiExplanation){
+      html+=`<div class="tutor-explain">${esc(q.aiExplanation)}</div>`;
+    }
+    html+=`<div class="tutor-qops">
+      <button class="btn ghost sm" onclick="tutorExplain('${q.id}',${q.aiExplanation?'true':'false'})" ${q.aiPending?'disabled':''}>
+        ${q.aiPending?'讲解中…':(q.aiExplanation?'重新讲解':'AI 讲解')}</button>
+    </div></div>`;
+  });
+  html+=`<div class="flex-between" style="margin-top:14px;gap:10px;flex-wrap:wrap">
+    <div class="fb-actions">
+      ${submitted
+        ? `<button class="btn ghost sm" onclick="tutorResetSet()">再做一次</button>`
+        : `<button class="btn" id="tutorSubmitBtn" onclick="tutorSubmitSet()">提交判分</button>`}
+    </div>
+    <button class="btn danger sm" onclick="tutorDeleteSet()">删除这套题</button>
+  </div></div>`;
+  box.innerHTML=html;
+}
+function tutorPick(qid,letter){
+  if(!TUTOR_SET||TUTOR_SET.submittedAt) return;
+  TUTOR_SET.answers=TUTOR_SET.answers||{};
+  TUTOR_SET.answers[qid]=letter;
+  TUTOR_SET.updatedAt=new Date().toISOString();
+  tutorTouch();
+}
+function tutorSubmitSet(){
+  if(!TUTOR_SET||TUTOR_SET.submittedAt) return;
+  const s=TUTOR_SET;
+  const unanswered=(s.questions||[]).filter(q=>!(s.answers||{})[q.id]).length;
+  if(unanswered&&!confirm('还有 '+unanswered+' 题没作答，确定提交吗？')) return;
+  let correct=0;
+  (s.questions||[]).forEach(q=>{
+    if((s.answers||{})[q.id]===q.answer) correct++;
+    else tutorAddMistake(q,s);
+  });
+  const total=(s.questions||[]).length||1;
+  s.correctCount=correct;
+  s.score=Math.round(correct/total*100);
+  s.submittedAt=new Date().toISOString();
+  s.updatedAt=s.submittedAt;
+  tutorTouch();
+  renderTutorSet(); renderTutorHome(); renderTutorReport();
+  toast('得分 '+s.score+'%，错题已收进辅导错题');
+}
+function tutorResetSet(){
+  if(!TUTOR_SET) return;
+  if(!confirm('清空这套题的作答和得分，重新做一遍？')) return;
+  TUTOR_SET.answers={};
+  TUTOR_SET.score=null; TUTOR_SET.correctCount=0; TUTOR_SET.submittedAt='';
+  TUTOR_SET.updatedAt=new Date().toISOString();
+  (DB.tutor.mistakes||[]).forEach(m=>{ if(m.setId===TUTOR_SET.id) m.deleted=true; });
+  tutorTouch(); renderTutorSet(); renderTutorHome();
+}
+function tutorDeleteSet(){
+  if(!TUTOR_SET) return;
+  if(!confirm('删除「'+TUTOR_SET.title+'」？这套题和它的错题记录都会消失。')) return;
+  TUTOR_SET.deleted=true;
+  TUTOR_SET.updatedAt=new Date().toISOString();
+  (DB.tutor.mistakes||[]).forEach(m=>{ if(m.setId===TUTOR_SET.id) m.deleted=true; });
+  TUTOR_SET=null;
+  tutorTouch();
+  renderTutorBank(); renderTutorHome(); renderTutorMistakes(); renderTutorReport();
+  toast('已删除这套题');
+}
+function tutorAddMistake(q,set){
+  const key=set.id+'|'+q.id;
+  if((DB.tutor.mistakes||[]).some(m=>m.key===key&&!m.deleted)) return;
+  const now=new Date().toISOString();
+  DB.tutor.mistakes.unshift({
+    id:uid(), key:key, setId:set.id, qid:q.id, level:set.level,
+    stem:q.stem, options:q.options||[], answer:q.answer,
+    explanation:q.explanation||'', userAnswer:(set.answers||{})[q.id]||'',
+    createdAt:now, updatedAt:now, deleted:false
+  });
+}
+
+/* ---- AI 讲解 / 问答 ---- */
+async function tutorAiReady(){
+  if(!SYNC.token){
+    toast('AI 辅导需要登录后使用');
+    gateShow();
+    return null;
+  }
+  if(AI_PROXY_OK===null) await aiProbeProxy();
+  if(!AI_PROXY_OK){
+    toast('AI 代理不可用：请确认后端已启动且当前账号已登录');
+    return null;
+  }
+  const p=DB.aiCfg.provider;
+  const key=(DB.aiCfg.keys[p]||'').trim();
+  if(!p||!DB.aiCfg.model||!key){
+    toast('先配置一个 AI 模型和 Key');
+    tutorAiOpen();
+    return null;
+  }
+  return {
+    provider:p, model:DB.aiCfg.model, api_key:key,
+    endpoint:DB.aiCfg.endpoints[p]||''
+  };
+}
+async function tutorAiFetch(path,body){
+  const r=await fetch((SYNC.apiBase||'')+path,{
+    method:'POST',
+    headers:Object.assign({'Content-Type':'application/json'},aiAuthHeaders()),
+    body:JSON.stringify(body)
+  });
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error(typeof j.detail==='string'?j.detail:('HTTP '+r.status));
+  return j;
+}
+function tutorQuestionContext(q){
+  const s=TUTOR_SET||{};
+  let ctx='级别：'+tutorLevelName(s.level)+'\n题型：'+(q.type||'练习')+'\n题干：'+q.stem+'\n';
+  if(q.passage_id){
+    const p=(s.passages||[]).find(x=>x.id===q.passage_id);
+    if(p) ctx+='文章：\n'+p.text+'\n';
+  }
+  ctx+='选项：\n'+(q.options||[]).map((o,i)=>'ABCD'[i]+'. '+o).join('\n');
+  ctx+='\n正确答案：'+q.answer+'\n学生答案：'+(((s.answers||{})[q.id])||'未作答');
+  return ctx;
+}
+async function tutorExplain(qid,force){
+  const s=TUTOR_SET; if(!s) return;
+  const q=(s.questions||[]).find(x=>x.id===qid); if(!q) return;
+  if(q.aiPending) return;
+  if(q.aiExplanation&&!force){ renderTutorSet(); return; }
+  const cfg=await tutorAiReady(); if(!cfg) return;
+  q.aiPending=true; q.aiError='';
+  renderTutorSet();
+  try{
+    const j=await tutorAiFetch('/api/v1/ai/tutor',Object.assign({},cfg,{
+      level:s.level, context:tutorQuestionContext(q),
+      messages:[{role:'user',content:'请讲解这道题：先给正确答案，再讲每个选项为什么对/错，最后点出考点。'}]
+    }));
+    q.aiExplanation=j.content||'';
+  }catch(e){
+    q.aiError=e.message||String(e);
+  }finally{
+    q.aiPending=false;
+    q.updatedAt=new Date().toISOString();
+    s.updatedAt=q.updatedAt;
+    tutorTouch();
+    renderTutorSet();
+  }
+}
+function renderTutorChat(){
+  const box=document.getElementById('tutorChatBox'); if(!box) return;
+  const ch=tutorChatThread();
+  const msgs=ch.messages||[];
+  if(!msgs.length&&!TUTOR_CHAT_PENDING){
+    box.innerHTML='<div class="tutor-empty">问老师任何四六级问题：语法、长难句、阅读依据、翻译、写作句型。</div>';
+    return;
+  }
+  box.innerHTML=msgs.map(m=>`<div class="tutor-msg ${m.role==='user'?'user':'ai'}">
+      <span class="who">${m.role==='user'?(esc(SYNC.username||'我')):'AI 老师'}</span>
+      <div class="bubble">${esc(m.content||'')}</div>
+    </div>`).join('')+
+    (TUTOR_CHAT_PENDING?'<div class="tutor-msg ai"><span class="who">AI 老师</span><div class="bubble">正在想…</div></div>':'');
+  box.scrollTop=box.scrollHeight;
+}
+async function tutorChatSend(){
+  const input=document.getElementById('tutorChatInput');
+  const text=(input.value||'').trim();
+  if(!text) return;
+  if(TUTOR_CHAT_PENDING) return;
+  const cfg=await tutorAiReady(); if(!cfg) return;
+  const ch=tutorChatThread();
+  const now=new Date().toISOString();
+  ch.messages.push({role:'user',content:text,at:now});
+  ch.updatedAt=now;
+  input.value='';
+  TUTOR_CHAT_PENDING=true;
+  const btn=document.getElementById('tutorChatBtn');
+  const old=btn.textContent; btn.disabled=true; btn.textContent='思考中…';
+  tutorTouch(); renderTutorChat();
+  try{
+    const history=ch.messages.slice(-12).map(m=>({role:m.role,content:m.content}));
+    const j=await tutorAiFetch('/api/v1/ai/tutor',Object.assign({},cfg,{
+      level:tutorLevel(), messages:history
+    }));
+    ch.messages.push({role:'assistant',content:j.content||'（模型没有返回内容）',at:new Date().toISOString()});
+  }catch(e){
+    ch.messages.push({role:'assistant',content:'（AI 没接上：'+(e.message||e)+'）',at:new Date().toISOString()});
+  }finally{
+    TUTOR_CHAT_PENDING=false; ch.updatedAt=new Date().toISOString();
+    btn.disabled=false; btn.textContent=old;
+    tutorTouch(); renderTutorChat();
+  }
+}
+function tutorAsk(text){
+  tutorTab('chat');
+  const input=document.getElementById('tutorChatInput'); if(!input) return;
+  input.value=text;
+  tutorChatSend();
+}
+function tutorChatClear(){
+  const ch=tutorChatThread();
+  if(!ch.messages.length){ toast('对话已经是空的'); return; }
+  if(!confirm('清空当前 AI 问答记录？')) return;
+  ch.messages=[]; ch.updatedAt=new Date().toISOString();
+  tutorTouch(); renderTutorChat();
+}
+
+/* ---- AI 通道设置 ---- */
+function tutorAiOpen(){
+  const sel=document.getElementById('tutorAiProvider');
+  if(!sel.options.length){
+    sel.innerHTML=AI_PROVIDERS.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
+  }
+  sel.value=DB.aiCfg.provider||'deepseek';
+  tutorAiProviderChanged();
+  document.getElementById('tutorAiModel').value=DB.aiCfg.model||'';
+  document.getElementById('tutorAiKey').value=DB.aiCfg.keys[sel.value]||'';
+  document.getElementById('tutorAiEndpoint').value=DB.aiCfg.endpoints[sel.value]||'';
+  document.getElementById('tutorAiModal').classList.remove('hidden');
+}
+function tutorAiClose(){
+  document.getElementById('tutorAiModal').classList.add('hidden');
+}
+function tutorAiProviderChanged(){
+  const sel=document.getElementById('tutorAiProvider');
+  const p=AI_PROVIDERS.find(x=>x.id===sel.value)||{id:sel.value,models:[],endpoint:''};
+  if(!DB.aiCfg.keys[sel.value]) DB.aiCfg.keys[sel.value]='';
+  if(!DB.aiCfg.endpoints[sel.value]) DB.aiCfg.endpoints[sel.value]='';
+  const modelEl=document.getElementById('tutorAiModel');
+  if(!modelEl.value||!p.models.includes(modelEl.value)) modelEl.value=p.models[0]||'';
+  document.getElementById('tutorAiKey').value=DB.aiCfg.keys[sel.value]||'';
+  document.getElementById('tutorAiEndpoint').value=DB.aiCfg.endpoints[sel.value]||p.endpoint||'';
+}
+function tutorAiSave(){
+  const provider=document.getElementById('tutorAiProvider').value;
+  const model=document.getElementById('tutorAiModel').value.trim();
+  const key=document.getElementById('tutorAiKey').value.trim();
+  const endpoint=document.getElementById('tutorAiEndpoint').value.trim();
+  if(!model){ toast('请填写模型名'); return; }
+  if(!key){ toast('请填写 API Key'); return; }
+  DB.aiCfg.provider=provider;
+  DB.aiCfg.model=model;
+  DB.aiCfg.keys=DB.aiCfg.keys||{}; DB.aiCfg.keys[provider]=key;
+  DB.aiCfg.endpoints=DB.aiCfg.endpoints||{}; DB.aiCfg.endpoints[provider]=endpoint;
+  save(); tutorAiClose(); renderTutorAiState();
+  toast('AI 通道已保存');
+}
+
+/* ---- 生成题库 ---- */
+async function tutorGenerate(){
+  const cfg=await tutorAiReady(); if(!cfg) return;
+  const type=document.getElementById('tutorGenType').value;
+  const types=type==='混合'?['词汇语法','选词填空','阅读理解']:[type];
+  const count=parseInt(document.getElementById('tutorGenCount').value||'5',10);
+  const difficulty=document.getElementById('tutorGenDiff').value;
+  const topic=(document.getElementById('tutorGenTopic').value||'').trim();
+  const btn=document.getElementById('tutorGenBtn');
+  const status=document.getElementById('tutorGenStatus');
+  const old=btn.textContent;
+  btn.disabled=true; btn.textContent='生成中…';
+  if(status) status.textContent='正在让 '+DB.aiCfg.model+' 出题，通常需要 10–30 秒…';
+  try{
+    const j=await tutorAiFetch('/api/v1/ai/generate_quiz',Object.assign({},cfg,{
+      level:tutorLevel(), topic, types, count, difficulty
+    }));
+    const questions=(j.questions||[]).map((q,i)=>Object.assign({},q,{id:'q'+(i+1)}));
+    const now=new Date().toISOString();
+    const set={
+      id:uid(), level:j.level||tutorLevel(), title:j.title||(tutorLevelName()+'练习'),
+      createdAt:now, updatedAt:now, passages:j.passages||[], questions:questions,
+      answers:{}, score:null, correctCount:0, submittedAt:'',
+      model:j.model||DB.aiCfg.model, deleted:false
+    };
+    DB.tutor.sets.unshift(set);
+    TUTOR_SET=set;
+    tutorTouch();
+    if(status) status.textContent='生成完成，共 '+questions.length+' 题';
+    toast('生成好了，开始做题吧');
+    tutorTab('bank'); renderTutorBank();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }catch(e){
+    if(status) status.textContent='生成失败：'+(e.message||e);
+    toast('生成失败：'+(e.message||e));
+  }finally{
+    btn.disabled=false; btn.textContent=old;
+  }
+}
+function tutorQuickGen(type){
+  tutorBackToBank();
+  tutorTab('bank');
+  const sel=document.getElementById('tutorGenType');
+  if(sel) sel.value=type;
+  const cnt=document.getElementById('tutorGenCount');
+  if(cnt) cnt.value='5';
+  tutorGenerate();
+}
+
+/* ---- 错题 / 报告 ---- */
+function renderTutorMistakes(){
+  const box=document.getElementById('tutorMistakeList'); if(!box) return;
+  const rows=tutorMistakes();
+  if(!rows.length){
+    box.innerHTML='<div class="tutor-empty">还没有错题。做错的题会自动收进来。</div>';
+    return;
+  }
+  box.innerHTML=rows.map(m=>`<div class="tutor-q">
+    <div class="stem"><span class="qtype">${tutorLevelName(m.level)}</span>${esc(m.stem)}</div>
+    <div class="fb-meta" style="margin-top:7px">
+      <span>你的答案：${esc(m.userAnswer||'未作答')}</span>
+      <span>正确答案：${esc(m.answer)}</span>
+    </div>
+    ${m.explanation?`<div class="tutor-explain">${esc(m.explanation)}</div>`:''}
+    ${m.aiExplanation?`<div class="tutor-explain">${esc(m.aiExplanation)}</div>`:''}
+    <div class="tutor-qops">
+      <button class="btn ghost sm" onclick="tutorExplainMistake('${m.id}')">AI 再讲一遍</button>
+      <button class="btn ghost sm" onclick="tutorMistakeOpen('${m.setId}')">回到原题</button>
+      <button class="btn ghost sm" onclick="tutorMistakeRemove('${m.id}')">已掌握</button>
+    </div>
+  </div>`).join('');
+}
+async function tutorExplainMistake(id){
+  const m=(DB.tutor.mistakes||[]).find(x=>x.id===id&&!x.deleted); if(!m) return;
+  const cfg=await tutorAiReady(); if(!cfg) return;
+  try{
+    const ctx='级别：'+tutorLevelName(m.level)+'\n题干：'+m.stem+'\n选项：\n'+
+      (m.options||[]).map((o,i)=>'ABCD'[i]+'. '+o).join('\n')+
+      '\n正确答案：'+m.answer+'\n学生答案：'+(m.userAnswer||'未作答');
+    const j=await tutorAiFetch('/api/v1/ai/tutor',Object.assign({},cfg,{
+      level:m.level, context:ctx,
+      messages:[{role:'user',content:'请针对这道错题再讲一遍，重点讲我为什么会选错。'}]
+    }));
+    m.aiExplanation=j.content||'';
+    m.updatedAt=new Date().toISOString();
+    tutorTouch(); renderTutorMistakes();
+  }catch(e){ toast('讲解失败：'+(e.message||e)); }
+}
+function tutorMistakeOpen(setId){
+  const s=(DB.tutor.sets||[]).find(x=>x.id===setId&&!x.deleted);
+  if(!s){ toast('原题已经被删除了'); return; }
+  tutorOpenSet(setId);
+}
+function tutorMistakeRemove(id){
+  const m=(DB.tutor.mistakes||[]).find(x=>x.id===id);
+  if(!m) return;
+  m.deleted=true; m.updatedAt=new Date().toISOString();
+  tutorTouch(); renderTutorMistakes(); renderTutorHome();
+}
+function renderTutorReport(){
+  const stats=document.getElementById('tutorReportStats');
+  const list=document.getElementById('tutorReportList');
+  const done=tutorSets().filter(s=>s.submittedAt);
+  const totalQ=done.reduce((n,s)=>n+(s.questions||[]).length,0);
+  const correct=done.reduce((n,s)=>n+(s.correctCount||0),0);
+  const acc=totalQ?Math.round(correct/totalQ*100):0;
+  if(stats){
+    stats.innerHTML=tutorTile(done.length,'完成套数')+tutorTile(totalQ,'完成题目')
+      +tutorTile(totalQ?acc+'%':'—','总正确率')+tutorTile(tutorMistakes().length,'错题待复盘');
+  }
+  if(!list) return;
+  if(!done.length){
+    list.innerHTML='<div class="tutor-empty">还没有提交过练习，完成一套后这里会生成报告。</div>';
+    return;
+  }
+  const byType={};
+  done.forEach(s=>(s.questions||[]).forEach(q=>{
+    const t=q.type||'练习';
+    byType[t]=byType[t]||{n:0,c:0};
+    byType[t].n++;
+    if((s.answers||{})[q.id]===q.answer) byType[t].c++;
+  }));
+  const typeHtml=Object.keys(byType).map(t=>{
+    const x=byType[t], p=x.n?Math.round(x.c/x.n*100):0;
+    return `<div style="margin:9px 0">
+      <div class="flex-between" style="font-size:12px"><span>${esc(t)}</span><span class="muted">${x.c}/${x.n} · ${p}%</span></div>
+      <div style="height:6px;background:rgba(141,153,181,.16);border-radius:3px;margin-top:5px;overflow:hidden">
+        <div style="height:6px;width:${p}%;background:linear-gradient(90deg,var(--zhu),var(--teng))"></div>
+      </div></div>`;
+  }).join('');
+  const recent=done.slice().sort((a,b)=>tutorRecTime(b)-tutorRecTime(a)).slice(0,8)
+    .map(s=>`<div class="tutor-set" onclick="tutorOpenSet('${s.id}')">
+      <div class="t">${esc(s.title)}</div>
+      <div class="m"><span>${tutorLevelName(s.level)}</span><span>${(s.questions||[]).length} 题</span>
+        <span>${s.score}%</span><span>${esc(admFmtDate(s.submittedAt))}</span></div></div>`).join('');
+  list.innerHTML=`<div style="border:1px solid rgba(44,61,107,.5);border-radius:10px;padding:13px 15px">
+      <h2 style="font-size:15px;margin:0 0 8px"><span class="dot"></span>分题型正确率</h2>${typeHtml}</div>
+    <div style="margin-top:14px">${recent}</div>`;
+}
+
 function switchTab(tab){
   document.querySelectorAll('#nav button').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
@@ -2414,6 +3285,7 @@ function switchTab(tab){
   if(tab==='data') renderSnapshots();
   if(tab==='changelog') renderChangelog();
   if(tab==='help') renderHelp();
+  if(tab==='tutor') renderTutor();
   if(tab==='admin') renderAdmin();
   /* 地址栏同步 tab（#vocab / #admin…），刷新和 404 页深链都靠它 */
   try{ history.replaceState(null,'','#'+tab); }catch(e){}
@@ -2423,6 +3295,12 @@ function switchTab(tab){
 function hashRoute(){
   const h=location.hash.slice(1);
   if(!h) return;
+  if(h==='tutor'){
+    if(APP_MODE!=='tutor') applyAppMode('tutor',true);
+    switchTab('tutor');
+    return;
+  }
+  if(APP_MODE==='tutor'&&!['sync','admin','help','changelog'].includes(h)) return;
   if(h==='admin'&&SYNC.role!=='admin') return;
   if(document.getElementById('view-'+h)) switchTab(h);
 }
@@ -2616,11 +3494,42 @@ document.getElementById('cohortSeg').addEventListener('click',e=>{
 });
 /* 考试类型切换（英语一 / 英语二） */
 document.getElementById('examTypeSeg').addEventListener('click',e=>{
-  const b=e.target.closest('button[data-et]'); if(b) applyExamType(parseInt(b.dataset.et));
+  const b=e.target.closest('button'); if(!b) return;
+  if(b.dataset.mode==='tutor'){
+    if(APP_MODE!=='tutor') applyAppMode('tutor');
+    return;
+  }
+  if(APP_MODE==='tutor'){
+    /* 从辅导切回考研：先恢复导航，再应用原来的英语一/二 */
+    applyAppMode('exam',true);
+    applyExamType(parseInt(b.dataset.et));
+    fullRender();
+    switchTab('home');
+    return;
+  }
+  applyExamType(parseInt(b.dataset.et));
 });
 function renderExamTypeSeg(){
-  document.querySelectorAll('#examTypeSeg button').forEach(b=>
-    b.classList.toggle('on',parseInt(b.dataset.et)===DB.profile.examType));
+  document.querySelectorAll('#examTypeSeg button').forEach(b=>{
+    if(b.dataset.mode==='tutor') b.classList.toggle('on',APP_MODE==='tutor');
+    else b.classList.toggle('on',APP_MODE!=='tutor'&&parseInt(b.dataset.et)===DB.profile.examType);
+  });
+}
+function applyAppMode(mode,silent){
+  APP_MODE=mode==='tutor'?'tutor':'exam';
+  try{ localStorage.setItem('ky_app_mode',APP_MODE); }catch(e){}
+  document.body.classList.toggle('tutor-mode',APP_MODE==='tutor');
+  const t=document.getElementById('appTitle');
+  if(t) t.textContent=APP_MODE==='tutor'?'花千树 · 四六级英语辅导':'花千树 · 考研英语学习台';
+  document.title=APP_MODE==='tutor'?'花千树 · 四六级英语辅导':'花千树 · 考研英语学习台';
+  renderExamTypeSeg();
+  if(APP_MODE==='tutor'){
+    if(!silent) switchTab('tutor');
+    renderTutor();
+    if(SYNC.token) tutorPull().catch(()=>{});
+  }else if(!silent){
+    switchTab('home');
+  }
 }
 function applyExamType(et){
   if(et===DB.profile.examType){ return; }
@@ -2628,6 +3537,11 @@ function applyExamType(et){
   renderExamTypeSeg(); fullRender();
   toast('已切换为考研英语'+(et===1?'一':'二')+'，题型满分与方法论已适配');
 }
+document.getElementById('tutorLevelSeg').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-lv]'); if(!b) return;
+  DB.tutor.level=b.dataset.lv==='cet6'?'cet6':'cet4';
+  tutorTouch(); renderTutor();
+});
 function getPhase(days){
   if(days>180) return {name:'基础阶段',tip:'主攻考研大纲词汇与长难句精读，可用早年真题阅读（2010 之前）找语感，作文暂不必投入。'};
   if(days>90) return {name:'强化阶段',tip:'分题型精练 2010–2018 真题：阅读逐篇精读复盘，新题型与翻译专项突破，同时积累写作句型。'};
@@ -3820,6 +4734,17 @@ function onboardCheck(){
 }
 /* ===================== 更新日志 ===================== */
 const CHANGELOG=[
+  {v:'v1.9',date:'2026-11-22',tags:['四六级','AI','题库'],title:'四六级 AI 辅导：第三模式、智能题库与私教问答',
+   items:[
+    '新增第三顶级模式「四六级」：英语一 / 英语二 / 四六级并列，切换后使用独立的辅导导航、题库与统计，不污染考研数据。',
+    'AI 智能题库：选四级/六级、题型、题量、难度与主题，服务端生成严格 JSON 题目，自动清洗选项、校验答案，格式不合格自动重试。',
+    '在线做题与自动判分：客观题提交后立即出分，答错的题自动收进「辅导错题」，可回到原题或标记已掌握。',
+    '逐题 AI 讲解：结合题干、选项、正确答案和你的作答，讲清为什么对/错；支持「重新讲解」。',
+    'AI 问答：独立于小灯人设的四六级辅导老师，可问语法、长难句、阅读依据、词汇辨析。',
+    '个人题库云端同步：按 updatedAt 合并，换设备登录自动拉回；同一浏览器切换账号会隔离上一个人的辅导数据。',
+    'AI 通道与「写作 → AI 润色」共用，仍然使用你自己的模型 Key；新增辅导首页、正确率与分题型报告。',
+    '数据版本升级到 v7；后端新增 7 个四六级/出题相关测试。'
+   ]},
   {v:'v1.8',date:'2026-11-22',tags:['反馈','管理','日志'],title:'帮助与反馈、管理员工作台与审计日志',
    items:[
     '新增「帮助」页：常见问题、提交反馈、我的反馈与管理员回复；导航上会显示未读回复红点。',
@@ -3887,6 +4812,8 @@ const CHANGELOG=[
    ]}
 ];
 const ROADMAP=[
+  {t:'四六级题型扩展',d:'翻译与写作 AI 批改、听力材料（音频）与跟读，补齐四六级完整题型。'},
+  {t:'题库管理',d:'题库导入/导出、按考点筛选、错题重练与管理员精选。'},
   {t:'公网部署与备份',d:'域名 + HTTPS、MySQL 定时备份与异常监控，让学习数据真正不怕丢。'},
   {t:'账号体系完善',d:'邮箱验证、找回密码、登录设备管理。'},
   {t:'月报历史与月度总结',d:'把每月报告也存快照，能回看每个月的成长曲线。'},
@@ -4932,12 +5859,12 @@ async function syncApi(path,opt={},_retry=true){
         body:JSON.stringify({username:SYNC.relogin.u,password:SYNC.relogin.p})});
       if(lr.ok){
         const j=await lr.json();
-        SYNC.token=j.access_token; SYNC.role=j.role||SYNC.role; syncSaveMeta();
+        SYNC.token=j.access_token; SYNC.role=j.role||SYNC.role; AI_PROXY_OK=null; syncSaveMeta();
         updateUserChip(); applyAdminVisibility();
         return syncApi(path,opt,false);
       }
     }catch(e){}
-    SYNC.token=''; SYNC.username=''; SYNC.role=''; SYNC.relogin=null; syncSaveMeta();
+    SYNC.token=''; SYNC.username=''; SYNC.role=''; SYNC.relogin=null; AI_PROXY_OK=null; syncSaveMeta();
     renderSyncUI(); updateUserChip(); applyAdminVisibility();
     setNavBadge('admBadge',0); setNavBadge('helpBadge',0);
     setCloudBadge('off','请重新登录');
@@ -5226,11 +6153,12 @@ async function doSyncLogin(u,p){
   try{
     SYNC.apiBase=document.getElementById('syApiBase').value.trim();
     const r=await syncApi('/api/v1/auth/login',{method:'POST',body:JSON.stringify({username:u,password:p})});
-    SYNC.token=r.access_token; SYNC.username=u; SYNC.role=r.role||'user';
+    SYNC.token=r.access_token; SYNC.username=u; SYNC.role=r.role||'user'; AI_PROXY_OK=null;
     SYNC.relogin={u,p}; syncSaveMeta();
     toast('登录成功，开始同步'); renderSyncUI(); updateUserChip(); applyAdminVisibility();
     updateAdminBadge(); updateHelpBadge();
     await syncPull();
+    tutorPull().catch(()=>{});
     syncEnsureTimer();
   }catch(e){ toast('登录失败：'+(e.message||e)); }
 }
@@ -5244,7 +6172,7 @@ function syncLogout(){
       }).catch(()=>{});
     }
   }catch(e){}
-  SYNC.token=''; SYNC.username=''; SYNC.role=''; SYNC.relogin=null; syncSaveMeta();
+  SYNC.token=''; SYNC.username=''; SYNC.role=''; SYNC.relogin=null; AI_PROXY_OK=null; syncSaveMeta();
   if(SYNC.pullTimer){ clearInterval(SYNC.pullTimer); SYNC.pullTimer=null; }
   setNavBadge('admBadge',0); setNavBadge('helpBadge',0);
   setCloudBadge('','未连接'); renderSyncUI(); updateUserChip(); applyAdminVisibility();
@@ -5330,6 +6258,8 @@ aiProbeProxy();
 onboardCheck();
 updateUserChip();
 applyAdminVisibility();
+applyAppMode(APP_MODE,true);
+if(APP_MODE==='tutor') switchTab('tutor');
 updateAdminBadge();
 updateHelpBadge();
 gateCheck();
