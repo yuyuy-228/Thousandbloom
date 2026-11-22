@@ -424,8 +424,63 @@
   .user-chip.hidden{display:none}
   .user-chip a{color:var(--zhu);cursor:pointer;font-weight:600}
   .user-chip a:hover{color:#f08a5e}
+  /* ===== 帮助与反馈 ===== */
+  .nav-badge{display:inline-block;min-width:15px;height:15px;line-height:15px;padding:0 4px;margin-left:5px;
+    border-radius:8px;background:var(--zhu);color:#fff;font-size:10px;font-weight:700;text-align:center;vertical-align:1px}
+  .nav-badge.hidden{display:none}
+  .faq-item{border:1px solid var(--line);border-radius:10px;background:rgba(20,30,56,.45);margin-bottom:9px;overflow:hidden}
+  .faq-item summary{list-style:none;cursor:pointer;padding:12px 15px;font-size:13.5px;color:var(--moon);
+    display:flex;align-items:center;gap:9px}
+  .faq-item summary::-webkit-details-marker{display:none}
+  .faq-item summary:after{content:'＋';margin-left:auto;color:var(--teng);font-size:15px}
+  .faq-item[open] summary:after{content:'－'}
+  .faq-item .faq-cat{font-size:10.5px;color:var(--teng);border:1px solid rgba(227,170,78,.3);
+    border-radius:5px;padding:1px 6px;flex:none}
+  .faq-item .faq-a{padding:0 15px 13px;font-size:12.5px;line-height:1.9;color:var(--yan);white-space:pre-wrap}
+  .fb-form label{display:block;font-size:12px;color:var(--yan);margin:10px 0 4px}
+  .fb-row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+  .fb-row>div{flex:1;min-width:150px}
+  .fb-form textarea{width:100%;resize:vertical}
+  .fb-item{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;background:rgba(20,30,56,.4)}
+  .fb-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:11.5px;color:var(--dim)}
+  .fb-content{margin-top:8px;font-size:13px;line-height:1.8;color:var(--moon);white-space:pre-wrap}
+  .fb-reply{margin-top:9px;padding:9px 12px;border-left:3px solid var(--teng);border-radius:0 7px 7px 0;
+    background:rgba(227,170,78,.07);font-size:12.5px;line-height:1.8;color:#d8cfba;white-space:pre-wrap}
+  .fb-actions{margin-top:9px;display:flex;gap:8px;flex-wrap:wrap}
+  .fb-status{font-size:10.5px;padding:1px 8px;border-radius:10px;font-weight:700}
+  .fb-status.pending{background:rgba(217,91,50,.16);color:#eb9d7f}
+  .fb-status.processing{background:rgba(227,170,78,.16);color:var(--teng)}
+  .fb-status.resolved{background:rgba(88,180,130,.15);color:#7fd6a8}
+  .adm-tabs{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:2px}
+  .adm-tabs button{border:1px solid var(--line);background:rgba(20,30,56,.5);color:var(--yan);
+    border-radius:9px;padding:7px 18px;font-size:12.5px;cursor:pointer;white-space:nowrap;font-family:var(--sans)}
+  .adm-tabs button.on{color:var(--teng);border-color:var(--teng);background:rgba(227,170,78,.1)}
+  .adm-pane.hidden{display:none}
+  .adm-log{width:100%;border-collapse:collapse;font-size:12px}
+  .adm-log th{text-align:left;color:var(--dim);font-weight:600;border-bottom:1px solid var(--line);padding:7px 8px}
+  .adm-log td{border-bottom:1px solid rgba(44,61,107,.4);padding:7px 8px;vertical-align:top;color:var(--yan)}
+  .adm-log td.dt{white-space:nowrap;font-family:ui-monospace,Consolas,monospace;font-size:11px;color:var(--dim)}
+  .adm-log .ev{color:var(--moon);white-space:nowrap}
+  .adm-log .detail{max-width:420px;word-break:break-all;line-height:1.55}
+  .faq-adm{border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-bottom:9px;background:rgba(20,30,56,.4)}
+  .faq-adm .q{font-size:13px;color:var(--moon);font-weight:600}
+  .faq-adm .a{font-size:12px;color:var(--yan);margin-top:5px;white-space:pre-wrap;line-height:1.75}
+  .faq-adm .ops{display:flex;gap:7px;margin-top:8px;flex-wrap:wrap}
+  .faq-form-actions{display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap}
+  .faq-form-actions .faq-pub{display:flex;align-items:center;gap:6px;margin:0;font-size:12px;color:var(--yan);white-space:nowrap}
+  .faq-form-actions .btn{margin-left:auto}
+  @media(max-width:640px){
+    .fb-row>div{flex:1 1 100%;min-width:0}
+    .faq-form-actions .btn{width:100%;margin-left:0}
+    .fb-row>div[style*="flex:0"]{flex:1 1 100%!important}
+    .fb-row .btn{width:100%}
+    .faq-adm .ops .btn{flex:1}
+  }
 
   /* 错题生词弹窗 */
+  #admFbModal{position:fixed;inset:0;z-index:235;display:flex;align-items:center;justify-content:center;
+    padding:20px;background:rgba(4,8,18,.72);backdrop-filter:blur(5px);overflow:auto}
+  #admFbModal.hidden{display:none}
   #mWordModal{position:fixed;inset:0;z-index:230;display:flex;align-items:center;justify-content:center;
     padding:20px;background:rgba(4,8,18,.72);backdrop-filter:blur(5px)}
   #mWordModal.hidden{display:none}
@@ -570,7 +625,8 @@
   <button data-tab="stats">统计</button>
   <button data-tab="data">数据管理</button>
   <button data-tab="sync">云同步</button>
-  <button data-tab="admin" id="adminTabBtn" style="display:none">管理员</button>
+  <button data-tab="admin" id="adminTabBtn" style="display:none">管理员<span class="nav-badge hidden" id="admBadge"></span></button>
+  <button data-tab="help" id="helpTabBtn">帮助<span class="nav-badge hidden" id="helpBadge"></span></button>
   <button data-tab="changelog">更新日志</button>
 </nav>
 
@@ -1003,15 +1059,158 @@
 
   <!-- ============ 管理员 ============ -->
   <section class="view" id="view-admin">
-    <div class="grid g4" id="admStats"></div>
-    <div class="grid g4" id="admStats2" style="margin-top:16px"></div>
-    <div class="card" style="margin-top:18px">
-      <div class="flex-between">
-        <h2><span class="dot"></span>用户管理</h2>
-        <button class="btn ghost sm" onclick="renderAdmin()">↻ 刷新</button>
+    <div class="adm-tabs" id="admTabs">
+      <button data-pane="overview" class="on" onclick="admPane('overview')">概览</button>
+      <button data-pane="users" onclick="admPane('users')">用户</button>
+      <button data-pane="feedback" onclick="admPane('feedback')">反馈</button>
+      <button data-pane="logs" onclick="admPane('logs')">日志</button>
+      <button data-pane="faq" onclick="admPane('faq')">常见问题</button>
+    </div>
+
+    <div class="adm-pane" id="admPane-overview">
+      <div class="flex-between" style="margin-bottom:12px">
+        <span class="tip" id="admOverviewHint">读取中…</span>
+        <button class="btn ghost sm" onclick="admPane('overview')">↻ 刷新</button>
       </div>
-      <div id="admUserList"><div class="empty">读取中…</div></div>
-      <p class="tip">禁用的账号无法登录，旧令牌立即失效；删除会连同该用户的全部学习数据一起清掉，不可恢复。</p>
+      <div class="grid g4" id="admStats"></div>
+      <div class="grid g4" id="admStats2" style="margin-top:16px"></div>
+      <div class="grid g2" style="margin-top:18px">
+        <div class="card">
+          <div class="flex-between"><h2><span class="dot"></span>待处理反馈</h2>
+            <button class="btn ghost sm" onclick="admPane('feedback')">全部反馈</button></div>
+          <div id="admRecentFb"><div class="empty">读取中…</div></div>
+        </div>
+        <div class="card">
+          <div class="flex-between"><h2><span class="dot"></span>最近前端错误</h2>
+            <button class="btn ghost sm" onclick="admPane('logs')">全部日志</button></div>
+          <div id="admRecentErr"><div class="empty">读取中…</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="adm-pane hidden" id="admPane-users">
+      <div class="card">
+        <div class="flex-between">
+          <h2><span class="dot"></span>用户管理</h2>
+          <button class="btn ghost sm" onclick="renderAdmUsers()">↻ 刷新</button>
+        </div>
+        <div id="admUserList"><div class="empty">读取中…</div></div>
+        <p class="tip">禁用的账号无法登录，旧令牌立即失效；删除会连同该用户的全部学习数据与反馈一起清掉，不可恢复。忘记密码可点「密码」代重置。</p>
+      </div>
+    </div>
+
+    <div class="adm-pane hidden" id="admPane-feedback">
+      <div class="card">
+        <div class="flex-between">
+          <h2><span class="dot"></span>用户反馈</h2>
+          <div class="fb-row" style="flex:0">
+            <div style="flex:0 0 130px;min-width:0">
+              <select id="admFbStatus" onchange="renderAdmFeedback()">
+                <option value="">全部状态</option>
+                <option value="pending">待处理</option>
+                <option value="processing">处理中</option>
+                <option value="resolved">已解决</option>
+              </select>
+            </div>
+            <button class="btn ghost sm" onclick="renderAdmFeedback()">↻ 刷新</button>
+          </div>
+        </div>
+        <div id="admFbList"><div class="empty">读取中…</div></div>
+      </div>
+    </div>
+
+    <div class="adm-pane hidden" id="admPane-logs">
+      <div class="card">
+        <div class="flex-between">
+          <h2><span class="dot"></span>审计日志</h2>
+          <div class="fb-row" style="flex:0">
+            <div style="flex:0 0 130px;min-width:0">
+              <select id="admLogAction" onchange="renderAdmLogs()">
+                <option value="">全部事件</option>
+                <option value="login">登录</option>
+                <option value="register">注册</option>
+                <option value="admin_user_update">管理员改用户</option>
+                <option value="admin_user_delete">管理员删用户</option>
+                <option value="admin_password_reset">重置密码</option>
+                <option value="feedback_submit">提交反馈</option>
+                <option value="feedback_reply">回复反馈</option>
+                <option value="client_error">前端错误</option>
+              </select>
+            </div>
+            <div style="flex:1 1 140px;min-width:0"><input id="admLogUser" placeholder="按用户名过滤" oninput="paintAdmLogs()"></div>
+            <button class="btn ghost sm" onclick="renderAdmLogs(true)">↻ 刷新</button>
+          </div>
+        </div>
+        <div id="admLogList"><div class="empty">读取中…</div></div>
+        <p class="tip">只记录关键事件与前端错误，不记录 AI 对话、API Key 或密码；日志默认保留 90 天。</p>
+      </div>
+    </div>
+
+    <div class="adm-pane hidden" id="admPane-faq">
+      <div class="card">
+        <div class="flex-between"><h2><span class="dot"></span><span id="admFaqFormTitle">新增常见问题</span></h2>
+          <button class="btn ghost sm" onclick="admFaqReset()">清空表单</button></div>
+        <input type="hidden" id="admFaqEditId">
+        <label>问题</label><input id="admFaqQ" placeholder="例如：换设备后数据怎么同步？">
+        <label>回答</label><textarea id="admFaqA" rows="3" placeholder="用两三句话说清楚；支持换行。"></textarea>
+        <div class="fb-row" style="margin-top:10px">
+          <div><label>分类</label><input id="admFaqCat" placeholder="账号 / 同步 / AI / 使用 / 数据"></div>
+          <div><label>排序（小的在前）</label><input id="admFaqSort" type="number" value="100"></div>
+        </div>
+        <div class="faq-form-actions">
+          <label class="faq-pub"><input type="checkbox" id="admFaqPub" checked> 发布到帮助页</label>
+          <button class="btn sm" id="admFaqSaveBtn" onclick="admFaqSave()">保存</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="flex-between"><h2><span class="dot"></span>现有问题</h2>
+          <button class="btn ghost sm" onclick="renderAdmFaq()">↻ 刷新</button></div>
+        <div id="admFaqList"><div class="empty">读取中…</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 帮助与反馈 ============ -->
+  <section class="view" id="view-help">
+    <div class="card">
+      <div class="flex-between">
+        <h2><span class="dot"></span>常见问题</h2>
+        <button class="btn ghost sm" onclick="renderHelp()">↻ 刷新</button>
+      </div>
+      <p class="tip">先看看这里；没有解决再往下提交反馈，管理员回复会显示在「我的反馈」。</p>
+      <div id="faqList"><div class="empty">读取中…</div></div>
+    </div>
+
+    <div class="card fb-form">
+      <h2><span class="dot"></span>意见反馈</h2>
+      <div id="fbNeedLogin" class="hidden">
+        <p class="tip">反馈需要登录后提交，这样管理员回复能直接回到你的账号。</p>
+        <button class="btn" onclick="gateShow()">去登录</button>
+      </div>
+      <div id="fbFormBox">
+        <div class="fb-row">
+          <div><label>类型</label>
+            <select id="fbKind">
+              <option>故障</option><option>建议</option><option>内容错误</option><option>其他</option>
+            </select>
+          </div>
+          <div><label>联系方式（可选）</label><input id="fbContact" placeholder="QQ / 微信 / 邮箱"></div>
+        </div>
+        <label>详细描述</label>
+        <textarea id="fbContent" rows="4" placeholder="遇到了什么？在哪个页面？期望是什么样？"></textarea>
+        <div class="flex-between" style="margin-top:10px">
+          <span class="tip" id="fbPageHint"></span>
+          <button class="btn" id="fbSubmitBtn" onclick="fbSubmit()">提交反馈</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="flex-between">
+        <h2><span class="dot"></span>我的反馈</h2>
+        <span class="tag hidden" id="fbUnreadTag"></span>
+      </div>
+      <div id="myFbList"><div class="empty">登录后可查看提交记录与管理员回复。</div></div>
     </div>
   </section>
 
@@ -1020,7 +1219,7 @@
     <div class="card">
       <div class="flex-between" style="align-items:center">
         <h2><span class="dot"></span>更新日志</h2>
-        <span class="tag" style="color:var(--gold)">应用 v1.6 · 数据 v6</span>
+        <span class="tag" style="color:var(--gold)">应用 v1.8 · 数据 v6</span>
       </div>
       <p class="tip">从一盏灯到一间灯屋。这里记录每一次长出新的枝叶；版本号按大阶段递增，数据版本用于本地迁移。</p>
       <div id="changelogList" class="cl-list"></div>
@@ -1083,6 +1282,25 @@
         <span class="gate-local" onclick="gateLocal()">＞ 先逛逛 · 本地模式</span>
         <span class="tip">数据只存本机浏览器，随时可在「云同步」里登录</span>
       </div>
+    </div>
+  </div>
+</div>
+
+<div id="admFbModal" class="hidden" onclick="if(event.target===this)admFbClose()">
+  <div class="mw-card" style="width:min(580px,100%)">
+    <h3>回复反馈</h3>
+    <div class="tip" id="admFbQuote" style="margin:8px 0 4px"></div>
+    <label>处理状态</label>
+    <select id="admFbStatusSel">
+      <option value="pending">待处理</option>
+      <option value="processing">处理中</option>
+      <option value="resolved">已解决</option>
+    </select>
+    <label>回复内容</label>
+    <textarea id="admFbReply" rows="4" placeholder="写清楚处理结果或计划；用户会在「我的反馈」里看到。"></textarea>
+    <div class="flex-between" style="margin-top:12px">
+      <button class="btn ghost" onclick="admFbClose()">取消</button>
+      <button class="btn" id="admFbSaveBtn" onclick="admFbSave()">保存回复</button>
     </div>
   </div>
 </div>
@@ -1656,6 +1874,9 @@ async function gateSubmit(){
     SYNC.token=j.access_token; SYNC.username=u; SYNC.role=j.role||'user';
     SYNC.relogin={u,p:p1}; syncSaveMeta();
     gateHide(); renderSyncUI(); updateUserChip(); applyAdminVisibility();
+    updateAdminBadge(); updateHelpBadge();
+    const cur=document.querySelector('#nav button.active');
+    if(cur&&cur.dataset.tab==='help') renderHelp();
     setCloudBadge('busy','连接中…');
     toast('欢迎回来，'+u);
     syncPull().then(()=>syncEnsureTimer()).catch(()=>{});
@@ -1677,7 +1898,8 @@ async function gateVerify(){
     const r=await fetch((SYNC.apiBase||'')+'/api/v1/auth/me',{headers:{'Authorization':'Bearer '+SYNC.token}});
     if(r.status===403){
       SYNC.token=''; SYNC.relogin=null; SYNC.role=''; syncSaveMeta();
-      renderSyncUI(); updateUserChip(); applyAdminVisibility(); setCloudBadge('off','已禁用');
+      renderSyncUI(); updateUserChip(); applyAdminVisibility(); setNavBadge('admBadge',0); setNavBadge('helpBadge',0);
+      setCloudBadge('off','已禁用');
       gateShow(); gateErr('该账号已被管理员禁用');
       return;
     }
@@ -1690,18 +1912,19 @@ async function gateVerify(){
           if(lr.ok){
             const j=await lr.json();
             SYNC.token=j.access_token; SYNC.role=j.role||'user'; syncSaveMeta();
-            updateUserChip(); applyAdminVisibility(); return;
+            updateUserChip(); applyAdminVisibility(); updateAdminBadge(); updateHelpBadge(); return;
           }
         }catch(e){}
       }
       SYNC.token=''; SYNC.relogin=null; SYNC.role=''; syncSaveMeta();
-      renderSyncUI(); updateUserChip(); applyAdminVisibility(); setCloudBadge('off','请重新登录');
+      renderSyncUI(); updateUserChip(); applyAdminVisibility(); setNavBadge('admBadge',0); setNavBadge('helpBadge',0);
+      setCloudBadge('off','请重新登录');
       gateShow();
       return;
     }
     if(r.ok){
       const j=await r.json();
-      if(j.role&&j.role!==SYNC.role){ SYNC.role=j.role; syncSaveMeta(); applyAdminVisibility(); }
+      if(j.role&&j.role!==SYNC.role){ SYNC.role=j.role; syncSaveMeta(); applyAdminVisibility(); updateAdminBadge(); updateHelpBadge(); }
     }
   }catch(e){ /* 服务器没开：维持原状，离线徽标由同步逻辑处理 */ }
 }
@@ -1735,21 +1958,203 @@ function admFmtDate(iso){
   catch(e){ return iso; }
 }
 function admFmtNum(n){ return (n==null?0:n).toLocaleString('zh-CN'); }
-let ADM_USERS={};   /* id → 用户对象：按钮只传 id，避免把 JSON 塞进 onclick */
+const APP_VER='v1.8';
+
+/* ===================== 帮助与反馈（用户侧） ===================== */
+let HELP_FAQ=[], HELP_MINE=[];
+const FB_STATUS_TEXT={pending:'待处理',processing:'处理中',resolved:'已解决'};
+function fbStatusLabel(st){ return FB_STATUS_TEXT[st]||st||'待处理'; }
+function setNavBadge(id,n){
+  const el=document.getElementById(id); if(!el) return;
+  const num=Number(n)||0;
+  if(num>0){ el.textContent=num>99?'99+':String(num); el.classList.remove('hidden'); }
+  else el.classList.add('hidden');
+}
+async function updateAdminBadge(){
+  if(SYNC.role!=='admin'){ setNavBadge('admBadge',0); return; }
+  try{ const s=await syncApi('/api/v1/admin/stats'); setNavBadge('admBadge',s.pending_feedback||0); }
+  catch(e){}
+}
+async function updateHelpBadge(){
+  if(!SYNC.token){ setNavBadge('helpBadge',0); return; }
+  try{ const r=await syncApi('/api/v1/feedback/unread'); setNavBadge('helpBadge',r.unread||0); }
+  catch(e){}
+}
+async function loadFaq(){
+  const box=document.getElementById('faqList'); if(!box) return;
+  try{
+    const r=await fetch((SYNC.apiBase||'')+'/api/v1/faq');
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    HELP_FAQ=await r.json();
+    box.innerHTML=HELP_FAQ.length
+      ? HELP_FAQ.map(f=>`<details class="faq-item">
+          <summary><span class="faq-cat">${esc(f.category||'使用')}</span>${esc(f.question)}</summary>
+          <div class="faq-a">${esc(f.answer)}</div>
+        </details>`).join('')
+      : '<div class="empty">还没有常见问题。</div>';
+  }catch(e){
+    box.innerHTML='<div class="empty">常见问题加载失败：'+esc(e.message||e)+'</div>';
+  }
+}
+function fbCard(f,isNew){
+  return `<div class="fb-item">
+    <div class="fb-meta">
+      <span class="fb-status ${esc(f.status)}">${fbStatusLabel(f.status)}</span>
+      <b style="color:var(--moon)">${esc(f.kind)}</b>
+      <span>${admFmtDate(f.created_at)}</span>
+      ${f.page?'<span>· '+esc(f.page)+'</span>':''}
+      ${isNew?'<span class="tag" style="color:var(--teng)">新回复</span>':''}
+    </div>
+    <div class="fb-content">${esc(f.content)}</div>
+    ${f.admin_reply?`<div class="fb-reply"><b>管理员回复</b>（${admFmtDate(f.replied_at)}）
+${esc(f.admin_reply)}</div>`:''}
+  </div>`;
+}
+async function renderHelp(){
+  const logged=!!SYNC.token;
+  const need=document.getElementById('fbNeedLogin'), form=document.getElementById('fbFormBox');
+  if(need) need.classList.toggle('hidden',logged);
+  if(form) form.classList.toggle('hidden',!logged);
+  const active=document.querySelector('#nav button.active');
+  const hint=document.getElementById('fbPageHint');
+  if(hint) hint.textContent=logged?('提交时附带：'+(active?active.dataset.tab:'home')+' · '+APP_VER):'';
+
+  loadFaq();
+
+  const box=document.getElementById('myFbList');
+  const tag=document.getElementById('fbUnreadTag');
+  if(!logged){
+    if(box) box.innerHTML='<div class="empty">登录后可查看提交记录与管理员回复。</div>';
+    if(tag) tag.classList.add('hidden');
+    setNavBadge('helpBadge',0);
+    return;
+  }
+  try{
+    HELP_MINE=await syncApi('/api/v1/feedback/mine');
+    const unreadIds={};
+    HELP_MINE.forEach(f=>{ if(f.admin_reply&&!f.user_read_at) unreadIds[f.id]=1; });
+    const unread=Object.keys(unreadIds).length;
+    /* 先标记已读，再渲染：避免角标和列表状态短暂不一致 */
+    if(unread){
+      try{
+        await syncApi('/api/v1/feedback/read',{method:'POST'});
+        setNavBadge('helpBadge',0);
+      }catch(e){}
+    }
+    if(tag){
+      if(unread){ tag.textContent='新回复 '+unread; tag.classList.remove('hidden'); }
+      else tag.classList.add('hidden');
+    }
+    if(box) box.innerHTML=HELP_MINE.length
+      ? HELP_MINE.map(f=>fbCard(f,!!unreadIds[f.id])).join('')
+      : '<div class="empty">还没有提交过反馈。</div>';
+  }catch(e){
+    if(box) box.innerHTML='<div class="empty">反馈记录加载失败：'+esc(e.message||e)+'</div>';
+  }
+}
+async function fbSubmit(){
+  if(!SYNC.token){ toast('请先登录再提交反馈'); gateShow(); return; }
+  const ta=document.getElementById('fbContent');
+  const content=(ta.value||'').trim();
+  if(content.length<5){ toast('请至少写 5 个字，方便我们定位问题'); ta.focus(); return; }
+  const btn=document.getElementById('fbSubmitBtn');
+  const old=btn.textContent; btn.disabled=true; btn.textContent='提交中…';
+  const active=document.querySelector('#nav button.active');
+  try{
+    await syncApi('/api/v1/feedback',{method:'POST',body:JSON.stringify({
+      kind:document.getElementById('fbKind').value,
+      content:content,
+      contact:(document.getElementById('fbContact').value||'').trim(),
+      page:active?active.dataset.tab:'home',
+      app_version:APP_VER
+    })});
+    ta.value='';
+    document.getElementById('fbContact').value='';
+    toast('收到啦，管理员会尽快处理');
+    renderHelp();
+  }catch(e){
+    toast('提交失败：'+(e.message||e));
+  }finally{
+    btn.disabled=false; btn.textContent=old;
+  }
+}
+
+/* ===================== 管理员：概览 / 用户 / 反馈 / 日志 / FAQ ===================== */
+let ADM_USERS={};        /* id → 用户对象：按钮只传 id，避免把 JSON 塞进 onclick */
+let ADM_PANE='overview';
+let ADM_FEEDBACK=[];
+let ADM_LOGS=[];
+let ADM_FAQ=[];
+let ADM_FB_CUR=null;     /* 当前正在回复的反馈 id */
+
+function admPane(p){
+  if(SYNC.role!=='admin'){ switchTab('home'); return; }
+  ADM_PANE=p;
+  document.querySelectorAll('#admTabs button').forEach(b=>{
+    b.classList.toggle('on',b.dataset.pane===p);
+  });
+  document.querySelectorAll('.adm-pane').forEach(el=>{
+    el.classList.toggle('hidden',el.id!=='admPane-'+p);
+  });
+  if(p==='overview') renderAdmOverview();
+  if(p==='users') renderAdmUsers();
+  if(p==='feedback') renderAdmFeedback();
+  if(p==='logs') renderAdmLogs();
+  if(p==='faq') renderAdmFaq();
+}
 async function renderAdmin(){
   if(SYNC.role!=='admin'){ switchTab('home'); return; }
-  const statsEl=document.getElementById('admStats'), statsEl2=document.getElementById('admStats2'), listEl=document.getElementById('admUserList');
-  if(!statsEl||!listEl) return;
+  admPane(ADM_PANE);
+}
+function admErrText(detail){
   try{
-    const [stats,users]=await Promise.all([
+    const j=JSON.parse(detail||'{}');
+    return (j.message||'')+(j.url?('  @ '+j.url):'');
+  }catch(e){ return detail||''; }
+}
+async function renderAdmOverview(){
+  const box=document.getElementById('admStats'), box2=document.getElementById('admStats2');
+  const hint=document.getElementById('admOverviewHint');
+  if(!box||!box2) return;
+  try{
+    const [stats,pending,errs]=await Promise.all([
       syncApi('/api/v1/admin/stats'),
-      syncApi('/api/v1/admin/users')
+      syncApi('/api/v1/admin/feedback?status=pending&limit=5'),
+      syncApi('/api/v1/admin/logs?action=client_error&limit=5')
     ]);
     const tile=(v,l)=>`<div class="adm-tile"><b>${admFmtNum(v)}</b><span>${l}</span></div>`;
-    statsEl.innerHTML=tile(stats.users,'注册用户')+tile(stats.active_users,'24 小时内活跃')
-      +tile(stats.words,'词汇总量')+tile(stats.papers,'练习记录');
-    statsEl2.innerHTML=tile(stats.checkins,'累计点灯')+tile(stats.mistakes,'错题总数')
-      +tile(stats.admins,'管理员')+tile(SYNC.role==='admin'?'管理员':'用户','我的角色');
+    box.innerHTML=tile(stats.users,'注册用户')+tile(stats.active_users,'24 小时内活跃')
+      +tile(stats.new_users_7d,'近 7 天新增')+tile(stats.words,'词汇总量');
+    box2.innerHTML=tile(stats.papers,'练习记录')+tile(stats.checkins,'累计点灯')
+      +tile(stats.mistakes,'错题总数')+tile(stats.pending_feedback,'待处理反馈');
+    if(hint) hint.textContent=`管理员 ${stats.admins} 人 · FAQ ${stats.faq_items} 条 · 24 小时前端错误 ${stats.errors_24h} 条`;
+    setNavBadge('admBadge',stats.pending_feedback||0);
+
+    const fbBox=document.getElementById('admRecentFb');
+    if(fbBox) fbBox.innerHTML=pending.length?pending.map(f=>`<div class="fb-item" style="padding:9px 11px">
+        <div class="fb-meta"><span class="fb-status pending">待处理</span>
+          <b style="color:var(--moon)">${esc(f.username||'未知用户')}</b>
+          <span>${esc(f.kind)}</span><span>${admFmtDate(f.created_at)}</span></div>
+        <div class="fb-content" style="margin-top:5px">${esc((f.content||'').slice(0,80))}</div>
+        <div class="fb-actions"><button class="btn ghost sm" onclick="admPane('feedback')">去处理</button></div>
+      </div>`).join(''):'<div class="empty">没有待处理反馈，灯下很安静。</div>';
+
+    const errBox=document.getElementById('admRecentErr');
+    if(errBox) errBox.innerHTML=errs.length?errs.map(l=>`<div class="fb-item" style="padding:9px 11px">
+        <div class="fb-meta"><span class="fb-status pending">前端错误</span>
+          <b style="color:var(--moon)">${esc(l.username||'匿名')}</b>
+          <span>${admFmtDate(l.created_at)}</span></div>
+        <div class="fb-content" style="margin-top:5px">${esc(admErrText(l.detail).slice(0,120))}</div>
+      </div>`).join(''):'<div class="empty">最近没有前端错误。</div>';
+  }catch(e){
+    box.innerHTML='<div class="empty">概览加载失败：'+esc(e.message||e)+'</div>';
+    box2.innerHTML='';
+  }
+}
+async function renderAdmUsers(){
+  const listEl=document.getElementById('admUserList'); if(!listEl) return;
+  try{
+    const users=await syncApi('/api/v1/admin/users');
     if(!users.length){ listEl.innerHTML='<div class="empty">还没有用户。</div>'; return; }
     ADM_USERS={}; users.forEach(u=>{ ADM_USERS[u.id]=u; });
     listEl.innerHTML=`<div class="table-scroll"><table><thead><tr>
@@ -1768,39 +2173,229 @@ async function renderAdmin(){
         <td style="white-space:nowrap">
           <button class="btn ghost sm" onclick="admUser(${u.id},'active')"${dis}>${u.is_active?'禁用':'启用'}</button>
           <button class="btn ghost sm" onclick="admUser(${u.id},'role')"${dis}>${u.role==='admin'?'降为用户':'设为管理员'}</button>
+          <button class="btn ghost sm" onclick="admUser(${u.id},'password')">密码</button>
           <button class="btn danger sm" onclick="admUser(${u.id},'del')"${dis}>删</button>
         </td></tr>`;
       }).join('')+
       '</tbody></table></div>';
   }catch(e){
-    listEl.innerHTML='<div class="empty">管理数据加载失败：'+esc(e.message||e)+'</div>';
+    listEl.innerHTML='<div class="empty">用户数据加载失败：'+esc(e.message||e)+'</div>';
   }
 }
 async function admUser(id,action){
   const u=ADM_USERS[id];
-  if(!u){ toast('用户信息已过期，正在刷新…'); renderAdmin(); return; }
+  if(!u){ toast('用户信息已过期，正在刷新…'); renderAdmUsers(); return; }
   if(action==='active'){
     const to=!u.is_active;
     if(!confirm((to?'禁用「':'启用「')+u.username+'」'+(to?'？该账号将立即无法登录。':'？'))) return;
     try{
       await syncApi('/api/v1/admin/users/'+u.id,{method:'PUT',body:JSON.stringify({is_active:to})});
-      toast((to?'已禁用 ':'已启用 ')+u.username); renderAdmin();
+      toast((to?'已禁用 ':'已启用 ')+u.username); renderAdmUsers();
     }catch(e){ toast('操作失败：'+(e.message||e)); }
   }else if(action==='role'){
     const to=u.role==='admin'?'user':'admin';
     if(!confirm((to==='admin'?'将「'+u.username+'」设为管理员？':'将「'+u.username+'」降为普通用户？'))) return;
     try{
       await syncApi('/api/v1/admin/users/'+u.id,{method:'PUT',body:JSON.stringify({role:to})});
-      toast('已更新 '+u.username+' 的角色'); renderAdmin();
+      toast('已更新 '+u.username+' 的角色'); renderAdmUsers(); updateAdminBadge();
     }catch(e){ toast('操作失败：'+(e.message||e)); }
+  }else if(action==='password'){
+    const pw=prompt('给「'+u.username+'」设置新密码（至少 6 位）');
+    if(!pw) return;
+    if(pw.length<6){ toast('密码至少 6 位'); return; }
+    if(!confirm('确定重置「'+u.username+'」的密码？对方需要用新密码重新登录。')) return;
+    try{
+      await syncApi('/api/v1/admin/users/'+u.id+'/password',{method:'PUT',body:JSON.stringify({new_password:pw})});
+      toast('已重置 '+u.username+' 的密码');
+    }catch(e){ toast('重置失败：'+(e.message||e)); }
   }else if(action==='del'){
-    if(!confirm('删除用户「'+u.username+'」？\n其全部学习数据（词汇/练习/打卡/错题/PDF）都会一起删除，不可恢复。')) return;
+    if(!confirm('删除用户「'+u.username+'」？\n其全部学习数据（词汇/练习/打卡/错题/PDF/反馈）都会一起删除，不可恢复。')) return;
     if(!confirm('再确认一次：真的要删除「'+u.username+'」吗？')) return;
     try{
       await syncApi('/api/v1/admin/users/'+u.id,{method:'DELETE'});
-      toast('已删除 '+u.username); renderAdmin();
+      toast('已删除 '+u.username); renderAdmUsers(); updateAdminBadge();
     }catch(e){ toast('删除失败：'+(e.message||e)); }
   }
+}
+async function renderAdmFeedback(){
+  const box=document.getElementById('admFbList'); if(!box) return;
+  const st=(document.getElementById('admFbStatus')||{}).value||'';
+  box.innerHTML='<div class="empty">读取中…</div>';
+  try{
+    ADM_FEEDBACK=await syncApi('/api/v1/admin/feedback?limit=200'+(st?'&status='+encodeURIComponent(st):''));
+    box.innerHTML=ADM_FEEDBACK.length?ADM_FEEDBACK.map(f=>`<div class="fb-item">
+        <div class="fb-meta">
+          <span class="fb-status ${esc(f.status)}">${fbStatusLabel(f.status)}</span>
+          <b style="color:var(--moon)">${esc(f.username||'未知用户')}</b>
+          <span>${esc(f.kind)}</span><span>${admFmtDate(f.created_at)}</span>
+          ${f.page?'<span>· '+esc(f.page)+'</span>':''}
+          ${f.contact?'<span>· 联系：'+esc(f.contact)+'</span>':''}
+          ${f.app_version?'<span>· '+esc(f.app_version)+'</span>':''}
+        </div>
+        <div class="fb-content">${esc(f.content)}</div>
+        ${f.admin_reply?`<div class="fb-reply"><b>已回复</b>（${admFmtDate(f.replied_at)}）
+${esc(f.admin_reply)}</div>`:''}
+        <div class="fb-actions">
+          <button class="btn ghost sm" onclick="admFbOpen(${f.id})">${f.admin_reply?'修改回复':'回复 / 处理'}</button>
+        </div>
+      </div>`).join(''):'<div class="empty">当前筛选下没有反馈。</div>';
+    updateAdminBadge();
+  }catch(e){
+    box.innerHTML='<div class="empty">反馈加载失败：'+esc(e.message||e)+'</div>';
+  }
+}
+function admFbOpen(id){
+  const f=ADM_FEEDBACK.find(x=>x.id===id); if(!f) return;
+  ADM_FB_CUR=id;
+  document.getElementById('admFbQuote').innerHTML=
+    `<b>${esc(f.username||'未知用户')}</b> · ${esc(f.kind)} · ${admFmtDate(f.created_at)}<br>`+
+    `<span style="color:var(--moon)">${esc(f.content)}</span>`;
+  document.getElementById('admFbStatusSel').value=f.status||'pending';
+  document.getElementById('admFbReply').value=f.admin_reply||'';
+  document.getElementById('admFbModal').classList.remove('hidden');
+}
+function admFbClose(){
+  document.getElementById('admFbModal').classList.add('hidden');
+  ADM_FB_CUR=null;
+}
+async function admFbSave(){
+  if(!ADM_FB_CUR) return;
+  const btn=document.getElementById('admFbSaveBtn');
+  const old=btn.textContent; btn.disabled=true; btn.textContent='保存中…';
+  try{
+    await syncApi('/api/v1/admin/feedback/'+ADM_FB_CUR,{method:'PUT',body:JSON.stringify({
+      status:document.getElementById('admFbStatusSel').value,
+      admin_reply:document.getElementById('admFbReply').value
+    })});
+    toast('已保存，用户端会看到回复');
+    admFbClose();
+    renderAdmFeedback();
+  }catch(e){
+    toast('保存失败：'+(e.message||e));
+  }finally{
+    btn.disabled=false; btn.textContent=old;
+  }
+}
+const ADM_LOG_LABELS={
+  register:'注册',login:'登录',login_failed:'登录失败',login_blocked:'登录被拒',logout:'退出',
+  admin_user_update:'改用户',admin_user_delete:'删用户',admin_password_reset:'重置密码',
+  feedback_submit:'提交反馈',feedback_reply:'回复反馈',
+  faq_create:'新增 FAQ',faq_update:'修改 FAQ',faq_delete:'删除 FAQ',
+  client_error:'前端错误'
+};
+function admLogDetail(l){
+  if(l.action==='client_error') return admErrText(l.detail);
+  return l.detail||'';
+}
+function paintAdmLogs(){
+  const box=document.getElementById('admLogList'); if(!box) return;
+  const kw=((document.getElementById('admLogUser')||{}).value||'').trim().toLowerCase();
+  const rows=kw?ADM_LOGS.filter(l=>(l.username||'').toLowerCase().includes(kw)):ADM_LOGS;
+  if(!rows.length){ box.innerHTML='<div class="empty">没有匹配的日志。</div>'; return; }
+  box.innerHTML=`<div class="table-scroll"><table class="adm-log"><thead><tr>
+      <th>时间</th><th>用户</th><th>事件</th><th>详情</th><th>IP</th></tr></thead><tbody>`+
+    rows.map(l=>`<tr>
+      <td class="dt">${admFmtDate(l.created_at)}</td>
+      <td>${esc(l.username||'—')}</td>
+      <td class="ev">${esc(ADM_LOG_LABELS[l.action]||l.action)}</td>
+      <td class="detail">${esc((admLogDetail(l)||'').slice(0,180))}</td>
+      <td class="dt">${esc(l.ip||'—')}</td>
+    </tr>`).join('')+'</tbody></table></div>';
+}
+async function renderAdmLogs(){
+  const box=document.getElementById('admLogList'); if(!box) return;
+  const action=(document.getElementById('admLogAction')||{}).value||'';
+  box.innerHTML='<div class="empty">读取中…</div>';
+  try{
+    ADM_LOGS=await syncApi('/api/v1/admin/logs?limit=300'+(action?'&action='+encodeURIComponent(action):''));
+    paintAdmLogs();
+  }catch(e){
+    box.innerHTML='<div class="empty">日志加载失败：'+esc(e.message||e)+'</div>';
+  }
+}
+async function renderAdmFaq(){
+  const box=document.getElementById('admFaqList'); if(!box) return;
+  try{
+    ADM_FAQ=await syncApi('/api/v1/admin/faq');
+    box.innerHTML=ADM_FAQ.length?ADM_FAQ.map(f=>`<div class="faq-adm">
+        <div class="flex-between">
+          <span class="q">${esc(f.question)}</span>
+          <span class="tag">${esc(f.category)} · #${f.sort_order}${f.published?'':' · 未发布'}</span>
+        </div>
+        <div class="a">${esc(f.answer)}</div>
+        <div class="ops">
+          <button class="btn ghost sm" onclick="admFaqEdit(${f.id})">编辑</button>
+          <button class="btn ghost sm" onclick="admFaqToggle(${f.id})">${f.published?'下架':'发布'}</button>
+          <button class="btn danger sm" onclick="admFaqDelete(${f.id})">删除</button>
+        </div>
+      </div>`).join(''):'<div class="empty">还没有常见问题。</div>';
+  }catch(e){
+    box.innerHTML='<div class="empty">FAQ 加载失败：'+esc(e.message||e)+'</div>';
+  }
+}
+function admFaqReset(){
+  document.getElementById('admFaqEditId').value='';
+  document.getElementById('admFaqQ').value='';
+  document.getElementById('admFaqA').value='';
+  document.getElementById('admFaqCat').value='';
+  document.getElementById('admFaqSort').value='100';
+  document.getElementById('admFaqPub').checked=true;
+  document.getElementById('admFaqFormTitle').textContent='新增常见问题';
+  document.getElementById('admFaqSaveBtn').textContent='保存';
+}
+function admFaqEdit(id){
+  const f=ADM_FAQ.find(x=>x.id===id); if(!f) return;
+  document.getElementById('admFaqEditId').value=f.id;
+  document.getElementById('admFaqQ').value=f.question;
+  document.getElementById('admFaqA').value=f.answer;
+  document.getElementById('admFaqCat').value=f.category||'';
+  document.getElementById('admFaqSort').value=f.sort_order;
+  document.getElementById('admFaqPub').checked=!!f.published;
+  document.getElementById('admFaqFormTitle').textContent='编辑常见问题';
+  document.getElementById('admFaqSaveBtn').textContent='保存修改';
+  document.getElementById('admPane-faq').scrollIntoView({behavior:'smooth'});
+}
+async function admFaqSave(){
+  const q=(document.getElementById('admFaqQ').value||'').trim();
+  const a=(document.getElementById('admFaqA').value||'').trim();
+  if(q.length<2||a.length<2){ toast('问题和回答都要写完整'); return; }
+  const id=document.getElementById('admFaqEditId').value;
+  const body={
+    question:q, answer:a,
+    category:(document.getElementById('admFaqCat').value||'使用').trim()||'使用',
+    sort_order:parseInt(document.getElementById('admFaqSort').value||'100',10)||0,
+    published:document.getElementById('admFaqPub').checked
+  };
+  const btn=document.getElementById('admFaqSaveBtn');
+  const old=btn.textContent; btn.disabled=true; btn.textContent='保存中…';
+  try{
+    if(id) await syncApi('/api/v1/admin/faq/'+id,{method:'PUT',body:JSON.stringify(body)});
+    else await syncApi('/api/v1/admin/faq',{method:'POST',body:JSON.stringify(body)});
+    toast(id?'已更新常见问题':'已新增常见问题');
+    admFaqReset();
+    renderAdmFaq();
+  }catch(e){
+    toast('保存失败：'+(e.message||e));
+  }finally{
+    btn.disabled=false; btn.textContent=old;
+  }
+}
+async function admFaqToggle(id){
+  const f=ADM_FAQ.find(x=>x.id===id); if(!f) return;
+  try{
+    await syncApi('/api/v1/admin/faq/'+id,{method:'PUT',body:JSON.stringify({published:!f.published})});
+    toast(f.published?'已下架':'已发布');
+    renderAdmFaq();
+  }catch(e){ toast('操作失败：'+(e.message||e)); }
+}
+async function admFaqDelete(id){
+  const f=ADM_FAQ.find(x=>x.id===id); if(!f) return;
+  if(!confirm('删除常见问题「'+f.question+'」？')) return;
+  try{
+    await syncApi('/api/v1/admin/faq/'+id,{method:'DELETE'});
+    toast('已删除');
+    renderAdmFaq();
+  }catch(e){ toast('删除失败：'+(e.message||e)); }
 }
 
 function switchTab(tab){
@@ -1813,6 +2408,7 @@ function switchTab(tab){
   if(tab==='stats') renderStats();
   if(tab==='data') renderSnapshots();
   if(tab==='changelog') renderChangelog();
+  if(tab==='help') renderHelp();
   if(tab==='admin') renderAdmin();
   /* 地址栏同步 tab（#vocab / #admin…），刷新和 404 页深链都靠它 */
   try{ history.replaceState(null,'','#'+tab); }catch(e){}
@@ -3219,6 +3815,15 @@ function onboardCheck(){
 }
 /* ===================== 更新日志 ===================== */
 const CHANGELOG=[
+  {v:'v1.8',date:'2026-11-22',tags:['反馈','管理','日志'],title:'帮助与反馈、管理员工作台与审计日志',
+   items:[
+    '新增「帮助」页：常见问题、提交反馈、我的反馈与管理员回复；导航上会显示未读回复红点。',
+    '反馈必须登录后提交，自动附带栏目、版本与浏览器信息，方便定位问题。',
+    '管理员页拆成「概览 / 用户 / 反馈 / 日志 / 常见问题」五个子页；待处理反馈会显示在管理员角标上。',
+    '管理员可回复反馈、改处理状态、增删改 FAQ 并控制发布；忘记密码可由管理员代重置。',
+    '新增审计日志：注册、登录、退出、管理员操作、反馈、前端 JS 错误；默认保留 90 天，启动时自动清理。',
+    '前端错误自动上报：同一会话同一条错误只报一次，匿名也能报，按 IP 限流。'
+   ]},
   {v:'v1.7',date:'2026-11-22',tags:['部署','账号','界面'],title:'登录注册、管理员视角与 404 页',
    items:[
     '首访登录 / 注册门：可注册账号、登录，也可「先逛逛 · 本地模式」；密码只留在内存，token 7 天有效。',
@@ -4321,11 +4926,17 @@ async function syncApi(path,opt={},_retry=true){
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({username:SYNC.relogin.u,password:SYNC.relogin.p})});
       if(lr.ok){
-        const j=await lr.json(); SYNC.token=j.access_token; syncSaveMeta();
+        const j=await lr.json();
+        SYNC.token=j.access_token; SYNC.role=j.role||SYNC.role; syncSaveMeta();
+        updateUserChip(); applyAdminVisibility();
         return syncApi(path,opt,false);
       }
     }catch(e){}
-    SYNC.token=''; SYNC.relogin=null; syncSaveMeta(); renderSyncUI(); setCloudBadge('off','请重新登录');
+    SYNC.token=''; SYNC.username=''; SYNC.role=''; SYNC.relogin=null; syncSaveMeta();
+    renderSyncUI(); updateUserChip(); applyAdminVisibility();
+    setNavBadge('admBadge',0); setNavBadge('helpBadge',0);
+    setCloudBadge('off','请重新登录');
+    gateShow();
     throw new Error('登录已过期');
   }
   if(!r.ok){
@@ -4613,15 +5224,28 @@ async function doSyncLogin(u,p){
     SYNC.token=r.access_token; SYNC.username=u; SYNC.role=r.role||'user';
     SYNC.relogin={u,p}; syncSaveMeta();
     toast('登录成功，开始同步'); renderSyncUI(); updateUserChip(); applyAdminVisibility();
+    updateAdminBadge(); updateHelpBadge();
     await syncPull();
     syncEnsureTimer();
   }catch(e){ toast('登录失败：'+(e.message||e)); }
 }
 function syncLogout(){
+  /* JWT 无状态，退出只记一条审计；失败也不影响本地退出 */
+  try{
+    if(SYNC.token){
+      fetch((SYNC.apiBase||'')+'/api/v1/auth/logout',{
+        method:'POST',
+        headers:Object.assign({'Content-Type':'application/json'},aiAuthHeaders())
+      }).catch(()=>{});
+    }
+  }catch(e){}
   SYNC.token=''; SYNC.username=''; SYNC.role=''; SYNC.relogin=null; syncSaveMeta();
   if(SYNC.pullTimer){ clearInterval(SYNC.pullTimer); SYNC.pullTimer=null; }
+  setNavBadge('admBadge',0); setNavBadge('helpBadge',0);
   setCloudBadge('','未连接'); renderSyncUI(); updateUserChip(); applyAdminVisibility();
   toast('已退出（本机数据保留）');
+  const cur=document.querySelector('#nav button.active');
+  if(cur&&cur.dataset.tab==='help') renderHelp();
   /* 本地模式的人退出后仍留在应用里；其他情况回到登录门 */
   try{ if(localStorage.getItem(GATE_MODE_KEY)!=='local') gateShow(); }catch(e){ gateShow(); }
 }
@@ -4701,12 +5325,49 @@ aiProbeProxy();
 onboardCheck();
 updateUserChip();
 applyAdminVisibility();
+updateAdminBadge();
+updateHelpBadge();
 gateCheck();
 gateVerify();
 hashRoute();
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){
   navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
+
+/* 前端错误上报：去重 + 静默失败，绝不因为上报再抛一个错 */
+const CLIENT_ERR_KEY='ky_err_seen';
+function reportClientError(kind,message,stack){
+  try{
+    if(!message) return;
+    const sig=String(message).slice(0,140);
+    let seen=[];
+    try{ seen=JSON.parse(sessionStorage.getItem(CLIENT_ERR_KEY)||'[]'); }catch(e){}
+    if(seen.indexOf(sig)>=0) return;
+    seen.push(sig); if(seen.length>25) seen.shift();
+    try{ sessionStorage.setItem(CLIENT_ERR_KEY,JSON.stringify(seen)); }catch(e){}
+    const active=document.querySelector('#nav button.active');
+    fetch((SYNC.apiBase||'')+'/api/v1/logs/client',{
+      method:'POST',
+      headers:Object.assign({'Content-Type':'application/json'},aiAuthHeaders()),
+      body:JSON.stringify({
+        kind:kind,
+        message:sig,
+        stack:(stack||'').slice(0,3500),
+        url:location.href.slice(0,300),
+        tab:active?active.dataset.tab:'',
+        version:APP_VER
+      }),
+      keepalive:true
+    }).catch(()=>{});
+  }catch(e){ /* 上报失败就安静地算了 */ }
+}
+window.addEventListener('error',function(e){
+  reportClientError('error',(e.message||'script error'),e.error&&e.error.stack);
+});
+window.addEventListener('unhandledrejection',function(e){
+  const r=e.reason;
+  reportClientError('promise',String((r&&r.message)||r||'unhandled rejection'),r&&r.stack);
+});
 </script>
 </body>
 </html>
