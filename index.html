@@ -370,6 +370,61 @@
   .onb-icon{font-size:52px;margin:10px 0 4px;filter:drop-shadow(0 0 18px rgba(240,160,75,.45))}
   .onb-card h3{margin:4px 0 8px;font-family:var(--serif);color:var(--gold);font-size:20px}
   .onb-card p{font-size:13px;line-height:1.85;color:var(--yan);margin:0}
+  /* ===== 登录 / 注册门 ===== */
+  #authGate{position:fixed;inset:0;z-index:260;display:flex;align-items:center;justify-content:center;
+    padding:24px;overflow:auto;
+    background:
+      radial-gradient(circle at 80% 16%, rgba(217,91,50,.12), transparent 44%),
+      radial-gradient(circle at 10% 90%, rgba(227,170,78,.08), transparent 40%),
+      linear-gradient(180deg,#101a31,#0b1222)}
+  #authGate.hidden{display:none}
+  body.gate-locked{overflow:hidden}
+  .gate-deco{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  .gate-deco .star{position:absolute;width:2px;height:2px;border-radius:50%;background:#f7f4ec;opacity:.5;animation:petBlink 4.6s infinite}
+  .gate-lan{position:absolute;font-size:44px;filter:drop-shadow(0 8px 22px rgba(240,160,75,.5));
+    animation:gateFloat 4.2s ease-in-out infinite}
+  @keyframes gateFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-14px) rotate(3deg)}}
+  .gate-card{position:relative;width:min(860px,100%);display:grid;grid-template-columns:1.05fr .95fr;
+    background:linear-gradient(160deg,rgba(31,44,79,.92),rgba(16,26,49,.96));
+    border:1px solid var(--line);border-radius:20px;overflow:hidden;
+    box-shadow:0 40px 90px -30px rgba(0,0,0,.85)}
+  @media(max-width:760px){ .gate-card{grid-template-columns:1fr} }
+  .gate-brand{padding:36px 34px;display:flex;flex-direction:column;justify-content:center;gap:10px;
+    background:
+      radial-gradient(circle at 85% 12%, rgba(217,91,50,.16), transparent 42%),
+      linear-gradient(180deg,rgba(27,41,73,.55),rgba(16,26,49,.2))}
+  .gate-brand h1{margin:0;font-family:var(--serif);font-size:30px;color:var(--teng);letter-spacing:3px;font-weight:800;
+    display:flex;align-items:center;gap:11px;text-shadow:0 0 26px rgba(227,170,78,.28)}
+  .gate-brand h1 svg{width:29px;height:29px;flex:none;filter:drop-shadow(0 0 8px rgba(201,168,106,.4))}
+  .gate-brand .verse{font-family:var(--serif);font-size:13px;color:#b8bfcd;letter-spacing:1px}
+  .gate-feats{margin-top:14px;display:grid;gap:9px}
+  .gate-feats div{display:flex;gap:9px;align-items:baseline;font-size:13px;color:var(--moon)}
+  .gate-feats i{font-style:normal;font-size:15px}
+  .gate-feats small{color:var(--yan);font-size:11.5px}
+  .gate-form{padding:34px 34px 26px;border-left:1px solid var(--line);display:flex;flex-direction:column;justify-content:center}
+  @media(max-width:760px){ .gate-form{border-left:0;border-top:1px solid var(--line)} }
+  .gate-tabs{display:flex;gap:6px;margin-bottom:18px;border-bottom:1px solid var(--line);padding-bottom:10px}
+  .gate-tabs button{border:1px solid var(--line);background:transparent;color:var(--yan);border-radius:9px;
+    padding:6px 18px;font-size:13px;cursor:pointer;font-family:var(--sans)}
+  .gate-tabs button.on{color:var(--gold);border-color:var(--teng);background:rgba(227,170,78,.1)}
+  .gate-form label{display:block;font-size:12px;color:var(--yan);margin:12px 0 4px}
+  .gate-err{min-height:20px;font-size:12px;color:#e88;margin-top:10px;line-height:1.6}
+  .gate-foot{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);
+    display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .gate-local{color:var(--teng);font-size:12.5px;cursor:pointer}
+  .gate-local:hover{color:var(--gold)}
+  .gate-foot .tip{margin:0;font-size:11px}
+  /* ===== 管理员页 ===== */
+  .adm-tile b{display:block;font-size:24px;color:var(--gold);font-family:var(--serif)}
+  .adm-tile span{font-size:11.5px;color:var(--yan)}
+  .adm-tile{background:rgba(20,30,56,.55);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .btn:disabled{opacity:.34;cursor:not-allowed;transform:none;box-shadow:none}
+  .user-chip{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--moon);
+    background:rgba(205,178,119,.1);border:1px solid rgba(205,178,119,.25);border-radius:20px;padding:4px 12px}
+  .user-chip.hidden{display:none}
+  .user-chip a{color:var(--zhu);cursor:pointer;font-weight:600}
+  .user-chip a:hover{color:#f08a5e}
+
   /* 错题生词弹窗 */
   #mWordModal{position:fixed;inset:0;z-index:230;display:flex;align-items:center;justify-content:center;
     padding:20px;background:rgba(4,8,18,.72);backdrop-filter:blur(5px)}
@@ -502,6 +557,7 @@
     </div>
     <div class="saved" id="savedTag">● 已保存</div>
     <div class="cloud" id="cloudTag" onclick="switchTab('sync')" title="云同步状态，点击进入云同步页">☁ 未连接</div>
+    <div class="user-chip hidden" id="userChip"><span id="userChipName" onclick="switchTab('sync')" style="cursor:pointer"></span><a onclick="syncLogout()" title="退出登录">退出</a></div>
   </div>
 </header>
 
@@ -514,6 +570,7 @@
   <button data-tab="stats">统计</button>
   <button data-tab="data">数据管理</button>
   <button data-tab="sync">云同步</button>
+  <button data-tab="admin" id="adminTabBtn" style="display:none">管理员</button>
   <button data-tab="changelog">更新日志</button>
 </nav>
 
@@ -944,6 +1001,20 @@
     </div>
   </section>
 
+  <!-- ============ 管理员 ============ -->
+  <section class="view" id="view-admin">
+    <div class="grid g4" id="admStats"></div>
+    <div class="grid g4" id="admStats2" style="margin-top:16px"></div>
+    <div class="card" style="margin-top:18px">
+      <div class="flex-between">
+        <h2><span class="dot"></span>用户管理</h2>
+        <button class="btn ghost sm" onclick="renderAdmin()">↻ 刷新</button>
+      </div>
+      <div id="admUserList"><div class="empty">读取中…</div></div>
+      <p class="tip">禁用的账号无法登录，旧令牌立即失效；删除会连同该用户的全部学习数据一起清掉，不可恢复。</p>
+    </div>
+  </section>
+
   <!-- ============ 更新日志 ============ -->
   <section class="view" id="view-changelog">
     <div class="card">
@@ -961,6 +1032,60 @@
     </div>
   </section>
 </main>
+
+<!-- ============ 登录 / 注册门 ============ -->
+<div id="authGate" class="hidden">
+  <div class="gate-deco">
+    <i class="star" style="left:12%;top:18%"></i><i class="star" style="left:30%;top:8%;animation-delay:1.2s"></i>
+    <i class="star" style="left:64%;top:12%;animation-delay:.6s"></i><i class="star" style="left:88%;top:30%;animation-delay:2s"></i>
+    <i class="star" style="left:8%;top:70%;animation-delay:1.6s"></i><i class="star" style="left:92%;top:78%;animation-delay:.3s"></i>
+    <span class="gate-lan" style="left:6%;bottom:12%">🏮</span>
+    <span class="gate-lan" style="right:7%;top:10%;font-size:32px;animation-delay:1.4s">🏮</span>
+    <span class="gate-lan" style="right:16%;bottom:22%;font-size:24px;animation-delay:.8s">🏮</span>
+  </div>
+  <div class="gate-card">
+    <div class="gate-brand">
+      <h1><svg viewBox="0 0 40 40" aria-hidden="true">
+        <g fill="#e3aa4e">
+          <ellipse cx="20" cy="7" rx="4.4" ry="7"/><ellipse cx="20" cy="33" rx="4.4" ry="7"/>
+          <ellipse cx="7" cy="20" rx="7" ry="4.4"/><ellipse cx="33" cy="20" rx="7" ry="4.4"/>
+          <ellipse cx="10.8" cy="10.8" rx="6.6" ry="3.8" transform="rotate(45 10.8 10.8)"/>
+          <ellipse cx="29.2" cy="10.8" rx="6.6" ry="3.8" transform="rotate(-45 29.2 10.8)"/>
+          <ellipse cx="10.8" cy="29.2" rx="6.6" ry="3.8" transform="rotate(-45 10.8 29.2)"/>
+          <ellipse cx="29.2" cy="29.2" rx="6.6" ry="3.8" transform="rotate(45 29.2 29.2)"/>
+        </g>
+        <circle cx="20" cy="20" r="3.6" fill="#e2703a"/>
+      </svg>花千树</h1>
+      <div class="verse">东风夜放花千树，更吹落、星如雨</div>
+      <div class="gate-feats">
+        <div><i>🏮</i><span>点灯打卡 · 灯火图<small>　每学一天点亮一盏灯</small></span></div>
+        <div><i>🎴</i><span>遗忘曲线复习 · 听写<small>　词汇到了才进队列</small></span></div>
+        <div><i>✨</i><span>AI 润色 · 多模型<small>　八大供应商随意切换</small></span></div>
+        <div><i>🐾</i><span>灯灵小灯 · 伴学换装<small>　攒灯油给它添新衣</small></span></div>
+      </div>
+    </div>
+    <div class="gate-form">
+      <div class="gate-tabs">
+        <button id="gateTabLogin" class="on" onclick="gateSetMode(false)">登录</button>
+        <button id="gateTabReg" onclick="gateSetMode(true)">注册</button>
+      </div>
+      <label>用户名</label>
+      <input id="gateUser" placeholder="3-50 个字符" autocomplete="username" onkeydown="if(event.key==='Enter')gateSubmit()">
+      <label>密码</label>
+      <input id="gatePass" type="password" placeholder="至少 6 位" autocomplete="current-password" onkeydown="if(event.key==='Enter')gateSubmit()">
+      <div id="gatePass2Row" class="hidden">
+        <label>确认密码</label>
+        <input id="gatePass2" type="password" placeholder="再输一遍" onkeydown="if(event.key==='Enter')gateSubmit()">
+      </div>
+      <div class="gate-err" id="gateErr"></div>
+      <button class="btn" id="gateBtn" style="width:100%;margin-top:6px" onclick="gateSubmit()">进入学习台</button>
+      <div class="gate-foot">
+        <span class="gate-local" onclick="gateLocal()">＞ 先逛逛 · 本地模式</span>
+        <span class="tip">数据只存本机浏览器，随时可在「云同步」里登录</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div id="mWordModal" class="hidden" onclick="if(event.target===this)mWordClose()">
   <div class="mw-card">
@@ -1475,6 +1600,209 @@ const TEMPLATES = {
 };
 
 /* ===================== 导航 ===================== */
+/* ===================== 登录 / 注册门 ===================== */
+const GATE_MODE_KEY='ky_auth_mode';
+let gateIsRegister=false;
+function gateShow(){
+  const g=document.getElementById('authGate'); if(!g) return;
+  document.body.classList.add('gate-locked');
+  g.classList.remove('hidden');
+  gateSetMode(gateIsRegister);
+  setTimeout(()=>{ const u=document.getElementById('gateUser'); if(u) u.focus(); },60);
+}
+function gateHide(){ const g=document.getElementById('authGate'); if(g) g.classList.add('hidden'); document.body.classList.remove('gate-locked'); }
+function gateErr(msg){
+  const e=document.getElementById('gateErr'); if(e) e.textContent=msg||'';
+}
+function gateSetMode(reg){
+  gateIsRegister=!!reg; gateErr('');
+  document.getElementById('gateTabLogin').classList.toggle('on',!reg);
+  document.getElementById('gateTabReg').classList.toggle('on',!!reg);
+  document.getElementById('gatePass2Row').classList.toggle('hidden',!reg);
+  document.getElementById('gateBtn').textContent=reg?'注册并进入':'进入学习台';
+}
+/* 后端报错转成中文提示：422 是参数校验，其余是 detail 字符串 */
+function gateApiError(j,status){
+  if(typeof j.detail==='string') return j.detail;
+  if(Array.isArray(j.detail)){
+    const f=j.detail[0]||{};
+    if(f.type==='string_too_short') return (f.loc&&f.loc[1]==='password')?'密码至少 6 位':'用户名至少 3 个字符';
+    if(f.type==='string_too_long') return '用户名太长了（最多 50 字符）';
+    return '输入格式不正确';
+  }
+  if(status===401) return '用户名或密码不正确';
+  return 'HTTP '+status;
+}
+async function gateSubmit(){
+  const u=document.getElementById('gateUser').value.trim();
+  const p1=document.getElementById('gatePass').value;
+  const p2=document.getElementById('gatePass2').value;
+  if(u.length<3){ gateErr('用户名至少 3 个字符'); return; }
+  if(p1.length<6){ gateErr('密码至少 6 位'); return; }
+  if(gateIsRegister&&p1!==p2){ gateErr('两次输入的密码不一致'); return; }
+  const btn=document.getElementById('gateBtn');
+  const old=btn.textContent; btn.disabled=true; btn.textContent='正在连接…'; gateErr('');
+  const base=(typeof SYNC!=='undefined'&&SYNC.apiBase)||'';
+  try{
+    if(gateIsRegister){
+      const r=await fetch(base+'/api/v1/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({username:u,password:p1})});
+      if(!r.ok){ const j=await r.json().catch(()=>({})); gateErr(gateApiError(j,r.status)); return; }
+    }
+    const r=await fetch(base+'/api/v1/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({username:u,password:p1})});
+    if(!r.ok){ const j=await r.json().catch(()=>({})); gateErr(gateApiError(j,r.status)); return; }
+    const j=await r.json();
+    SYNC.token=j.access_token; SYNC.username=u; SYNC.role=j.role||'user';
+    SYNC.relogin={u,p:p1}; syncSaveMeta();
+    gateHide(); renderSyncUI(); updateUserChip(); applyAdminVisibility();
+    setCloudBadge('busy','连接中…');
+    toast('欢迎回来，'+u);
+    syncPull().then(()=>syncEnsureTimer()).catch(()=>{});
+  }catch(e){
+    gateErr('无法连接服务器：请确认后端已启动（手机端可在「云同步」里填服务器地址），或先用本地模式。');
+  }finally{
+    btn.disabled=false; btn.textContent=old;
+  }
+}
+function gateLocal(){
+  try{ localStorage.setItem(GATE_MODE_KEY,'local'); }catch(e){}
+  gateHide();
+  toast('本地模式：数据只存在这台设备的浏览器里');
+}
+/* 有 token 时启动验证一次：token 过期回登录门；账号被禁用也回登录门 */
+async function gateVerify(){
+  if(!SYNC.token) return;
+  try{
+    const r=await fetch((SYNC.apiBase||'')+'/api/v1/auth/me',{headers:{'Authorization':'Bearer '+SYNC.token}});
+    if(r.status===403){
+      SYNC.token=''; SYNC.relogin=null; SYNC.role=''; syncSaveMeta();
+      renderSyncUI(); updateUserChip(); applyAdminVisibility(); setCloudBadge('off','已禁用');
+      gateShow(); gateErr('该账号已被管理员禁用');
+      return;
+    }
+    if(r.status===401){
+      /* 有记住的密码就静默续登一次，不行再回登录门 */
+      if(SYNC.relogin&&SYNC.relogin.u){
+        try{
+          const lr=await fetch((SYNC.apiBase||'')+'/api/v1/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({username:SYNC.relogin.u,password:SYNC.relogin.p})});
+          if(lr.ok){
+            const j=await lr.json();
+            SYNC.token=j.access_token; SYNC.role=j.role||'user'; syncSaveMeta();
+            updateUserChip(); applyAdminVisibility(); return;
+          }
+        }catch(e){}
+      }
+      SYNC.token=''; SYNC.relogin=null; SYNC.role=''; syncSaveMeta();
+      renderSyncUI(); updateUserChip(); applyAdminVisibility(); setCloudBadge('off','请重新登录');
+      gateShow();
+      return;
+    }
+    if(r.ok){
+      const j=await r.json();
+      if(j.role&&j.role!==SYNC.role){ SYNC.role=j.role; syncSaveMeta(); applyAdminVisibility(); }
+    }
+  }catch(e){ /* 服务器没开：维持原状，离线徽标由同步逻辑处理 */ }
+}
+function gateCheck(){
+  let local='';
+  try{ local=localStorage.getItem(GATE_MODE_KEY)||''; }catch(e){}
+  if(!SYNC.token&&local!=='local') gateShow();
+}
+/* ===================== 用户徽章 / 管理员入口 ===================== */
+function updateUserChip(){
+  const chip=document.getElementById('userChip'), name=document.getElementById('userChipName');
+  if(!chip||!name) return;
+  if(SYNC.token){ name.textContent='👤 '+(SYNC.username||''); chip.classList.remove('hidden'); }
+  else chip.classList.add('hidden');
+}
+function applyAdminVisibility(){
+  const b=document.getElementById('adminTabBtn'); if(!b) return;
+  b.style.display=(SYNC.role==='admin')?'':'none';
+  const cur=document.querySelector('#nav button.active');
+  if(SYNC.role!=='admin'&&cur&&cur.dataset.tab==='admin') switchTab('home');
+}
+/* ===================== 管理员页 ===================== */
+function admFmtDate(iso){
+  if(!iso) return '—';
+  try{
+    let str=String(iso);
+    /* 后端 datetime 是 UTC 且不带时区，补 Z 后再按本地时区显示 */
+    if(!/[zZ]$|[+-]\d{2}:?\d{2}$/.test(str)) str+='Z';
+    return new Date(str).toLocaleString('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+  }
+  catch(e){ return iso; }
+}
+function admFmtNum(n){ return (n==null?0:n).toLocaleString('zh-CN'); }
+let ADM_USERS={};   /* id → 用户对象：按钮只传 id，避免把 JSON 塞进 onclick */
+async function renderAdmin(){
+  if(SYNC.role!=='admin'){ switchTab('home'); return; }
+  const statsEl=document.getElementById('admStats'), statsEl2=document.getElementById('admStats2'), listEl=document.getElementById('admUserList');
+  if(!statsEl||!listEl) return;
+  try{
+    const [stats,users]=await Promise.all([
+      syncApi('/api/v1/admin/stats'),
+      syncApi('/api/v1/admin/users')
+    ]);
+    const tile=(v,l)=>`<div class="adm-tile"><b>${admFmtNum(v)}</b><span>${l}</span></div>`;
+    statsEl.innerHTML=tile(stats.users,'注册用户')+tile(stats.active_users,'24 小时内活跃')
+      +tile(stats.words,'词汇总量')+tile(stats.papers,'练习记录');
+    statsEl2.innerHTML=tile(stats.checkins,'累计点灯')+tile(stats.mistakes,'错题总数')
+      +tile(stats.admins,'管理员')+tile(SYNC.role==='admin'?'管理员':'用户','我的角色');
+    if(!users.length){ listEl.innerHTML='<div class="empty">还没有用户。</div>'; return; }
+    ADM_USERS={}; users.forEach(u=>{ ADM_USERS[u.id]=u; });
+    listEl.innerHTML=`<div class="table-scroll"><table><thead><tr>
+      <th>用户名</th><th>角色</th><th>状态</th><th>注册时间</th><th>最近登录</th>
+      <th>词汇</th><th>练习</th><th>点灯</th><th>操作</th></tr></thead><tbody>`+
+      users.map(u=>{
+        const me=u.username===SYNC.username;
+        const dis=me?' disabled title="不能对自己执行此操作"':'';
+        return `<tr>
+        <td><b>${esc(u.username)}</b>${me?'<span class="tag" style="margin-left:6px">我</span>':''}</td>
+        <td>${u.role==='admin'?'<span class="pill p3">管理员</span>':'<span class="pill p0">用户</span>'}</td>
+        <td>${u.is_active?'<span style="color:#7fd6a8">● 正常</span>':'<span style="color:#e88">● 已禁用</span>'}</td>
+        <td class="muted small">${admFmtDate(u.created_at)}</td>
+        <td class="muted small">${u.last_login_at?admFmtDate(u.last_login_at):'从未'}</td>
+        <td>${u.words}</td><td>${u.papers}</td><td>${u.checkins}</td>
+        <td style="white-space:nowrap">
+          <button class="btn ghost sm" onclick="admUser(${u.id},'active')"${dis}>${u.is_active?'禁用':'启用'}</button>
+          <button class="btn ghost sm" onclick="admUser(${u.id},'role')"${dis}>${u.role==='admin'?'降为用户':'设为管理员'}</button>
+          <button class="btn danger sm" onclick="admUser(${u.id},'del')"${dis}>删</button>
+        </td></tr>`;
+      }).join('')+
+      '</tbody></table></div>';
+  }catch(e){
+    listEl.innerHTML='<div class="empty">管理数据加载失败：'+esc(e.message||e)+'</div>';
+  }
+}
+async function admUser(id,action){
+  const u=ADM_USERS[id];
+  if(!u){ toast('用户信息已过期，正在刷新…'); renderAdmin(); return; }
+  if(action==='active'){
+    const to=!u.is_active;
+    if(!confirm((to?'禁用「':'启用「')+u.username+'」'+(to?'？该账号将立即无法登录。':'？'))) return;
+    try{
+      await syncApi('/api/v1/admin/users/'+u.id,{method:'PUT',body:JSON.stringify({is_active:to})});
+      toast((to?'已禁用 ':'已启用 ')+u.username); renderAdmin();
+    }catch(e){ toast('操作失败：'+(e.message||e)); }
+  }else if(action==='role'){
+    const to=u.role==='admin'?'user':'admin';
+    if(!confirm((to==='admin'?'将「'+u.username+'」设为管理员？':'将「'+u.username+'」降为普通用户？'))) return;
+    try{
+      await syncApi('/api/v1/admin/users/'+u.id,{method:'PUT',body:JSON.stringify({role:to})});
+      toast('已更新 '+u.username+' 的角色'); renderAdmin();
+    }catch(e){ toast('操作失败：'+(e.message||e)); }
+  }else if(action==='del'){
+    if(!confirm('删除用户「'+u.username+'」？\n其全部学习数据（词汇/练习/打卡/错题/PDF）都会一起删除，不可恢复。')) return;
+    if(!confirm('再确认一次：真的要删除「'+u.username+'」吗？')) return;
+    try{
+      await syncApi('/api/v1/admin/users/'+u.id,{method:'DELETE'});
+      toast('已删除 '+u.username); renderAdmin();
+    }catch(e){ toast('删除失败：'+(e.message||e)); }
+  }
+}
+
 function switchTab(tab){
   document.querySelectorAll('#nav button').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
@@ -1485,7 +1813,17 @@ function switchTab(tab){
   if(tab==='stats') renderStats();
   if(tab==='data') renderSnapshots();
   if(tab==='changelog') renderChangelog();
+  if(tab==='admin') renderAdmin();
+  /* 地址栏同步 tab（#vocab / #admin…），刷新和 404 页深链都靠它 */
+  try{ history.replaceState(null,'','#'+tab); }catch(e){}
   window.scrollTo({top:0,behavior:'smooth'});
+}
+/* 首次进入时按 #hash 直达对应页（404 页的「去真题库」等按钮用） */
+function hashRoute(){
+  const h=location.hash.slice(1);
+  if(!h) return;
+  if(h==='admin'&&SYNC.role!=='admin') return;
+  if(document.getElementById('view-'+h)) switchTab(h);
 }
 document.addEventListener('click',e=>{
   const b=e.target.closest('#nav button[data-tab]');
@@ -2151,11 +2489,19 @@ function fillEditorToAi(){ document.getElementById('aiInput').value=document.get
 /* AI 通道探测：null=未探测。true=本机服务器代理可用（无 CORS 限制，全供应商通行）；
    false=直连模式（仅 direct=true 的供应商可用）。 */
 let AI_PROXY_OK=null;
+function aiAuthHeaders(){
+  const h={};
+  if(typeof SYNC!=='undefined'&&SYNC.token) h['Authorization']='Bearer '+SYNC.token;
+  return h;
+}
 async function aiProbeProxy(){
   if(AI_PROXY_OK!==null) return AI_PROXY_OK;
   try{
     const ctl=new AbortController(); setTimeout(()=>ctl.abort(),1500);
-    const r=await fetch((typeof SYNC!=='undefined'&&SYNC.apiBase||'')+'/health',{signal:ctl.signal});
+    /* 用 /ai/providers 而不是 /health 探测：服务器开了「AI 需登录」时，
+       未登录的探测会 401，前端自动走直连，不会误报代理可用 */
+    const r=await fetch((typeof SYNC!=='undefined'&&SYNC.apiBase||'')+'/api/v1/ai/providers',
+      {signal:ctl.signal,headers:aiAuthHeaders()});
     AI_PROXY_OK=r.ok;
   }catch(e){ AI_PROXY_OK=false; }
   renderAiModeTip();
@@ -2217,7 +2563,7 @@ function renderAiProviderUI(){
 }
 async function aiStreamPolish(payload,onDelta){
   const r=await fetch((typeof SYNC!=='undefined'&&SYNC.apiBase||'')+'/api/v1/ai/polish_stream',{
-    method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    method:'POST',headers:Object.assign({'Content-Type':'application/json'},aiAuthHeaders()),body:JSON.stringify(payload)});
   if(!r.ok){
     let msg='HTTP '+r.status;
     try{ const j=await r.json(); if(typeof j.detail==='string') msg=j.detail; }catch(e){}
@@ -2287,7 +2633,7 @@ async function aiPolish(){
       /* 流式不可用（旧后端/供应商不支持）：退回一次性转发 */
       try{
         const r=await fetch((typeof SYNC!=='undefined'&&SYNC.apiBase||'')+'/api/v1/ai/polish',{
-          method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+          method:'POST',headers:Object.assign({'Content-Type':'application/json'},aiAuthHeaders()),body:JSON.stringify(payload)});
         const j=await r.json();
         if(!r.ok) throw new Error(typeof j.detail==='string'?j.detail:('HTTP '+r.status));
         out=j.content; via='服务器转发';
@@ -2782,7 +3128,7 @@ async function weeklyAiComment(){
   if(holder) holder.textContent='🐾 小灯正在读你的报告…';
   try{
     const r=await fetch((SYNC.apiBase||'')+'/api/v1/ai/chat',{
-      method:'POST',headers:{'Content-Type':'application/json'},
+      method:'POST',headers:Object.assign({'Content-Type':'application/json'},aiAuthHeaders()),
       body:JSON.stringify({provider:DB.aiCfg.provider,model:DB.aiCfg.model,
         api_key:key,endpoint:DB.aiCfg.endpoints[DB.aiCfg.provider]||'',
         messages:[{role:'user',content:'这是我最近的学习报告：\n'+window._weeklyText+'\n请用不超过 50 字点评：先肯定一句，再给一个具体可执行的小建议，不要提“作为AI”。'}]})});
@@ -2873,6 +3219,15 @@ function onboardCheck(){
 }
 /* ===================== 更新日志 ===================== */
 const CHANGELOG=[
+  {v:'v1.7',date:'2026-11-22',tags:['部署','账号','界面'],title:'登录注册、管理员视角与 404 页',
+   items:[
+    '首访登录 / 注册门：可注册账号、登录，也可「先逛逛 · 本地模式」；密码只留在内存，token 7 天有效。',
+    '双视角：普通用户只看到学习功能；管理员多出「管理员」页，可看系统统计与用户列表，禁用 / 启用、设 / 撤管理员、删除用户及其全部数据。',
+    '账号安全：登录与注册限流；被禁用账号的旧 token 立即失效；系统始终保留至少一个管理员。',
+    '404 页「此路无灯」按设计稿实现：梅枝、月亮、宫灯、楼阁剪影与灯火格；后端对未知路径返回真正的 HTTP 404。',
+    'hash 路由：#vocab / #library 等深链刷新可直达，404 页按钮也能跳回对应栏目。',
+    '部署配置集中到 backend/.env：管理员引导、注册开关、AI 代理鉴权、数据库与令牌有效期。'
+   ]},
   {v:'v1.6',date:'2026-11-14',tags:['陪伴','工程'],title:'自定义头像、季节限定与工程体验',
    items:[
     '小灯头像上传：PNG/JPG ≤300KB，存 IndexedDB，登录后独立 blob 同步，换设备自动拉回。',
@@ -2922,6 +3277,8 @@ const CHANGELOG=[
    ]}
 ];
 const ROADMAP=[
+  {t:'公网部署与备份',d:'域名 + HTTPS、MySQL 定时备份与异常监控，让学习数据真正不怕丢。'},
+  {t:'账号体系完善',d:'邮箱验证、找回密码、登录设备管理。'},
   {t:'月报历史与月度总结',d:'把每月报告也存快照，能回看每个月的成长曲线。'},
   {t:'SRS 细化',d:'暂停某个词、每日新词上限、提前复习独立计划。'},
   {t:'AI 长期记忆',d:'让小灯记住最近的学习状态和情绪，而不是只带 10 轮对话。'},
@@ -3869,7 +4226,7 @@ async function petChatSend(){
   const holder=petAppendChat('pt','小灯拨了拨火苗……');
   try{
     const r=await fetch((SYNC.apiBase||'')+'/api/v1/ai/chat',{
-      method:'POST',headers:{'Content-Type':'application/json'},
+      method:'POST',headers:Object.assign({'Content-Type':'application/json'},aiAuthHeaders()),
       body:JSON.stringify({provider:DB.aiCfg.provider,model:DB.aiCfg.model,api_key:key,
         endpoint:DB.aiCfg.endpoints[DB.aiCfg.provider]||'',messages:petChatMsgs.slice(-10),
         persona:(((DB.petCfg.name||'小灯')!=='小灯')?('你现在的名字叫「'+DB.petCfg.name+'」。'):'')+(DB.petCfg.persona||'')})});
@@ -3927,16 +4284,19 @@ const SYNC_META_KEY='ky_sync_meta';
 const TOMB_KEY='ky_sync_tombstones';
 const SYNC_COLLECTIONS=['profile','words','papers','writings','sentences','mistakes','checkins','dailyTasks','targets','materials','aiHistory'];
 const ARRAY_COLS=['words','papers','writings','sentences','mistakes'];
-let SYNC={token:'',username:'',apiBase:'',auto:true,lastSync:'',relogin:null,
+let SYNC={token:'',username:'',role:'',apiBase:'',auto:true,lastSync:'',relogin:null,
   applyingRemote:false,pushing:false,pullTimer:null,logs:[]};
 try{
   const m=JSON.parse(localStorage.getItem(SYNC_META_KEY)||'{}');
-  SYNC.token=m.token||''; SYNC.username=m.username||''; SYNC.apiBase=m.apiBase||'';
-  SYNC.auto=m.auto!==false; SYNC.lastSync=m.lastSync||''; SYNC.relogin=m.relogin||null;
+  SYNC.token=m.token||''; SYNC.username=m.username||''; SYNC.role=m.role||''; SYNC.apiBase=m.apiBase||'';
+  SYNC.auto=m.auto!==false; SYNC.lastSync=m.lastSync||'';
+  /* 密码只留在内存里（用于本次会话 token 过期时静默续登），绝不落盘；
+     旧版本若存过 relogin，载入时顺手抹掉 */
+  if(m.relogin){ try{ syncSaveMeta(); }catch(e){} }
 }catch(e){}
 function syncSaveMeta(){
-  localStorage.setItem(SYNC_META_KEY,JSON.stringify({token:SYNC.token,username:SYNC.username,
-    apiBase:SYNC.apiBase,auto:SYNC.auto,lastSync:SYNC.lastSync,relogin:SYNC.relogin}));
+  localStorage.setItem(SYNC_META_KEY,JSON.stringify({token:SYNC.token,username:SYNC.username,role:SYNC.role,
+    apiBase:SYNC.apiBase,auto:SYNC.auto,lastSync:SYNC.lastSync}));
 }
 
 /* 删除墓碑：记录被删的本地 id，推送时让服务器也删，拉取时防止其他端复活 */
@@ -4250,17 +4610,20 @@ async function doSyncLogin(u,p){
   try{
     SYNC.apiBase=document.getElementById('syApiBase').value.trim();
     const r=await syncApi('/api/v1/auth/login',{method:'POST',body:JSON.stringify({username:u,password:p})});
-    SYNC.token=r.access_token; SYNC.username=u;
+    SYNC.token=r.access_token; SYNC.username=u; SYNC.role=r.role||'user';
     SYNC.relogin={u,p}; syncSaveMeta();
-    toast('登录成功，开始同步'); renderSyncUI();
+    toast('登录成功，开始同步'); renderSyncUI(); updateUserChip(); applyAdminVisibility();
     await syncPull();
     syncEnsureTimer();
   }catch(e){ toast('登录失败：'+(e.message||e)); }
 }
 function syncLogout(){
-  SYNC.token=''; SYNC.username=''; SYNC.relogin=null; syncSaveMeta();
+  SYNC.token=''; SYNC.username=''; SYNC.role=''; SYNC.relogin=null; syncSaveMeta();
   if(SYNC.pullTimer){ clearInterval(SYNC.pullTimer); SYNC.pullTimer=null; }
-  setCloudBadge('','未连接'); renderSyncUI(); toast('已退出（本机数据保留）');
+  setCloudBadge('','未连接'); renderSyncUI(); updateUserChip(); applyAdminVisibility();
+  toast('已退出（本机数据保留）');
+  /* 本地模式的人退出后仍留在应用里；其他情况回到登录门 */
+  try{ if(localStorage.getItem(GATE_MODE_KEY)!=='local') gateShow(); }catch(e){ gateShow(); }
 }
 function syncForcePull(){
   if(!SYNC.token){ toast('请先登录'); return; }
@@ -4336,6 +4699,11 @@ voiceInit();
 petInit();
 aiProbeProxy();
 onboardCheck();
+updateUserChip();
+applyAdminVisibility();
+gateCheck();
+gateVerify();
+hashRoute();
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){
   navigator.serviceWorker.register('sw.js').catch(()=>{});
 }

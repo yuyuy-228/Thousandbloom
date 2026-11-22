@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 · 此路无灯 — 花千树</title>
+<meta name="theme-color" content="#0b1222">
+<style>
+  :root{
+    --line:#2c3d6b;
+    --zhu:#d4622a; --zhu-lt:#e8793f; --teng:#c9a86a; --jin:#e6c887;
+    --moon:#e8dcc8; --yan:#9aa3b5; --dim:#6b7488;
+    --serif:"Noto Serif SC","Songti SC","STSong","SimSun",serif;
+  }
+  *{box-sizing:border-box}
+  html,body{min-height:100%}
+  body{margin:0;font-family:var(--serif);color:var(--moon);min-height:100vh;overflow-x:hidden;
+    background:
+      radial-gradient(ellipse at 78% 18%, rgba(198,200,205,.07), transparent 42%),
+      radial-gradient(ellipse at 10% 90%, rgba(217,91,50,.06), transparent 40%),
+      linear-gradient(180deg,#17223e 0%,#141d36 46%,#101829 78%,#0d1422 100%)}
+
+  /* ===== 顶部导航 ===== */
+  nav{display:flex;align-items:center;gap:26px;padding:20px 52px;flex-wrap:wrap;
+    border-bottom:1px solid rgba(44,61,107,.45);position:relative;z-index:6}
+  nav .logo{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;
+    color:var(--teng);letter-spacing:2.5px;text-decoration:none}
+  nav .logo svg{width:25px;height:25px;filter:drop-shadow(0 0 6px rgba(201,168,106,.35))}
+  nav a{color:#98a1b4;font-size:13.5px;text-decoration:none;letter-spacing:1.2px;transition:.2s}
+  nav a:hover{color:var(--jin)}
+  nav .home-link{margin-left:auto;display:flex;align-items:center;gap:12px}
+  nav .home-link .moon-ico{width:19px;height:19px;opacity:.7}
+  nav .home-link .avatar{width:30px;height:30px;border-radius:50%;border:1px solid rgba(201,168,106,.45);
+    display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--jin)}
+
+  /* ===== 背景夜景（整页） ===== */
+  .scene{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+  .moon{position:absolute;right:8%;top:11%;width:250px;height:250px;border-radius:50%;
+    background:
+      radial-gradient(circle at 38% 32%, #dcd7c8 0%, #cfcaba 40%, #bdb8a8 68%, #a9a494 100%);
+    box-shadow:0 0 130px 52px rgba(214,208,190,.12), inset -22px -16px 48px rgba(96,90,76,.3)}
+  .moon i{position:absolute;border-radius:50%;background:rgba(126,120,104,.2);filter:blur(1px)}
+  .moon i:nth-child(1){width:30px;height:26px;left:46px;top:86px}
+  .moon i:nth-child(2){width:16px;height:16px;left:124px;top:52px}
+  .moon i:nth-child(3){width:22px;height:20px;left:100px;top:156px}
+  .moon i:nth-child(4){width:11px;height:11px;left:166px;top:120px}
+  .moon i:nth-child(5){width:8px;height:8px;left:74px;top:186px}
+
+  .branch{position:absolute;left:0;top:0;width:100%;height:100%}
+  .skyline{position:absolute;left:0;right:0;bottom:0;width:100%;height:52vh;min-height:340px}
+  .mist{position:absolute;left:0;right:0;bottom:0;height:30vh;
+    background:linear-gradient(to top,rgba(13,20,34,.88) 0%,rgba(15,23,40,.28) 55%,transparent 100%)}
+
+  /* ===== 宫灯 ===== */
+  .lantern{position:absolute;width:58px;height:74px;animation:float 5s ease-in-out infinite}
+  .lantern .glow{position:absolute;left:50%;top:50%;width:190px;height:190px;transform:translate(-50%,-50%);
+    background:radial-gradient(circle,rgba(255,150,66,.42) 0%,rgba(240,120,50,.16) 45%,transparent 70%)}
+  .lantern .cap{position:absolute;left:50%;width:22px;height:6px;border-radius:2px;transform:translateX(-50%);
+    background:linear-gradient(180deg,#e8c887,#a97f3f)}
+  .lantern .cap.top{top:2px}
+  .lantern .cap.bot{bottom:6px}
+  .lantern .body{position:absolute;left:6px;right:6px;top:8px;bottom:12px;border-radius:11px/15px;
+    background:linear-gradient(90deg,#7e2810 0%,#c0451c 22%,#f08a45 46%,#e2662a 62%,#a13413 84%,#6d220d 100%);
+    box-shadow:inset 0 0 14px rgba(70,10,0,.55),0 0 22px rgba(255,140,60,.45)}
+  .lantern .body:after{content:'';position:absolute;inset:3px 4px;border-radius:9px/13px;
+    border:1px solid rgba(255,206,140,.28)}
+  .lantern .rib{position:absolute;top:8px;bottom:12px;left:50%;width:1px;background:rgba(255,210,150,.35)}
+  .lantern .tassel{position:absolute;left:50%;bottom:-10px;width:1.5px;height:14px;transform:translateX(-50%);
+    background:linear-gradient(180deg,#d9a95e,rgba(217,169,94,0))}
+  .lantern .tassel:after{content:'';position:absolute;left:-2px;top:8px;width:5px;height:9px;border-radius:1px;
+    background:#c08b45;box-shadow:0 0 6px rgba(230,180,100,.7)}
+  .lantern.l1{right:24%;top:12%;width:62px;height:80px}
+  .lantern.l2{right:4.5%;top:26%;width:40px;height:52px;animation-delay:1.6s}
+  .lantern.l3{right:12.5%;top:40%;width:26px;height:34px;opacity:.5;animation-delay:.9s}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(-1.6deg)}50%{transform:translateY(-11px) rotate(1.6deg)}}
+
+  .firefly{position:absolute;width:3px;height:3px;border-radius:50%;background:#e9bc70;
+    box-shadow:0 0 8px 2px rgba(233,188,112,.5);opacity:.7;animation:rise 9s linear infinite}
+  @keyframes rise{0%{transform:translateY(0);opacity:0}12%{opacity:.75}80%{opacity:.5}100%{transform:translateY(-90px);opacity:0}}
+
+  /* ===== 主体 ===== */
+  main{position:relative;z-index:4;max-width:1440px;margin:0 auto;padding:96px 6vw 28px}
+  .content{max-width:520px}
+  .big404{font-size:clamp(94px,9.8vw,132px);font-weight:800;line-height:.92;color:var(--jin);
+    text-shadow:0 0 40px rgba(230,200,135,.28);letter-spacing:8px;margin-left:-6px}
+  .ttl{display:flex;align-items:stretch;gap:16px;margin:26px 0 0}
+  .ttl .bar{width:5px;background:linear-gradient(180deg,var(--zhu-lt),var(--zhu));border-radius:3px;flex:none;
+    box-shadow:0 0 14px rgba(217,91,50,.45)}
+  .ttl .bar:after{content:'';display:block;width:5px;height:5px;border-radius:50%;background:var(--zhu-lt);
+    margin:12px 0 0 -0;opacity:.6}
+  .ttl h1{margin:0;font-size:clamp(28px,3.5vw,38px);font-weight:700;color:#efe6d4;letter-spacing:6px;line-height:1.15}
+  .verse{margin:14px 0 0 21px;font-size:13.5px;color:#a9b0bf;letter-spacing:2.5px}
+  .desc{margin:22px 0 0 21px;font-size:13.5px;line-height:2;color:var(--yan)}
+  .acts{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:22px 0 0 21px}
+  .btn{display:inline-block;font-family:var(--serif);font-size:15px;letter-spacing:2.5px;
+    padding:12px 34px;border-radius:7px;cursor:pointer;text-decoration:none;transition:.2s;border:0}
+  .btn.primary{background:linear-gradient(180deg,#e2703a,#cf5724);color:#fff;
+    box-shadow:0 12px 28px -12px rgba(224,110,55,.8)}
+  .btn.primary:hover{background:linear-gradient(180deg,#ef7f47,#d9612c);transform:translateY(-2px)}
+  .btn.ghost{background:rgba(16,24,42,.42);border:1px solid rgba(201,168,106,.55);color:var(--jin)}
+  .btn.ghost:hover{background:rgba(201,168,106,.13)}
+  .back{color:#98a1b4;font-size:13px;cursor:pointer;background:none;border:0;font-family:var(--serif);letter-spacing:1px}
+  .back:hover{color:#fff;text-decoration:underline}
+
+  /* 灯火格 */
+  .dots-wrap{display:flex;align-items:center;gap:20px;margin:28px 0 0 21px}
+  .dots{display:grid;grid-template-columns:repeat(9,13px);gap:5px}
+  .dots i{width:13px;height:13px;border-radius:2.5px;background:#242e49;transition:.35s}
+  .dots i.c1{background:#e0a13f;box-shadow:0 0 7px rgba(224,161,63,.35)}
+  .dots i.c2{background:#b9663a}
+  .dots i.c3{background:#7c4023}
+  .dots i.c4{background:#4a3350}
+  .dots-cap{font-size:11.5px;color:var(--dim);line-height:1.85;letter-spacing:1.5px}
+
+  .poem{display:inline-flex;align-items:center;gap:12px;margin:24px 0 0 21px;
+    border:1px solid rgba(44,61,107,.75);border-radius:8px;padding:9px 18px 9px 10px;
+    background:rgba(18,27,48,.55)}
+  .poem .badge{width:32px;height:32px;border-radius:6px;background:linear-gradient(180deg,#e2703a,#c9551f);
+    color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;flex:none}
+  .poem b{font-size:14px;color:#e7ddc9;font-weight:700;letter-spacing:2.5px}
+  .poem span{display:block;font-size:10.5px;color:var(--dim);margin-top:3px;letter-spacing:1px}
+
+  .meta{display:flex;align-items:center;gap:18px;margin:24px 0 0 21px;
+    font-family:ui-monospace,Consolas,monospace;font-size:11.5px;letter-spacing:.14em;color:#8d8468}
+  .meta .rule{flex:1;height:1px;background:linear-gradient(90deg,rgba(107,116,136,.5),transparent)}
+  .meta .route{color:var(--dim);letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .kbd-tip{margin:18px 0 0 21px;font-size:11.5px;color:var(--dim);letter-spacing:.5px}
+  .kbd-tip kbd{border:1px solid rgba(107,116,136,.45);border-radius:4px;padding:1px 6px;font-size:10.5px;font-family:inherit}
+
+  /* ===== 响应式 ===== */
+  @media(max-width:1180px){
+    .moon{right:4%;top:15%;width:210px;height:210px}
+    .lantern.l1{right:20%;top:11%}
+  }
+  @media(max-width:880px){
+    nav{padding:16px 22px;gap:16px}
+    nav a:not(.logo){display:none}
+    nav .home-link{margin-left:auto}
+    main{padding:24px 22px 30px}
+    .content{max-width:none}
+    .big404{font-size:clamp(92px,26vw,112px);letter-spacing:5px;text-shadow:0 0 30px rgba(230,200,135,.22);
+      margin-top:64px}
+    .moon{right:-78px;top:96px;width:252px;height:252px;opacity:.55;
+      box-shadow:0 0 80px 26px rgba(214,208,190,.08)}
+    .branch{height:760px;opacity:.9;transform:scale(1.55);transform-origin:top left}
+    .lantern.l1{right:34px;top:78px;width:46px;height:58px}
+    .lantern.l2{display:none}
+    .lantern.l3{right:18px;top:176px;width:22px;height:28px;opacity:.4}
+    .skyline{height:46vh;min-height:320px;opacity:1}
+    .mist{height:30vh}
+    .ttl{margin-top:20px}
+    .ttl h1{letter-spacing:5px}
+    .verse{letter-spacing:1.5px}
+    .acts{display:grid;grid-template-columns:1fr;gap:10px;margin:18px 0 0 21px}
+    .btn{width:100%;text-align:center;padding:12px 0}
+    .back{display:none}
+    .dots-wrap{margin-top:22px;gap:16px}
+    .dots{grid-template-columns:repeat(9,9px);gap:3px}
+    .dots i{width:9px;height:9px;border-radius:2px}
+    .desc{margin-top:18px}
+    .poem{margin-top:18px}
+    .meta{gap:8px;margin-top:18px;font-size:10px;letter-spacing:.06em}
+    .kbd-tip{margin-top:14px}
+    .meta .rule{display:none}
+    .meta .route{max-width:42vw}
+    .poem{margin-top:26px}
+  }
+  @media(max-width:430px){
+    .big404{font-size:92px}
+    .dots-cap{font-size:11px}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/">
+    <svg viewBox="0 0 40 40" aria-hidden="true">
+      <g fill="#c9a86a">
+        <ellipse cx="20" cy="7" rx="4.4" ry="7"/><ellipse cx="20" cy="33" rx="4.4" ry="7"/>
+        <ellipse cx="7" cy="20" rx="7" ry="4.4"/><ellipse cx="33" cy="20" rx="7" ry="4.4"/>
+        <ellipse cx="10.8" cy="10.8" rx="6.6" ry="3.8" transform="rotate(45 10.8 10.8)"/>
+        <ellipse cx="29.2" cy="10.8" rx="6.6" ry="3.8" transform="rotate(-45 29.2 10.8)"/>
+        <ellipse cx="10.8" cy="29.2" rx="6.6" ry="3.8" transform="rotate(-45 10.8 29.2)"/>
+        <ellipse cx="29.2" cy="29.2" rx="6.6" ry="3.8" transform="rotate(45 29.2 29.2)"/>
+      </g>
+      <circle cx="20" cy="20" r="3.6" fill="#e2703a"/>
+    </svg>
+    花千树
+  </a>
+  <a href="/#home">首页</a><a href="/#vocab">词汇</a><a href="/#cloze">完形</a>
+  <a href="/#reading">阅读</a><a href="/#writing">写作</a><a href="/#library">真题库</a>
+  <a href="/#mistakes">错题本</a><a href="/#stats">统计</a>
+  <span class="home-link">
+    <svg class="moon-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M20 14.5A8.5 8.5 0 1 1 10 4a6.6 6.6 0 0 0 10 10.5Z" stroke="#c9a86a" stroke-width="1.5"/>
+    </svg>
+    <span class="avatar">灯</span>
+  </span>
+</nav>
+
+<div class="scene" aria-hidden="true">
+  <div class="moon"><i></i><i></i><i></i><i></i><i></i></div>
+
+  <!-- 楼阁剪影：远处屋脊 + 右下山寺 -->
+  <svg class="skyline" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMax slice" fill="none">
+    <defs>
+      <linearGradient id="far" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#26395c"/><stop offset="1" stop-color="#1c2c4a"/>
+      </linearGradient>
+      <linearGradient id="near" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#223554"/><stop offset="1" stop-color="#131f36"/>
+      </linearGradient>
+      <filter id="wglow" x="-160%" y="-160%" width="420%" height="420%">
+        <feGaussianBlur stdDeviation="2.4" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+
+      <!-- 单层殿宇：飞檐 + 柱身 + 暖窗 -->
+      <g id="hall">
+        <path d="M-96 -8 Q-90 -2 -80 1 Q-74 -2 -60 -4 C-40 -8 -18 -18 0 -28 C18 -18 40 -8 60 -4 Q74 -2 80 1 Q90 -2 96 -8 Q88 0 70 5 L-70 5 Q-88 0 -96 -8 Z" fill="url(#near)"/>
+        <path d="M-60 6 L-60 46 L60 46 L60 6 Z" fill="#152138"/>
+        <path d="M-44 10 L-44 46 M0 10 L0 46 M44 10 L44 46" stroke="#1e2e4c" stroke-width="3"/>
+        <rect x="-7" y="18" width="14" height="19" rx="2" fill="#d99a45" opacity=".5" filter="url(#wglow)"/>
+        <rect x="-34" y="18" width="8" height="11" rx="1.5" fill="#c98a3d" opacity=".26"/>
+        <rect x="26" y="18" width="8" height="11" rx="1.5" fill="#c98a3d" opacity=".22"/>
+      </g>
+
+      <!-- 四层塔：层层收分，檐角起翘 -->
+      <g id="pagoda">
+        <!-- 一层 -->
+        <path d="M-46 0 L-46 40 L46 40 L46 0 Z" fill="#152138"/>
+        <path d="M-96 -8 Q-90 -2 -80 1 Q-74 -2 -60 -4 C-40 -8 -18 -18 0 -28 C18 -18 40 -8 60 -4 Q74 -2 80 1 Q90 -2 96 -8 Q88 0 70 5 L-70 5 Q-88 0 -96 -8 Z" fill="url(#near)"/>
+        <!-- 二层 -->
+        <path d="M-38 -36 L-38 -78 L38 -78 L38 -36 Z" fill="#16243d"/>
+        <path d="M-84 -44 Q-79 -38 -70 -35 Q-65 -38 -52 -40 C-35 -44 -16 -54 0 -64 C16 -54 35 -44 52 -40 Q65 -38 70 -35 Q79 -38 84 -44 Q77 -36 61 -31 L-61 -31 Q-77 -36 -84 -44 Z" fill="url(#near)"/>
+        <!-- 三层 -->
+        <path d="M-32 -67 L-32 -106 L32 -106 L32 -67 Z" fill="#152138"/>
+        <path d="M-72 -75 Q-68 -69 -60 -66 Q-56 -69 -44 -71 C-30 -75 -14 -85 0 -95 C14 -85 30 -75 44 -71 Q56 -69 60 -66 Q68 -69 72 -75 Q66 -67 52 -62 L-52 -62 Q-66 -67 -72 -75 Z" fill="url(#near)"/>
+        <!-- 四层 + 塔刹 -->
+        <path d="M-25 -95 L-25 -130 L25 -130 L25 -95 Z" fill="#16243d"/>
+        <path d="M-58 -103 Q-55 -97 -48 -94 Q-45 -97 -35 -99 C-24 -103 -11 -112 0 -121 C11 -112 24 -103 35 -99 Q45 -97 48 -94 Q55 -97 58 -103 Q53 -95 42 -91 L-42 -91 Q-53 -95 -58 -103 Z" fill="url(#near)"/>
+        <path d="M0 -121 L0 -146" stroke="#24395c" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="0" cy="-148" r="3" fill="#c9a86a" opacity=".55"/>
+        <!-- 暖窗 -->
+        <g filter="url(#wglow)">
+          <rect x="-30" y="16" width="9" height="14" rx="1.5" fill="#e3aa4e" opacity=".8"/>
+          <rect x="-7" y="16" width="9" height="14" rx="1.5" fill="#e3aa4e" opacity=".45"/>
+          <rect x="18" y="16" width="9" height="14" rx="1.5" fill="#e3aa4e" opacity=".65"/>
+          <rect x="-23" y="-58" width="7" height="11" rx="1.5" fill="#e3aa4e" opacity=".5"/>
+          <rect x="6" y="-58" width="7" height="11" rx="1.5" fill="#dc9c43" opacity=".32"/>
+          <rect x="-17" y="-90" width="6" height="10" rx="1.5" fill="#e3aa4e" opacity=".4"/>
+          <rect x="7" y="-89" width="6" height="10" rx="1.5" fill="#dc9c43" opacity=".26"/>
+        </g>
+      </g>
+    </defs>
+
+    <!-- 远山雾里的屋顶带 -->
+    <g opacity=".38">
+      <path d="M0 336 C90 312 180 322 260 306 C340 290 420 308 500 298 C600 284 660 302 740 292
+               C840 278 920 296 1010 286 C1110 274 1200 294 1300 282 C1360 274 1410 282 1440 276 L1440 420 L0 420 Z"
+            fill="url(#far)"/>
+      <path d="M120 322 q30 -16 60 0 M330 312 q26 -14 52 0 M560 306 q28 -15 56 0
+               M790 300 q30 -16 60 0 M1020 294 q26 -14 52 0 M1270 288 q28 -15 56 0"
+            stroke="#2c4267" stroke-width="2" opacity=".7"/>
+    </g>
+    <!-- 中景屋檐（高低错落，别排成一条线） -->
+    <g opacity=".72">
+      <use href="#hall" transform="translate(170 368) scale(.78)"/>
+      <use href="#hall" transform="translate(392 380) scale(.6)"/>
+      <use href="#hall" transform="translate(596 362) scale(.86)"/>
+      <use href="#hall" transform="translate(838 376) scale(.68)"/>
+      <use href="#hall" transform="translate(1236 366) scale(.82)"/>
+      <use href="#hall" transform="translate(1400 384) scale(.62)"/>
+    </g>
+    <!-- 右下主体建筑群 -->
+    <use href="#pagoda" transform="translate(1132 372) scale(1.42)"/>
+    <use href="#pagoda" transform="translate(1298 392) scale(.92)"/>
+    <use href="#pagoda" transform="translate(1004 388) scale(.7)"/>
+    <use href="#hall" transform="translate(1372 398) scale(1.02)"/>
+    <use href="#hall" transform="translate(898 396) scale(.86)"/>
+    <use href="#hall" transform="translate(742 402) scale(.7)"/>
+    <use href="#hall" transform="translate(520 404) scale(.62)"/>
+  </svg>
+
+  <div class="mist"></div>
+
+  <!-- 梅枝：自左上横贯 -->
+  <svg class="branch" viewBox="0 0 1440 900" preserveAspectRatio="xMinYMin slice" fill="none">
+    <g stroke="#241d19" stroke-linecap="round">
+      <path d="M-40 236 C90 196 168 208 252 176 C352 138 392 76 470 66 C552 56 566 128 638 156
+               C716 186 762 178 824 214 C890 252 902 312 968 348 C1030 382 1072 380 1128 414"
+            stroke-width="8"/>
+      <path d="M252 176 C286 146 288 108 322 82" stroke-width="4.5"/>
+      <path d="M470 66 C500 34 542 22 574 10" stroke-width="4"/>
+      <path d="M638 156 C650 112 684 88 720 74" stroke-width="3.6"/>
+      <path d="M824 214 C836 172 870 148 906 136" stroke-width="3.4"/>
+      <path d="M968 348 C1002 330 1040 332 1074 318" stroke-width="3"/>
+      <path d="M352 148 C338 118 306 104 278 100" stroke-width="3"/>
+      <path d="M560 120 C540 96 512 90 486 94" stroke-width="2.8"/>
+      <path d="M742 196 C728 166 700 152 672 150" stroke-width="3.2"/>
+      <path d="M900 300 C888 268 858 254 830 252" stroke-width="2.6"/>
+      <path d="M1042 368 C1052 348 1078 340 1098 344" stroke-width="2.2"/>
+      <path d="M180 206 C164 180 138 166 112 166" stroke-width="2.6"/>
+      <path d="M398 116 C420 92 448 84 470 88" stroke-width="2.4"/>
+      <path d="M1128 414 C1152 404 1174 408 1192 398" stroke-width="2.4"/>
+    </g>
+    <!-- 细梢 -->
+    <g stroke="#2a211c" stroke-width="1.4" stroke-linecap="round" opacity=".9">
+      <path d="M322 82 C330 62 348 52 362 50"/>
+      <path d="M574 10 C588 -2 606 0 616 6"/>
+      <path d="M720 74 C736 56 756 50 772 54"/>
+      <path d="M278 100 C258 90 246 74 244 60"/>
+      <path d="M672 150 C654 136 638 136 628 142"/>
+      <path d="M906 136 C924 122 944 122 958 128"/>
+      <path d="M112 166 C96 158 82 160 72 168"/>
+      <path d="M1074 318 C1090 306 1108 306 1122 312"/>
+    </g>
+    <!-- 花与蕊（JS 生成） -->
+    <g id="blossoms"></g>
+  </svg>
+
+  <div class="lantern l1"><span class="glow"></span><span class="cap top"></span><span class="body"><span class="rib"></span></span><span class="cap bot"></span><span class="tassel"></span></div>
+  <div class="lantern l2"><span class="glow"></span><span class="cap top"></span><span class="body"><span class="rib"></span></span><span class="cap bot"></span><span class="tassel"></span></div>
+  <div class="lantern l3"><span class="glow"></span><span class="cap top"></span><span class="body"><span class="rib"></span></span><span class="cap bot"></span><span class="tassel"></span></div>
+
+  <span class="firefly" style="left:34%;bottom:16%;animation-delay:0s"></span>
+  <span class="firefly" style="left:46%;bottom:10%;animation-delay:2.4s"></span>
+  <span class="firefly" style="left:58%;bottom:14%;animation-delay:4.8s"></span>
+  <span class="firefly" style="left:72%;bottom:8%;animation-delay:1.2s"></span>
+  <span class="firefly" style="left:83%;bottom:18%;animation-delay:3.6s"></span>
+  <span class="firefly" style="left:90%;bottom:12%;animation-delay:6s"></span>
+</div>
+
+<main>
+  <section class="content">
+    <div class="big404">404</div>
+    <div class="ttl"><span class="bar"></span><h1>此路无灯</h1></div>
+    <p class="verse">东风夜放花千树，更吹落、星如雨</p>
+    <p class="desc">你寻找的页面不存在，或已被移走。<br>灯火图上这一格仍是暗的——前路尚待点亮。</p>
+    <div class="acts">
+      <a class="btn primary" href="/">提灯归位</a>
+      <a class="btn ghost" href="/#library">转去真题库</a>
+      <button class="back" onclick="history.back()">返回上一页</button>
+    </div>
+    <div class="dots-wrap">
+      <div class="dots" id="dots"></div>
+      <div class="dots-cap">此路未点亮<br>前路灯火待续</div>
+    </div>
+    <div class="poem">
+      <span class="badge">寻</span>
+      <div><b>青玉案 · 元夕</b><span>辛弃疾</span></div>
+    </div>
+    <div class="meta">
+      <span>HTTP 404 · NOT FOUND</span>
+      <span class="rule"></span>
+      <span class="route" id="routeLine">route: —</span>
+    </div>
+    <div class="kbd-tip">若你确认路径无误，可按 <kbd>Ctrl</kbd> / <kbd>⌘</kbd> + <kbd>Enter</kbd> 重新点亮此灯。</div>
+  </section>
+</main>
+
+<script>
+  /* 路由信息 */
+  document.getElementById('routeLine').textContent='route: '+location.pathname+location.search;
+
+  /* 灯格：9 × 8，按设计稿的三角灯阵点亮 */
+  var PATTERN=[
+    '..###....',
+    '.#####...',
+    '#######..',
+    '########.',
+    '#########',
+    '########.',
+    '.#######.',
+    '..#####..'
+  ];
+  var dots=document.getElementById('dots'), cells=[];
+  for(var r=0;r<PATTERN.length;r++){
+    for(var c=0;c<PATTERN[r].length;c++){
+      var d=document.createElement('i');
+      if(PATTERN[r][c]==='#'){
+        var m=(r*7+c*3)%11;
+        d.className=m<6?'c1':(m<8?'c2':(m<10?'c3':'c4'));
+      }
+      dots.appendChild(d); cells.push(d);
+    }
+  }
+  var allOn=false;
+  function lightAll(){
+    if(allOn) return; allOn=true;
+    cells.forEach(function(cell,idx){
+      setTimeout(function(){ cell.className='c1'; }, idx*18);
+    });
+  }
+  document.addEventListener('keydown',function(e){
+    if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){ e.preventDefault(); lightAll(); }
+  });
+  dots.style.pointerEvents='auto'; dots.style.cursor='pointer';
+  dots.addEventListener('click',lightAll);
+
+  /* 梅花：五瓣 + 深色花心，沿枝干分布 */
+  (function(){
+    var box=document.getElementById('blossoms'); if(!box) return;
+    var svgNS='http://www.w3.org/2000/svg';
+    var flowers=[
+      [128,198,12,'#b8543a'],[196,186,9,'#c96a3f'],[252,176,13,'#a94c34'],
+      [286,150,8,'#d8c9a8'],[318,104,10,'#c96a3f'],[352,78,7,'#b8543a'],
+      [398,118,11,'#c98a4a'],[438,96,8,'#d8c9a8'],[470,66,12,'#b8543a'],
+      [512,44,8,'#c96a3f'],[552,28,6,'#d8c9a8'],[574,10,7,'#b8543a'],
+      [560,120,9,'#c98a4a'],[606,94,11,'#c96a3f'],[638,156,13,'#a94c34'],
+      [672,150,8,'#d8c9a8'],[704,110,10,'#b8543a'],[720,74,7,'#c96a3f'],
+      [742,196,9,'#c98a4a'],[790,206,11,'#b8543a'],[824,214,8,'#d8c9a8'],
+      [860,232,12,'#c96a3f'],[906,136,9,'#b8543a'],[900,300,8,'#d8c9a8'],
+      [936,326,10,'#c96a3f'],[968,348,7,'#b8543a'],[1000,330,9,'#d8c9a8'],
+      [1042,368,11,'#c96a3f'],[1080,338,8,'#b8543a'],[1128,414,12,'#a94c34'],
+      [1160,404,7,'#d8c9a8'],[1192,398,9,'#b8543a'],[830,252,8,'#b8543a'],
+      [672,150,5,'#d8c9a8'],[486,94,7,'#c96a3f'],[244,60,6,'#b8543a'],
+      [362,50,5,'#d8c9a8'],[616,6,5,'#c96a3f'],[772,54,6,'#b8543a'],
+      [958,128,6,'#c96a3f'],[72,168,6,'#b8543a'],[1122,312,5,'#d8c9a8']
+    ];
+    function flower(x,y,r,color){
+      var g=document.createElementNS(svgNS,'g');
+      g.setAttribute('transform','translate('+x+' '+y+') rotate('+((x+y)%72)+')');
+      for(var i=0;i<5;i++){
+        var p=document.createElementNS(svgNS,'ellipse');
+        p.setAttribute('cx','0'); p.setAttribute('cy',String(-r*0.7));
+        p.setAttribute('rx',String(r*0.39)); p.setAttribute('ry',String(r*0.56));
+        p.setAttribute('fill',color); p.setAttribute('opacity','0.92');
+        p.setAttribute('transform','rotate('+(i*72)+')');
+        g.appendChild(p);
+      }
+      var c=document.createElementNS(svgNS,'circle');
+      c.setAttribute('r',String(r*0.22)); c.setAttribute('fill','#3a2a20');
+      g.appendChild(c);
+      var dot=document.createElementNS(svgNS,'circle');
+      dot.setAttribute('r',String(r*0.09)); dot.setAttribute('fill','#e6c887');
+      g.appendChild(dot);
+      box.appendChild(g);
+    }
+    flowers.forEach(function(f){ flower(f[0],f[1],f[2],f[3]); });
+    /* 花苞 */
+    [[300,190,4],[360,110,3.4],[530,72,3.6],[688,168,3.2],[870,282,3.6],
+     [1012,372,3.2],[1100,352,3],[150,224,3.6],[410,134,3.4],[1180,420,3]].forEach(function(b){
+      var c=document.createElementNS(svgNS,'circle');
+      c.setAttribute('cx',b[0]); c.setAttribute('cy',b[1]); c.setAttribute('r',b[2]);
+      c.setAttribute('fill','#a94c34'); c.setAttribute('opacity','.85');
+      box.appendChild(c);
+    });
+  })();
+</script>
+</body>
+</html>
