@@ -416,6 +416,17 @@
   .gate-about{font-size:11px;color:var(--dim)}
   .gate-about:hover{color:var(--teng)}
   .gate-foot .tip{margin:0;font-size:11px}
+  .gate-agree{display:flex;align-items:flex-start;gap:7px;margin:10px 0 2px;font-size:11.5px;color:var(--yan);line-height:1.65;font-weight:400}
+  .gate-agree input{width:16px;height:16px;padding:0;margin:2px 0 0;flex:none;accent-color:var(--zhu)}
+  .gate-agree a{color:var(--teng)}
+  .gate-agree a:hover{color:var(--gold);text-decoration:underline}
+  .trial-chip{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--teng);
+    border:1px dashed rgba(201,168,106,.45);border-radius:20px;padding:4px 11px;white-space:nowrap}
+  .trial-chip a{color:var(--zhu);cursor:pointer;font-weight:600}
+  .trial-chip.hidden{display:none}
+  #mergeModal{position:fixed;inset:0;z-index:250;display:flex;align-items:center;justify-content:center;
+    padding:20px;background:rgba(4,8,18,.78);backdrop-filter:blur(5px);overflow:auto}
+  #mergeModal.hidden{display:none}
   /* ===== 管理员页 ===== */
   .adm-tile b{display:block;font-size:24px;color:var(--gold);font-family:var(--serif)}
   .adm-tile span{font-size:11.5px;color:var(--yan)}
@@ -692,6 +703,7 @@
     </div>
     <div class="saved" id="savedTag">● 已保存</div>
     <div class="cloud" id="cloudTag" onclick="switchTab('sync')" title="云同步状态，点击进入云同步页">☁ 未连接</div>
+    <div class="trial-chip hidden" id="trialChip"><span>试用模式</span><a onclick="gateShow()">登录 / 注册</a></div>
     <div class="user-chip hidden" id="userChip"><span id="userChipName" onclick="switchTab('sync')" style="cursor:pointer"></span><a onclick="syncLogout()" title="退出登录">退出</a></div>
   </div>
 </header>
@@ -1131,10 +1143,10 @@
     </div>
     <div class="card">
       <h2><span class="dot"></span>说明</h2>
-      <p class="tip">· 同步协议：本机为唯一真源，改动按「集合」推送（词汇 / 练习 / 打卡……），多端按记录合并，删除靠墓碑防复活。<br>
+      <p class="tip">· 同步协议：本机与云端各存一份，改动按「集合」推送（词汇 / 练习 / 打卡……），多端按记录合并，删除靠墓碑防复活。<br>
       · 真题 PDF 在登录后也会备份到云端（含答题卡进度），换设备登录自动找回。<br>
       · AI 各供应商的 Key / 模型选择、润色历史、桌宠小灯的设置，都随账号同步，换设备不必重配。<br>
-      · 不登录时，一切功能与从前完全一致，数据只存本机浏览器。</p>
+      · 默认必须登录后使用；登录态失效会回到登录门。首次使用请先注册，登录后数据自动保存并同步。</p>
     </div>
   </section>
 
@@ -1429,7 +1441,7 @@
     <div class="card">
       <div class="flex-between" style="align-items:center">
         <h2><span class="dot"></span>更新日志</h2>
-        <span class="tag" style="color:var(--gold)">应用 v1.9.2 · 数据 v7</span>
+        <span class="tag" style="color:var(--gold)">应用 v1.10 · 数据 v7</span>
       </div>
       <p class="tip">从一盏灯到一间灯屋。这里记录每一次长出新的枝叶；版本号按大阶段递增，数据版本用于本地迁移。</p>
       <div id="changelogList" class="cl-list"></div>
@@ -1486,13 +1498,31 @@
         <label>确认密码</label>
         <input id="gatePass2" type="password" placeholder="再输一遍" onkeydown="if(event.key==='Enter')gateSubmit()">
       </div>
+      <div id="gateAgreeRow" class="hidden">
+        <label class="gate-agree">
+          <input type="checkbox" id="gateAgree">
+          <span>我已阅读并同意 <a href="/legal.html#terms" target="_blank">《用户协议》</a> 与 <a href="/legal.html#privacy" target="_blank">《隐私政策》</a>，并了解学习数据会保存在我的账号下。</span>
+        </label>
+      </div>
       <div class="gate-err" id="gateErr"></div>
       <button class="btn" id="gateBtn" style="width:100%;margin-top:6px" onclick="gateSubmit()">进入学习台</button>
       <div class="gate-foot">
-        <span class="gate-local" onclick="gateLocal()">＞ 先逛逛 · 本地模式</span>
-        <span class="tip">数据只存本机浏览器，随时可在「云同步」里登录</span>
+        <span class="tip">登录后数据可多端同步；首次使用请先注册</span>
         <a class="gate-about" href="/about.html" target="_blank">关于与版权</a>
       </div>
+    </div>
+  </div>
+</div>
+
+<div id="mergeModal" class="hidden">
+  <div class="mw-card" style="width:min(560px,100%)">
+    <h3>把本机数据带入账号？</h3>
+    <p class="tip" id="mergeSummary" style="margin:8px 0 4px"></p>
+    <p class="tip" id="mergeOwnerHint" style="margin:0 0 4px"></p>
+    <p class="tip">「带入」会把本机学习数据合并到当前账号；「不使用」会先存一份本地快照，再以云端数据为准。两种选择都不会删除云端内容。</p>
+    <div class="flex-between" style="margin-top:16px;gap:10px;flex-wrap:wrap">
+      <button class="btn ghost" id="mergeNo" onclick="mergeChoose(false)">不使用本机数据</button>
+      <button class="btn" id="mergeYes" onclick="mergeChoose(true)">带入账号</button>
     </div>
   </div>
 </div>
@@ -2086,7 +2116,124 @@ const TEMPLATES = {
 /* ===================== 导航 ===================== */
 /* ===================== 登录 / 注册门 ===================== */
 const GATE_MODE_KEY='ky_auth_mode';
+const TRIAL_KEY='ky_trial_until';
+const LOCAL_OWNER_KEY='ky_local_owner';
 let gateIsRegister=false;
+let MERGE_RESOLVE=null;
+
+/* 隐藏试用：只通过 ?trial=1 进入，有效期 7 天；不再有显式「本地模式」入口 */
+function trialActive(){
+  try{
+    const until=parseInt(localStorage.getItem(TRIAL_KEY)||'0',10);
+    return until>Date.now();
+  }catch(e){ return false; }
+}
+function startTrial(silent){
+  if(SYNC.token) return;
+  try{
+    localStorage.setItem(TRIAL_KEY,String(Date.now()+7*86400000));
+    localStorage.removeItem(GATE_MODE_KEY);
+  }catch(e){}
+  gateHide(); updateTrialChip();
+  if(!silent) toast('试用模式：数据只存本机，登录后可同步');
+}
+function endTrial(){
+  try{ localStorage.removeItem(TRIAL_KEY); }catch(e){}
+  updateTrialChip();
+}
+function updateTrialChip(){
+  const chip=document.getElementById('trialChip'); if(!chip) return;
+  chip.classList.toggle('hidden', !(trialActive()&&!SYNC.token));
+}
+function initTrial(){
+  let legacy='';
+  try{ legacy=localStorage.getItem(GATE_MODE_KEY)||''; }catch(e){}
+  if(legacy==='local'){ try{ localStorage.removeItem(GATE_MODE_KEY); }catch(e){} }
+  let q='';
+  try{ q=new URLSearchParams(location.search).get('trial')||''; }catch(e){}
+  if(q==='1'&&!SYNC.token){
+    startTrial(true);
+    try{ history.replaceState(null,'',location.pathname+location.hash); }catch(e){}
+  }
+  updateTrialChip();
+}
+function getLocalOwner(){
+  try{ return localStorage.getItem(LOCAL_OWNER_KEY)||''; }catch(e){ return ''; }
+}
+function setLocalOwner(name){
+  try{ localStorage.setItem(LOCAL_OWNER_KEY,name||''); }catch(e){}
+}
+function localDataSummary(){
+  const t=DB.tutor||{};
+  const s={
+    words:(DB.words||[]).length,
+    papers:(DB.papers||[]).length,
+    writings:(DB.writings||[]).length,
+    mistakes:(DB.mistakes||[]).length,
+    checkins:Object.keys(DB.checkins||{}).length,
+    tutor:(t.sets||[]).filter(x=>x&&!x.deleted).length
+  };
+  s.total=s.words+s.papers+s.writings+s.mistakes+s.checkins+s.tutor;
+  return s;
+}
+function mergeSummaryText(s){
+  const parts=[];
+  if(s.words) parts.push(s.words+' 个单词');
+  if(s.papers) parts.push(s.papers+' 条练习');
+  if(s.writings) parts.push(s.writings+' 篇写作');
+  if(s.mistakes) parts.push(s.mistakes+' 道错题');
+  if(s.checkins) parts.push(s.checkins+' 天打卡');
+  if(s.tutor) parts.push(s.tutor+' 套四六级题');
+  return parts.length?('本机检测到：'+parts.join('、')+'。'):'本机没有可合并的学习数据。';
+}
+function resetLocalStudyData(){
+  const fresh=defaultDB();
+  SYNC.applyingRemote=true;
+  try{
+    DB.words=[]; DB.papers=[]; DB.writings=[]; DB.sentences=[]; DB.mistakes=[];
+    DB.checkins={}; DB.dailyTasks=fresh.dailyTasks; DB.targets=fresh.targets;
+    DB.materials=''; DB.aiHistory=[]; DB.weekReports=[];
+    DB.tutor=defaultTutor();
+    DB.profile=Object.assign({},DB.profile,{name:'',goal:'',examDate:''});
+    save(); fullRender();
+  }finally{ SYNC.applyingRemote=false; }
+}
+function maybeMergeLocalData(){
+  if(!SYNC.token) return Promise.resolve();
+  const owner=getLocalOwner();
+  const sum=localDataSummary();
+  if(!sum.total){ setLocalOwner(SYNC.username); return Promise.resolve(); }
+  if(owner===SYNC.username) return Promise.resolve();
+  return new Promise(resolve=>{
+    MERGE_RESOLVE=resolve;
+    const sumEl=document.getElementById('mergeSummary');
+    const hintEl=document.getElementById('mergeOwnerHint');
+    const yesEl=document.getElementById('mergeYes');
+    if(sumEl) sumEl.textContent=mergeSummaryText(sum);
+    if(hintEl) hintEl.textContent=owner
+      ? ('这些数据上次属于「'+owner+'」，建议选择「不使用本机数据」，避免串号。')
+      : '这些数据还没有绑定账号，可以放心带入当前账号。';
+    if(yesEl) yesEl.textContent=owner?'仍然合并（不推荐）':'带入账号';
+    document.getElementById('mergeModal').classList.remove('hidden');
+  });
+}
+async function mergeChoose(include){
+  const resolve=MERGE_RESOLVE;
+  if(!resolve) return;
+  MERGE_RESOLVE=null;
+  document.getElementById('mergeModal').classList.add('hidden');
+  if(include){
+    setLocalOwner(SYNC.username);
+    toast('已选择带入本机数据');
+  }else{
+    const ok=await snapshotNow(true);
+    resetLocalStudyData();
+    setLocalOwner(SYNC.username);
+    toast(ok?'已使用云端数据；本机旧数据已存为快照':'已使用云端数据');
+  }
+  resolve();
+}
+
 function gateShow(){
   const g=document.getElementById('authGate'); if(!g) return;
   document.body.classList.add('gate-locked');
@@ -2103,6 +2250,8 @@ function gateSetMode(reg){
   document.getElementById('gateTabLogin').classList.toggle('on',!reg);
   document.getElementById('gateTabReg').classList.toggle('on',!!reg);
   document.getElementById('gatePass2Row').classList.toggle('hidden',!reg);
+  const agreeRow=document.getElementById('gateAgreeRow');
+  if(agreeRow) agreeRow.classList.toggle('hidden',!reg);
   document.getElementById('gateBtn').textContent=reg?'注册并进入':'进入学习台';
 }
 /* 后端报错转成中文提示：422 是参数校验，其余是 detail 字符串 */
@@ -2124,6 +2273,9 @@ async function gateSubmit(){
   if(u.length<3){ gateErr('用户名至少 3 个字符'); return; }
   if(p1.length<6){ gateErr('密码至少 6 位'); return; }
   if(gateIsRegister&&p1!==p2){ gateErr('两次输入的密码不一致'); return; }
+  if(gateIsRegister&&!(document.getElementById('gateAgree')||{}).checked){
+    gateErr('请先阅读并同意《用户协议》和《隐私政策》'); return;
+  }
   const btn=document.getElementById('gateBtn');
   const old=btn.textContent; btn.disabled=true; btn.textContent='正在连接…'; gateErr('');
   const base=(typeof SYNC!=='undefined'&&SYNC.apiBase)||'';
@@ -2139,6 +2291,7 @@ async function gateSubmit(){
     const j=await r.json();
     SYNC.token=j.access_token; SYNC.username=u; SYNC.role=j.role||'user';
     AI_PROXY_OK=null;
+    endTrial();
     SYNC.relogin={u,p:p1}; syncSaveMeta();
     gateHide(); renderSyncUI(); updateUserChip(); applyAdminVisibility();
     updateAdminBadge(); updateHelpBadge();
@@ -2146,18 +2299,14 @@ async function gateSubmit(){
     if(cur&&cur.dataset.tab==='help') renderHelp();
     setCloudBadge('busy','连接中…');
     toast('欢迎回来，'+u);
+    await maybeMergeLocalData();
     syncPull().then(()=>syncEnsureTimer()).catch(()=>{});
     tutorPull().catch(()=>{});
   }catch(e){
-    gateErr('无法连接服务器：请确认后端已启动（手机端可在「云同步」里填服务器地址），或先用本地模式。');
+    gateErr('无法连接服务器：请确认后端已启动；已登录用户可在断网时继续使用本机数据。');
   }finally{
     btn.disabled=false; btn.textContent=old;
   }
-}
-function gateLocal(){
-  try{ localStorage.setItem(GATE_MODE_KEY,'local'); }catch(e){}
-  gateHide();
-  toast('本地模式：数据只存在这台设备的浏览器里');
 }
 /* 有 token 时启动验证一次：token 过期回登录门；账号被禁用也回登录门 */
 async function gateVerify(){
@@ -2166,6 +2315,7 @@ async function gateVerify(){
     const r=await fetch((SYNC.apiBase||'')+'/api/v1/auth/me',{headers:{'Authorization':'Bearer '+SYNC.token}});
     if(r.status===403){
       SYNC.token=''; SYNC.relogin=null; SYNC.role=''; syncSaveMeta();
+      endTrial();
       renderSyncUI(); updateUserChip(); applyAdminVisibility(); setNavBadge('admBadge',0); setNavBadge('helpBadge',0);
       setCloudBadge('off','已禁用');
       gateShow(); gateErr('该账号已被管理员禁用');
@@ -2185,6 +2335,7 @@ async function gateVerify(){
         }catch(e){}
       }
       SYNC.token=''; SYNC.relogin=null; SYNC.role=''; syncSaveMeta();
+      endTrial();
       renderSyncUI(); updateUserChip(); applyAdminVisibility(); setNavBadge('admBadge',0); setNavBadge('helpBadge',0);
       setCloudBadge('off','请重新登录');
       gateShow();
@@ -2198,9 +2349,9 @@ async function gateVerify(){
   }catch(e){ /* 服务器没开：维持原状，离线徽标由同步逻辑处理 */ }
 }
 function gateCheck(){
-  let local='';
-  try{ local=localStorage.getItem(GATE_MODE_KEY)||''; }catch(e){}
-  if(!SYNC.token&&local!=='local') gateShow();
+  if(SYNC.token){ updateTrialChip(); return; }
+  if(trialActive()){ gateHide(); updateTrialChip(); return; }
+  gateShow();
 }
 /* ===================== 用户徽章 / 管理员入口 ===================== */
 function updateUserChip(){
@@ -2208,6 +2359,7 @@ function updateUserChip(){
   if(!chip||!name) return;
   if(SYNC.token){ name.textContent='👤 '+(SYNC.username||''); chip.classList.remove('hidden'); }
   else chip.classList.add('hidden');
+  updateTrialChip();
 }
 function applyAdminVisibility(){
   const b=document.getElementById('adminTabBtn'); if(!b) return;
@@ -4745,6 +4897,14 @@ function onboardCheck(){
 }
 /* ===================== 更新日志 ===================== */
 const CHANGELOG=[
+  {v:'v1.10',date:'2026-11-22',tags:['账号','合规'],title:'强制登录、隐藏试用与首次登录数据合并',
+   items:[
+    '公网默认强制登录：移除显式「本地模式」入口，没有账号就停在登录/注册门；退出或 token 失效后回到登录页。',
+    '隐藏试用：访问 /?trial=1 可开启 7 天本地试用（不出现在界面上），适合评审/演示；试用数据在首次登录时提示是否带入账号。',
+    '首次登录检测本机学习数据：可带入账号，或先存一份本地快照再以云端数据为准；不会把上一个账号的数据静默混进来。',
+    '注册必须勾选《用户协议》《隐私政策》，新增 /legal.html；忘记密码仍由管理员在用户页重置。',
+    '更新 FAQ 与文档：明确 AI Key 随账号配置保存用于同步，AI 代理转发本身不落库、不写日志。'
+   ]},
   {v:'v1.9.2',date:'2026-11-22',tags:['账号'],title:'退出登录统一回到登录页',
    items:[
     '退出登录后固定回到登录/注册门，不再因为之前选过「本地模式」而留在应用里。',
@@ -6176,9 +6336,11 @@ async function doSyncLogin(u,p){
     SYNC.apiBase=document.getElementById('syApiBase').value.trim();
     const r=await syncApi('/api/v1/auth/login',{method:'POST',body:JSON.stringify({username:u,password:p})});
     SYNC.token=r.access_token; SYNC.username=u; SYNC.role=r.role||'user'; AI_PROXY_OK=null;
+    endTrial();
     SYNC.relogin={u,p}; syncSaveMeta();
     toast('登录成功，开始同步'); renderSyncUI(); updateUserChip(); applyAdminVisibility();
     updateAdminBadge(); updateHelpBadge();
+    await maybeMergeLocalData();
     await syncPull();
     tutorPull().catch(()=>{});
     syncEnsureTimer();
@@ -6195,6 +6357,7 @@ function syncLogout(){
     }
   }catch(e){}
   SYNC.token=''; SYNC.username=''; SYNC.role=''; SYNC.relogin=null; AI_PROXY_OK=null; syncSaveMeta();
+  endTrial();
   if(SYNC.pullTimer){ clearInterval(SYNC.pullTimer); SYNC.pullTimer=null; }
   setNavBadge('admBadge',0); setNavBadge('helpBadge',0);
   setCloudBadge('','未连接'); renderSyncUI(); updateUserChip(); applyAdminVisibility();
@@ -6288,6 +6451,7 @@ aiProbeProxy();
 onboardCheck();
 updateUserChip();
 applyAdminVisibility();
+initTrial();
 applyAppMode(APP_MODE,true);
 if(APP_MODE==='tutor') switchTab('tutor');
 updateAdminBadge();
