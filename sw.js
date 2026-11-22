@@ -5,7 +5,7 @@
  * - /api/* 一律不缓存，避免把同步/AI 响应固化
  * 更新前端后把 CACHE 版本号 +1 即可让旧缓存失效。
  */
-const CACHE = 'hqs-v2';
+const CACHE = 'hqs-v3';
 const ASSETS = [
   '/',
   '/index.html',
@@ -42,8 +42,11 @@ self.addEventListener('fetch', (e) => {
     e.respondWith(
       fetch(req)
         .then((r) => {
-          const copy = r.clone();
-          caches.open(CACHE).then((c) => c.put('/index.html', copy)).catch(() => {});
+          /* 只缓存真正的首页：404 页也是 text/html，不能覆盖离线入口 */
+          if (r.ok && (r.headers.get('content-type') || '').includes('text/html')) {
+            const copy = r.clone();
+            caches.open(CACHE).then((c) => c.put('/index.html', copy)).catch(() => {});
+          }
           return r;
         })
         .catch(() => caches.match('/index.html').then((hit) => hit || caches.match('/')))
