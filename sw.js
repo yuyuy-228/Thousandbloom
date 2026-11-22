@@ -5,16 +5,18 @@
  * - /api/* 一律不缓存，避免把同步/AI 响应固化
  * 更新前端后把 CACHE 版本号 +1 即可让旧缓存失效。
  */
-const CACHE = 'hqs-v3';
+const CACHE = 'hqs-v4';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/pdf.min.js',
-  '/pdf.worker.min.js',
-  '/manifest.webmanifest',
-  '/icon-192.png',
-  '/icon-512.png'
+  './',
+  './index.html',
+  './pdf.min.js',
+  './pdf.worker.min.js',
+  './manifest.webmanifest',
+  './icon-192.png',
+  './icon-512.png'
 ];
+/* GitHub Pages 项目站点在 /<repo>/ 下，缓存键必须跟着作用域走，不能写死 /index.html */
+const INDEX_URL = new URL('index.html', self.registration.scope).href;
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
@@ -45,11 +47,11 @@ self.addEventListener('fetch', (e) => {
           /* 只缓存真正的首页：404 页也是 text/html，不能覆盖离线入口 */
           if (r.ok && (r.headers.get('content-type') || '').includes('text/html')) {
             const copy = r.clone();
-            caches.open(CACHE).then((c) => c.put('/index.html', copy)).catch(() => {});
+            caches.open(CACHE).then((c) => c.put(INDEX_URL, copy)).catch(() => {});
           }
           return r;
         })
-        .catch(() => caches.match('/index.html').then((hit) => hit || caches.match('/')))
+        .catch(() => caches.match(INDEX_URL).then((hit) => hit || caches.match(new URL('./', self.registration.scope).href)))
     );
     return;
   }

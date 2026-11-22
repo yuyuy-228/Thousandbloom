@@ -174,7 +174,7 @@
 <body>
 
 <nav>
-  <a class="logo" href="/">
+  <a class="logo" href="/" data-root="">
     <svg viewBox="0 0 40 40" aria-hidden="true">
       <g fill="#c9a86a">
         <ellipse cx="20" cy="7" rx="4.4" ry="7"/><ellipse cx="20" cy="33" rx="4.4" ry="7"/>
@@ -188,10 +188,10 @@
     </svg>
     花千树
   </a>
-  <a href="/#home">首页</a><a href="/#vocab">词汇</a><a href="/#cloze">完形</a>
-  <a href="/#reading">阅读</a><a href="/#writing">写作</a><a href="/#library">真题库</a>
-  <a href="/#mistakes">错题本</a><a href="/#stats">统计</a>
-  <a href="/about.html">关于</a>
+  <a href="/#home" data-root="#home">首页</a><a href="/#vocab" data-root="#vocab">词汇</a><a href="/#cloze" data-root="#cloze">完形</a>
+  <a href="/#reading" data-root="#reading">阅读</a><a href="/#writing" data-root="#writing">写作</a><a href="/#library" data-root="#library">真题库</a>
+  <a href="/#mistakes" data-root="#mistakes">错题本</a><a href="/#stats" data-root="#stats">统计</a>
+  <a href="/about.html" data-root="about.html">关于</a>
   <span class="home-link">
     <svg class="moon-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path d="M20 14.5A8.5 8.5 0 1 1 10 4a6.6 6.6 0 0 0 10 10.5Z" stroke="#c9a86a" stroke-width="1.5"/>
@@ -340,8 +340,8 @@
     <p class="verse">东风夜放花千树，更吹落、星如雨</p>
     <p class="desc">你寻找的页面不存在，或已被移走。<br>灯火图上这一格仍是暗的——前路尚待点亮。</p>
     <div class="acts">
-      <a class="btn primary" href="/">提灯归位</a>
-      <a class="btn ghost" href="/#library">转去真题库</a>
+      <a class="btn primary" href="/" data-root="">提灯归位</a>
+      <a class="btn ghost" href="/#library" data-root="#library">转去真题库</a>
       <button class="back" onclick="history.back()">返回上一页</button>
     </div>
     <div class="dots-wrap">
@@ -399,6 +399,19 @@
   });
   dots.style.pointerEvents='auto'; dots.style.cursor='pointer';
   dots.addEventListener('click',lightAll);
+
+  /* GitHub Pages 项目站点在 /<repo>/ 下，404 页保留的深路径会让根链接跑出仓库；
+     这里按仓库名把 data-root 链接修正到项目根。自定义域名/本地部署仍是 /。 */
+  (function(){
+    var GH_OWNER='yuyuy-228', GH_REPO='Huaqianshu';
+    var base='/';
+    if(location.hostname===GH_OWNER+'.github.io' && location.pathname.indexOf('/'+GH_REPO+'/')===0){
+      base='/'+GH_REPO+'/';
+    }
+    document.querySelectorAll('a[data-root]').forEach(function(a){
+      a.setAttribute('href',base+(a.getAttribute('data-root')||''));
+    });
+  })();
 
   /* 梅花：五瓣 + 深色花心，沿枝干分布 */
   (function(){

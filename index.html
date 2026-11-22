@@ -476,6 +476,8 @@
   .gate-local:hover{color:var(--gold)}
   .gate-about{font-size:11px;color:var(--dim)}
   .gate-about:hover{color:var(--teng)}
+  .gate-demo{font-size:11px;color:var(--teng);cursor:pointer;border-bottom:1px dashed rgba(201,168,106,.4)}
+  .gate-demo:hover{color:var(--gold)}
   .gate-foot .tip{margin:0;font-size:11px}
   .gate-agree{display:flex;align-items:flex-start;gap:7px;margin:10px 0 2px;font-size:11.5px;color:var(--yan);line-height:1.65;font-weight:400}
   .gate-agree input{width:16px;height:16px;padding:0;margin:2px 0 0;flex:none;accent-color:var(--zhu)}
@@ -1491,7 +1493,7 @@
     <div class="card">
       <div class="flex-between">
         <h2><span class="dot"></span>关于花千树</h2>
-        <a class="btn ghost sm" href="/about.html" target="_blank">作品与版权</a>
+        <a class="btn ghost sm" href="about.html" target="_blank">作品与版权</a>
       </div>
       <p class="tip">品牌名取自辛弃疾《青玉案·元夕》；扇面美术作品《东风夜放花千树》已完成版权登记。证书与作品展示在关于页。</p>
     </div>
@@ -1502,7 +1504,7 @@
     <div class="card">
       <div class="flex-between" style="align-items:center">
         <h2><span class="dot"></span>更新日志</h2>
-        <span class="tag" style="color:var(--gold)">应用 v1.12 · 数据 v7</span>
+        <span class="tag" style="color:var(--gold)">应用 v1.12.1 · 数据 v7</span>
       </div>
       <p class="tip">从一盏灯到一间灯屋。这里记录每一次长出新的枝叶；版本号按大阶段递增，数据版本用于本地迁移。</p>
       <div id="changelogList" class="cl-list"></div>
@@ -1531,7 +1533,7 @@
   <div class="gate-bg-art" aria-hidden="true">
     <div class="gate-moon"></div>
   </div>
-  <a class="gate-corner" href="/about.html" target="_blank" title="查看作品登记证书">
+  <a class="gate-corner" href="about.html" target="_blank" title="查看作品登记证书">
     <img src="assets/copyright/fan-cut.webp" alt="扇面作品《东风夜放花千树》">
     <span class="gate-corner-cap">
       <b>《扇-东风夜放花千树》</b>
@@ -1578,14 +1580,15 @@
       <div id="gateAgreeRow" class="hidden">
         <label class="gate-agree">
           <input type="checkbox" id="gateAgree">
-          <span>我已阅读并同意 <a href="/legal.html#terms" target="_blank">《用户协议》</a> 与 <a href="/legal.html#privacy" target="_blank">《隐私政策》</a>，并了解学习数据会保存在我的账号下。</span>
+          <span>我已阅读并同意 <a href="legal.html#terms" target="_blank">《用户协议》</a> 与 <a href="legal.html#privacy" target="_blank">《隐私政策》</a>，并了解学习数据会保存在我的账号下。</span>
         </label>
       </div>
       <div class="gate-err" id="gateErr"></div>
       <button class="btn" id="gateBtn" style="width:100%;margin-top:6px" onclick="gateSubmit()">进入学习台</button>
       <div class="gate-foot">
         <span class="tip">登录后数据可多端同步；首次使用请先注册</span>
-        <a class="gate-about" href="/about.html" target="_blank">关于与版权</a>
+        <a class="gate-about" href="about.html" target="_blank">关于与版权</a>
+        <a class="gate-demo hidden" id="gateDemo" onclick="startTrial()" title="GitHub Pages 静态演示，无需后端">静态演示 · 试用</a>
       </div>
     </div>
   </div>
@@ -2233,6 +2236,11 @@ function initTrial(){
     try{ history.replaceState(null,'',location.pathname+location.hash); }catch(e){}
   }
   updateTrialChip();
+  updateGateDemo();
+}
+function updateGateDemo(){
+  const el=document.getElementById('gateDemo'); if(!el) return;
+  el.classList.toggle('hidden', !(location.hostname.endsWith('github.io')&&!SYNC.token));
 }
 function getLocalOwner(){
   try{ return localStorage.getItem(LOCAL_OWNER_KEY)||''; }catch(e){ return ''; }
@@ -2316,6 +2324,7 @@ function gateShow(){
   document.body.classList.add('gate-locked');
   g.classList.remove('hidden');
   gateSetMode(gateIsRegister);
+  updateGateDemo();
   setTimeout(()=>{ const u=document.getElementById('gateUser'); if(u) u.focus(); },60);
 }
 function gateHide(){ const g=document.getElementById('authGate'); if(g) g.classList.add('hidden'); document.body.classList.remove('gate-locked'); }
@@ -4974,6 +4983,13 @@ function onboardCheck(){
 }
 /* ===================== 更新日志 ===================== */
 const CHANGELOG=[
+  {v:'v1.12.1',date:'2026-11-22',tags:['部署'],title:'GitHub Pages 兼容与静态演示入口',
+   items:[
+    'about.html / legal.html / 404.html 的内部链接改为相对路径，放到 github.io/<repo>/ 子路径下不再跳到域名根。',
+    '404 页在 GitHub Pages 项目站点下自动识别仓库子路径，把「提灯归位 / 去真题库 / 关于」修正到项目根。',
+    'Service Worker 缓存资源改为相对路径、缓存键跟随注册作用域，项目 Pages 下 PWA 离线缓存不再失效。',
+    'GitHub Pages 上没有后端，登录门会额外显示「静态演示 · 试用」入口（仅 github.io 域名），点击进入本地数据版本。'
+   ]},
   {v:'v1.12',date:'2026-11-22',tags:['品牌','界面'],title:'登录页回归第一版：扇面缩到左下角',
    items:[
     '登录/注册卡恢复第一版布局：左侧标题、词句与四行卖点，右侧表单；不再把扇面放进内容区。',
