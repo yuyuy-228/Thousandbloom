@@ -403,7 +403,7 @@
   /* GitHub Pages 项目站点在 /<repo>/ 下，404 页保留的深路径会让根链接跑出仓库；
      这里按仓库名把 data-root 链接修正到项目根。自定义域名/本地部署仍是 /。 */
   (function(){
-    var GH_OWNER='yuyuy-228', GH_REPO='Huaqianshu';
+    var GH_OWNER='yuyuy-228', GH_REPO='Thousandbloom';
     var base='/';
     if(location.hostname===GH_OWNER+'.github.io' && location.pathname.indexOf('/'+GH_REPO+'/')===0){
       base='/'+GH_REPO+'/';

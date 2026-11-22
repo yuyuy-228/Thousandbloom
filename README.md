@@ -7,11 +7,11 @@
 
 GitHub Pages（纯前端静态演示）：
 
-**https://yuyuy-228.github.io/Huaqianshu/**
+**https://yuyuy-228.github.io/Thousandbloom/**
 
 > GitHub Pages 只能托管静态页面，不能运行 FastAPI/MySQL。  
 > 所以线上的注册、登录、云同步、AI 代理与反馈提交不可用；进入登录门后点「静态演示 · 试用」，
-> 或直接访问 `https://yuyuy-228.github.io/Huaqianshu/?trial=1` 体验本地数据版本。  
+> 或直接访问 `https://yuyuy-228.github.io/Thousandbloom/?trial=1` 体验本地数据版本。  
 > 完整系统需要把 `huaqianshu-stack` 后端部署到服务器，见仓库内 `docs/部署与多用户说明.md`。
 
 ## 功能
